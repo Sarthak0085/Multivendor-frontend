@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.no-spin::-webkit-outer-spin-button,
+.no-spin::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Define scrollbar styles */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 1px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb{
+    color: transparent;
+    background: transparent;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    color: #56b8fa;
+    background: #56b8fa;
+    border-radius: 6px;
+}
+
+.carousel {
+    width: 300px;
+    height: 300px;
+    /* Adjust height as needed */
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-slide {
+    flex: 0 0 100%;
+}
+
+.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+} */
