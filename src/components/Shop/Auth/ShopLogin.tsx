@@ -76,27 +76,6 @@ const ShopLogin = () => {
           required={true}
           name="email"
         />
-        {/* <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Enter shop's Email address
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type="email"
-              placeholder="john@gmail.com"
-              {...register("email")}
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <MdOutlineEmail
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-          </div>
-          {errors.email && (
-            <span className="mt-2 text-red-500">{errors.email.message}</span>
-          )}
-        </div> */}
-
         <Input
           label="Enter shop's Password"
           type="password"
@@ -107,43 +86,6 @@ const ShopLogin = () => {
           required={true}
           name="password"
         />
-        {/* <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Enter shop's Password
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type={visible ? "text" : "password"}
-              autoComplete="current-password"
-              {...register("password")}
-              placeholder="**********"
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <RiLockPasswordLine
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-            {visible ? (
-              <AiOutlineEye
-                className="absolute right-2 top-2 cursor-pointer"
-                size={25}
-                onClick={() => setVisible(false)}
-              />
-            ) : (
-              <AiOutlineEyeInvisible
-                className="absolute right-2 top-2 cursor-pointer"
-                size={25}
-                onClick={() => setVisible(true)}
-              />
-            )}
-          </div>
-          {errors.password && (
-            <span className="mt-2 text-red-500">{errors.password.message}</span>
-          )}
-        </div> */}
         <div className="text-start">
           <Link
             to="/shop-forgot-password"

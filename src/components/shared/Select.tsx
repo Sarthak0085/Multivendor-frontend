@@ -38,7 +38,7 @@ const Select = <T extends FieldValues>({
   return (
     <div className={`mb-5 ${!className}`}>
       <label
-        className={`block text-sm sm:text-[16px] lg:text-[18px] pb-1 font-medium text-gray-700`}
+        className={`block text-sm lg:text-[15px] 1300px:text-[18px] pb-1 font-medium text-gray-700`}
       >
         {label} {required === true && <span className="text-red-500">*</span>}
       </label>
@@ -51,7 +51,7 @@ const Select = <T extends FieldValues>({
           })}
           onChange={setState ? (e) => setState(e.target.value) : undefined}
           className={`w-full appearance-none  border h-[40px] rounded-[5px] pl-[40px] focus:outline-none 
-          focus:ring-[blue] focus:border-[blue] text-sm sm:text-[16px] lg:text-[18px] ${!selectClassName}`}
+          focus:ring-[blue] focus:border-[blue] text-sm lg:text-[15px] 1300px:text-[18px] ${!selectClassName}`}
         >
           <option
             value=""
@@ -63,7 +63,7 @@ const Select = <T extends FieldValues>({
             data.map((item: any) => (
               <option
                 className="block font-normal bg-slate-200 hover:text-white hover:bg-slate-700"
-                key={item?.isoCode ? item?.isoCode : item?.name}
+                key={item?.isoCode || item?.title || item?.name}
                 value={
                   item?.isoCode
                     ? item?.isoCode

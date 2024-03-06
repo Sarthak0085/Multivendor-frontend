@@ -1,19 +1,18 @@
-import AdminHeader from "../../components/Layout/AdminHeader";
+import AdminDashboard from "../../components/Admin/AdminDashboard";
+import AdminHeader from "../../components/Admin/Layout/AdminHeader";
 import AdminSideBar from "../../components/Admin/Layout/AdminSideBar";
-import { useSelector } from "react-redux";
 // import AdminDashboardMain from "../../components/Admin/AdminDashboardMain";
 
 const AdminDashboardPage = () => {
-  const { loading } = useSelector((state: any) => state.auth);
   return (
     <div>
-      <AdminHeader />
-      <div className="w-full flex">
-        <div className="flex items-start justify-between w-full">
-          <div className="hidden sm:block sm:w-[80px] 800px:w-[330px]">
-            <AdminSideBar active={1} />
-          </div>
-          {/* <AdminDashboardMain /> */}
+      <AdminHeader active={1} />
+      <div className="flex items-start justify-between w-full">
+        <div className="w-auto fixed hidden sm:block sm:w-[80px] 1100px:w-[260px] overflow-y-auto">
+          <AdminSideBar active={1} />
+        </div>
+        <div className="flex justify-between w-full mx-10 sm:mr-5 sm:ml-[85px] 1100px:ml-[260px] overflow-x-hidden overflow-y-auto">
+          <AdminDashboard />
         </div>
       </div>
     </div>

@@ -16,21 +16,24 @@ import {
 
 const AllWithdraw = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const [withdrawStatus, setWithdrawStatus] = useState<string>("Processing");
+  const [withdrawStatus, setWithdrawStatus] = useState<string>("PENDING");
   const [id, setId] = useState<string>("");
   const [shopId, setShopId] = useState<string>("");
 
   const { isLoading, data, refetch } = useGetAllWithdrawRequestByAdminQuery({
     refetchOnMountOrArgChange: true,
   });
-  const [updateWithdraw, { isLoading: updateLoading, isSuccess, error }] =
+  const [updateWithdraw, { isSuccess, isLoading: updateLoading, error }] =
     useUpdateWithdrawRequestByAdminMutation();
+
+  console.log("data", data);
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Withdraw Request Updated Successfully", {
         style: setSuccessOptions,
       });
+      setOpen(false);
       refetch();
     }
     if (error) {
@@ -48,22 +51,23 @@ const AllWithdraw = () => {
   }, [isSuccess, error, refetch]);
 
   const handleSubmit = async () => {
-    setOpen(false);
-    const data = { id, shopId, withdrawStatus };
+    const data = { _id: id, shopId, withdrawStatus };
+    console.log(data);
+
     await updateWithdraw(data);
   };
 
   const TableComponent = TableHOC<WithdrawDataType>(
     withdrawColumns.map((column) => {
-      if (column.accessor === "actions") {
+      if (column?.accessor === "actions") {
         return {
           ...column,
           Cell: ({ row }) => (
             <div className="flex items-center justify-center space-x-2">
               <button
                 onClick={() => {
-                  setId(row.original?._id);
-                  setShopId(row.original.shopId);
+                  setId(row?.original?._id);
+                  setShopId(row.original?.seller);
                   setOpen(true);
                 }}
               >
@@ -81,7 +85,7 @@ const AllWithdraw = () => {
       }
     }),
     data?.withdraws,
-    "All Users",
+    "All Withdraws",
     data?.withdraws?.length > 10 ? true : false
   );
 

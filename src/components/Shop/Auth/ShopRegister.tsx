@@ -1,32 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { FaRegUser } from "react-icons/fa6";
-import { MdOutlineEmail, MdOutlineDescription } from "react-icons/md";
 import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
-import { RiLockPasswordLine } from "react-icons/ri";
+import { MdOutlineDescription, MdOutlineEmail } from "react-icons/md";
 import { PiAddressBook } from "react-icons/pi";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { RxAvatar, RxPerson } from "react-icons/rx";
 import { TbMapPinCode } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
-import { setErrorOptions, setSuccessOptions } from "../../options";
+import { useShopRegisterMutation } from "../../../redux/features/shop-auth/shopAuthApi";
+import styles from "../../../styles/styles";
 import {
   ShopRegisterFormData,
   shopRegisterSchema,
 } from "../../../validations/ShopRegistrationValidation";
-import styles from "../../../styles/styles";
-import { useShopRegisterMutation } from "../../../redux/features/shop-auth/shopAuthApi";
+import { setErrorOptions, setSuccessOptions } from "../../options";
 import Input from "../../shared/Input";
-import { RxAvatar, RxPerson } from "react-icons/rx";
-// import { nullable } from "zod";
-// import { RxAvatar } from "react-icons/rx";
 
 const ShopRegister = () => {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState<string>("");
 
-  const [registerMutation, { isSuccess, data, error }] =
+  const [registerMutation, { isSuccess, data, error, isLoading }] =
     useShopRegisterMutation();
 
   useEffect(() => {
@@ -59,6 +55,20 @@ const ShopRegister = () => {
     resolver: zodResolver(shopRegisterSchema),
   });
 
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result as string);
+      }
+    };
+
+    if (e.target.files !== null) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
   const onSubmit: SubmitHandler<ShopRegisterFormData> = async (data) => {
     console.log(data);
 
@@ -80,6 +90,7 @@ const ShopRegister = () => {
         pinCode,
         email,
         password,
+        avatar,
       });
       // Handle successful registration response
       console.log(response);
@@ -161,7 +172,7 @@ const ShopRegister = () => {
         </div> */}
 
         <div>
-          <label className="block text-sm sm:text-[16px] lg:text-[18px] font-medium text-gray-700">
+          <label className="block text-sm lg:text-[15px] 1300px:text-[18px] font-medium text-gray-700">
             Enter Shop's description <span className="text-red-500">*</span>
           </label>
           <div className="mt-1 relative">
@@ -172,7 +183,7 @@ const ShopRegister = () => {
               rows={8}
               cols={10}
               className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm 
-              placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-[16px] lg:text-[18px] text-sm"
+              placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 lg:text-[15px] 1300px:text-[18px] text-sm"
             />
             <MdOutlineDescription
               className="absolute left-2 top-2 cursor-pointer"
@@ -418,7 +429,7 @@ const ShopRegister = () => {
                 name="avatar"
                 id="file-input"
                 accept=".jpg,.jpeg,.png"
-                // onChange={handleFileInputChange}
+                onChange={handleImage}
                 className="sr-only"
               />
             </label>
@@ -428,7 +439,12 @@ const ShopRegister = () => {
         <div>
           <button
             type="submit"
-            className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent sm:text-[16px] text-sm lg:text-[18px] font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+            disabled={isLoading}
+            aria-disabled={isLoading ? true : false}
+            className={`group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm
+             lg:text-[15px] 1300px:text-[18px] font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${
+               isLoading && "cursor-not-allowed"
+             }`}
           >
             Submit
           </button>

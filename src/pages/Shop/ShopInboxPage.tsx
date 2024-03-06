@@ -5,9 +5,9 @@ import DashboardSideBar from "../../components/Shop/Layout/DashboardSidebar";
 const ShopInboxPage = () => {
   return (
     <div>
-      <DashboardHeader />
+      <DashboardHeader active={8} />
       <div className="flex items-start justify-between w-full">
-        <div className="w-auto hidden sm:block 1100px:w-[330px]">
+        <div className="w-auto fixed hidden sm:block 1100px:w-[300px] overflow-y-auto">
           <DashboardSideBar active={8} />
         </div>
         {/* <DashboardMessages /> */}

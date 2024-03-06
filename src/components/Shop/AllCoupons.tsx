@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { FaArrowRight } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import CouponModal from "../../modals/CouponModal";
 import DeleteConfirmationModal from "../../modals/DeleteModal";
@@ -225,7 +226,7 @@ const AllCoupons = () => {
       {isLoading || productLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
+        <div className="w-full mx-8 pt-1 mt-10 bg-white overflow-y-hidden">
           <div className="w-full flex justify-end">
             <div
               className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}
@@ -237,13 +238,26 @@ const AllCoupons = () => {
           {data?.couponCodes && data?.couponCodes?.length !== 0 ? (
             <TableComponent />
           ) : (
-            <div className="w-full h-full space-y-2 flex flex-col items-center justify-center">
+            <div className="w-full h-full space-y-2 -mt-10 flex flex-col items-center justify-center">
               <h2 className="text-3xl font-bold mb-4 text-red-500">
                 No Coupons Available 😔
               </h2>
               <p className="text-lg text-gray-600 mb-2">
-                You haven't created any coupon yet.
+                You haven't added any coupons yet.
               </p>
+              <p className="text-lg text-gray-600 mb-2">
+                Start adding your coupons to offer discounts to your customers.
+              </p>
+              <p className="text-lg text-gray-600 mb-2">
+                Consider creating special promotions or seasonal discounts.
+              </p>
+              <button
+                onClick={() => setMode("create")}
+                className="text-blue-500 font-semibold flex items-center justify-center gap-1 hover:underline text-lg"
+              >
+                Click here to create coupon{" "}
+                <FaArrowRight title="Create a Coupon" />
+              </button>
             </div>
           )}
           {open && !couponLoading && (

@@ -1,17 +1,19 @@
-import AdminHeader from "../../components/Layout/AdminHeader";
+import AdminHeader from "../../components/Admin/Layout/AdminHeader";
 import AdminSideBar from "../../components/Admin/Layout/AdminSideBar";
-// import AllWithdraw from "../../components/Admin/AllWithdraw";
+import AllWithdraw from "../../components/Admin/AllWithdraws";
 
 const AdminDashboardWithdraw = () => {
   return (
     <div>
-      <AdminHeader />
+      <AdminHeader active={16} />
       <div className="w-full flex">
         <div className="flex items-start justify-between w-full">
-          <div className="hidden sm:block sm:w-[80px] 800px:w-[330px]">
+          <div className="hidden sm:block sm:w-[80px] 800px:w-[300px]">
             <AdminSideBar active={16} />
           </div>
-          {/* <AllWithdraw /> */}
+          <div className="w-full flex justify-center overflow-x-hidden overflow-y-auto">
+            <AllWithdraw />
+          </div>
         </div>
       </div>
     </div>

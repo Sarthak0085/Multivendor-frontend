@@ -11,6 +11,7 @@ type RegistrationData = {
     fullName: string;
     email: string;
     password: string;
+    avatar: string;
 };
 
 export const authApi = apiSlice.injectEndpoints({
@@ -201,7 +202,7 @@ export const authApi = apiSlice.injectEndpoints({
         }),
         logout: builder.mutation({
             query: () => ({
-                url: "/logout",
+                url: "/auth/logout",
                 method: "POST",
                 credentials: "include" as const,
             }),

@@ -14,7 +14,6 @@ import {
 } from "../../validations/ResetPassword";
 import { setErrorOptions, setSuccessOptions } from "../options";
 import Input from "../shared/Input";
-import Loader from "../Layout/Loader";
 
 type VerifyNumber = {
   "0": string;
@@ -29,10 +28,10 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const {
     reset_token,
-    isLoading: authLoading,
+    // isLoading: authLoading,
     user,
   } = useSelector((state: any) => state.auth);
-  console.log("resetToken", authLoading, reset_token, user);
+  console.log("resetToken", reset_token, user);
 
   const [invalidError, setInvalidError] = useState<boolean>(false);
   const [verifyNumber, setVerifyNumber] = useState<VerifyNumber>({
@@ -117,9 +116,7 @@ const ResetPassword = () => {
     }
   };
 
-  return authLoading ? (
-    <Loader />
-  ) : (
+  return (
     <form onSubmit={handleSubmit(verificationHandler)}>
       <h1 className={`${styles.title}`}>Reset Password</h1>
       <div className="w-full flex items-center justify-center mt-2">

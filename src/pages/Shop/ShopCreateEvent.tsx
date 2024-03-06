@@ -5,12 +5,12 @@ import DashboardSideBar from "../../components/Shop/Layout/DashboardSidebar";
 const ShopCreateEvents = () => {
   return (
     <div>
-      <DashboardHeader />
+      <DashboardHeader active={6} />
       <div className="flex items-center justify-between w-full">
-        <div className="w-auto hidden sm:block 1100px:w-[250px]">
+        <div className="w-auto hidden sm:block 1100px:w-[300px]">
           <DashboardSideBar active={6} />
         </div>
-        <div className="w-full justify-center flex">
+        <div className="w-full justify-center flex mt-10 sm:mt-0">
           <CreateEvent />
         </div>
       </div>

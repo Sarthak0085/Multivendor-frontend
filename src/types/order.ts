@@ -1,5 +1,4 @@
 import { IProduct } from "./product";
-import { IShop } from "./shop";
 import { IUser } from "./user";
 
 export type IPaymentInfo = {

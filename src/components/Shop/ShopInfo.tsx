@@ -75,7 +75,11 @@ const ShopInfo = ({ isOwner }: { isOwner: boolean }) => {
             <div className="w-full py-5">
               <div className="w-full flex item-center justify-center">
                 <img
-                  src={`${data.avatar ? data?.avatar?.url : "https:"}`}
+                  src={`${
+                    shopInfo?.shop?.avatar
+                      ? shopInfo?.shop?.avatar?.url
+                      : "https:"
+                  }`}
                   alt=""
                   className="w-[150px] h-[150px] object-cover rounded-full"
                 />
@@ -84,7 +88,7 @@ const ShopInfo = ({ isOwner }: { isOwner: boolean }) => {
                 {shopInfo?.shop?.name}
               </h3>
               <p className="text-[16px] text-[#000000a6] p-[10px] flex items-center">
-                {data.description}
+                {shopInfo?.shop?.description}
               </p>
             </div>
             <div className="p-3">

@@ -34,26 +34,29 @@ const UpdateWithdrawModal = ({
           Update Withdraw status
         </h1>
         <br />
-        <select
-          onChange={(e) => setWithdrawStatus(e.target.value)}
-          className="w-[200px] h-[35px] border rounded"
-          value={withdrawStatus}
-        >
-          <option value={withdrawStatus}>pending</option>
-          <option value={withdrawStatus}>succeed</option>
-        </select>
-        <button
-          type="submit"
-          disabled={updateLoading}
-          className={`block ${
-            styles.button
-          } text-white !h-[42px] mt-4 text-[18px] ${
-            updateLoading && "cursor-not-allowed"
-          }`}
-          onClick={handleSubmit}
-        >
-          Update
-        </button>
+        <div className="flex flex-col items-center justify-center">
+          <select
+            onChange={(e) => setWithdrawStatus(e.target.value)}
+            className="flex items-center w-[200px] px-4 h-[35px] appearance-none border rounded"
+            value={withdrawStatus}
+          >
+            <option value={"PENDING"}>pending</option>
+            <option value={"SUCCEEDED"}>succeed</option>
+          </select>
+          <button
+            type="submit"
+            disabled={updateLoading}
+            aria-disabled={updateLoading ? true : false}
+            className={`block ${
+              styles.button
+            } text-white !h-[42px] mt-4 text-[18px] ${
+              updateLoading && "cursor-not-allowed"
+            }`}
+            onClick={handleSubmit}
+          >
+            Update
+          </button>
+        </div>
       </div>
     </div>
   );

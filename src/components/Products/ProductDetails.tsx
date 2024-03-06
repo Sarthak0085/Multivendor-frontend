@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   AiFillHeart,
   AiOutlineHeart,
@@ -6,20 +7,22 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import styles from "../../styles/styles";
-import Ratings from "./Ratings";
+import { Link } from "react-router-dom";
+import {
+  useAddToCartMutation,
+  useGetCartQuery,
+} from "../../redux/features/cart/cartApi";
 import { useGetAllShopProductsQuery } from "../../redux/features/product/productApi";
-import toast from "react-hot-toast";
-import { IProduct, IReview } from "../../types/product";
-import ProductDetailsInfo from "./ProductDetailsInfo";
-import { IEvent } from "../../types/event";
-import { useAddToCartMutation } from "../../redux/features/cart/cartApi";
 import {
   useAddToWishlistMutation,
   useGetWishlistQuery,
   useRemoveFromWishlistMutation,
 } from "../../redux/features/wishlist/wishlistApi";
+import styles from "../../styles/styles";
+import { IEvent } from "../../types/event";
+import { IProduct, IReview } from "../../types/product";
+import Loader from "../Layout/Loader";
+import ProductDetailsInfo from "./ProductDetailsInfo";
 
 const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
   const { user, seller } = useSelector((state: any) => state.auth);
@@ -28,7 +31,7 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
   const selectImage = data?.images[0]?.url;
   const [select, setSelect] = useState<string>(selectImage ?? null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { data: productData, isLoading } = useGetAllShopProductsQuery(
     seller?._id,
     {}
@@ -37,6 +40,9 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
     addToWishlist,
     { isSuccess: addWishlistSuccess, error: addWishlistError },
   ] = useAddToWishlistMutation();
+  const { refetch } = useGetCartQuery(user?._id, {
+    refetchOnMountOrArgChange: true,
+  });
   const [
     removeFromWishlist,
     { isSuccess: removeWishlistSuccess, error: removeWishlistError },
@@ -94,21 +100,26 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
     }
   };
 
-  const { data: wishlistData } = useGetWishlistQuery(user?._id, {});
+  const { data: wishlistData, refetch: wishlistRefetch } = useGetWishlistQuery(
+    user?._id,
+    { refetchOnMountOrArgChange: true }
+  );
   console.log("Wishlist :", wishlistData);
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Item added to Cart successfully!");
-      //   refetch();
+      refetch();
     }
     if (addWishlistSuccess) {
       toast.success("Product Added to Wishlist Successfully");
       setClick(!click);
+      wishlistRefetch();
     }
     if (removeWishlistSuccess) {
       toast.success("Product Removed from wishlist Successfully");
       setClick(!click);
+      wishlistRefetch();
     }
     if (error) {
       if ("data" in error) {
@@ -164,7 +175,9 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
 
   return (
     <div className="bg-white">
-      {data ? (
+      {isLoading ? (
+        <Loader />
+      ) : data ? (
         <div className={`${styles.section} w-[90%] 800px:w-[100%]`}>
           <div className="w-full py-5">
             <div className="block w-full 800px:flex">
@@ -212,11 +225,11 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
                       &#x20B9;{data.originalPrice ? data.originalPrice : null}
                     </h3>
                   </div>
-                  <Ratings
+                  {/* <Ratings
                     rating={
-                      data ? data?.reviews !== [] && data?.reviews?.rating : 0
+                      data ? data?.reviews !== undefined && data?.reviews?.rating : 0
                     }
-                  />
+                  /> */}
                   <div className="flex items-center mt-12 justify-between w-[90%] pr-3">
                     <div>
                       <button
@@ -271,8 +284,8 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
                     <Link to={`/shop/preview/${data?.shop?._id}`}>
                       <img
                         src={`${
-                          data?.shop?.image
-                            ? data?.shop?.image?.url
+                          data?.shop?.avatar
+                            ? data?.shop?.avatar?.url
                             : "https://res.cloudinary.com/dkzfopuco/image/upload/v1704392874/avatars/fgzkqxku7re8opvf8lsz.png"
                         }`}
                         alt=""

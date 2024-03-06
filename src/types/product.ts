@@ -20,6 +20,7 @@ export type IProduct = {
     size?: string | number;
     stock: number;
     colors: string[];
+    brand: string;
     images: {
         public_id: string;
         url: string;

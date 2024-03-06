@@ -40,7 +40,7 @@ const Input = <T extends FieldValues>({
     <div className={`${className} mb-5`}>
       <div>
         <label
-          className={`block text-sm sm:text-[16px] lg:text-[18px] font-medium pb-1 text-gray-700`}
+          className={`block text-sm lg:text-[15px] 1300px:text-[18px] font-medium pb-1 text-gray-700`}
         >
           {label} {required === true && <span className="text-red-500">*</span>}
         </label>
@@ -61,7 +61,8 @@ const Input = <T extends FieldValues>({
           })}
           className={`appearance-none block w-full ${
             Icon !== undefined ? "pl-10 pr-3" : "px-2"
-          } py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[blue] focus:border-[blue] text-sm sm:text-[16px] lg:text-[18px] ${!inputClassName}`}
+          } py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none
+           focus:ring-[blue] focus:border-[blue] text-sm lg:text-[15px] 1300px:text-[18px] ${!inputClassName}`}
         />
         {Icon && (
           <Icon

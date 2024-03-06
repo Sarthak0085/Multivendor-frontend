@@ -7,8 +7,12 @@ import {
 } from "react-icons/md";
 import { TbAddressBook } from "react-icons/tb";
 import { RxPerson } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { setErrorOptions, setSuccessOptions } from "../options";
+import { useLogoutMutation } from "../../redux/features/auth/authApi";
 
 const ProfileSidebar = ({
   setActive,
@@ -17,21 +21,35 @@ const ProfileSidebar = ({
   active: number;
   setActive: (active: number) => void;
 }) => {
+  const navigate = useNavigate();
+
   const { user } = useSelector((state: any) => state?.auth);
   console.log(user);
+  const [logout, { isSuccess, error, isLoading }] = useLogoutMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Logged Out Successfully", {
+        style: setSuccessOptions,
+      });
+      navigate("/login");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error?.data as Error;
+        toast.error(errorData?.message, {
+          style: setErrorOptions,
+        });
+      } else {
+        toast.error("An Unknown error occured", {
+          style: setErrorOptions,
+        });
+      }
+    }
+  }, [isSuccess, error]);
 
   const logoutHandler = async () => {
-    // await logout(user);
-    // axios
-    //   .get(`${server}/user/logout`, { withCredentials: true })
-    //   .then((res) => {
-    //     toast.success(res.data.message);
-    //     window.location.reload(true);
-    //     navigate("/login");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data.message);
-    //   });
+    await logout({});
   };
   return (
     <div className="w-full mt-[20px] bg-white shadow-sm rounded-[10px] p-4 pt-8">
@@ -187,9 +205,13 @@ const ProfileSidebar = ({
           </div>
         </Link>
       )}
-      <div
-        className="single_item flex items-center cursor-pointer w-full mb-8"
+      <button
+        className={` ${
+          isLoading && "cursor-not-allowed"
+        } flex items-center cursor-pointer w-full mb-8`}
         onClick={logoutHandler}
+        disabled={isLoading}
+        aria-disabled={isLoading ? true : false}
       >
         <AiOutlineLogin
           title={`Logout`}
@@ -203,7 +225,7 @@ const ProfileSidebar = ({
         >
           Log out
         </span>
-      </div>
+      </button>
     </div>
   );
 };

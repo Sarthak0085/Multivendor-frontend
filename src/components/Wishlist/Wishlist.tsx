@@ -33,6 +33,7 @@ const Wishlist = ({
   } = useGetWishlistQuery(user?._id, {
     refetchOnMountOrArgChange: true,
   });
+
   const [
     removeFromWishlist,
     { isSuccess: removeWishlistSuccess, error: removeWishlistError },
@@ -158,8 +159,8 @@ const Wishlist = ({
   useClickOutside(modalRef, () => setOpenWishlist(false));
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-      <div className="fixed top-0 right-0 h-full w-[90%] sm:w-[70%] overflow-y-scroll 800px:w-[55%] 1100px:w-[45%] 1300px:w-[35%] bg-white flex flex-col justify-between shadow-sm">
+    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-[999]">
+      <div className="top-0 right-0 h-full w-[90%] sm:w-[70%] overflow-y-scroll 800px:w-[55%] 1100px:w-[45%] 1300px:w-[35%] bg-white flex flex-col justify-between shadow-sm">
         {isLoading ? (
           <Loader />
         ) : wishlistData?.wishlist &&

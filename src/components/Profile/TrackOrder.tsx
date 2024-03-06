@@ -137,6 +137,8 @@ const TrackOrder = () => {
         deliveryDate.setDate(deliveryDate.getDate() + 3);
       } else if (dataInfo?.status === "On the way") {
         deliveryDate.setDate(deliveryDate.getDate() + 3);
+      } else {
+        deliveryDate.setDate(dataInfo?.deliveredAt);
       }
 
       // Get current date

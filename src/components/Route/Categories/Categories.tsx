@@ -70,7 +70,17 @@ const Categories = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          <Carousel responsive={responsive}>
+          <Carousel
+            infinite={true}
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            autoPlay={true}
+            autoPlaySpeed={2000}
+            keyBoardControl={false}
+            responsive={responsive}
+            removeArrowOnDeviceType={"all"}
+          >
             {data?.getallCategory?.map((category, index) => (
               <div key={index} className="space-x-10 relative ">
                 <img

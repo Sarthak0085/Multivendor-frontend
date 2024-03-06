@@ -54,18 +54,25 @@ const authSlice = createSlice({
             state.token = action.payload.token;
         },
         userLoggedIn: (state, action: PayloadAction<{ accessToken: string, user: string }>) => {
+            console.log("hello");
+
             state.isLoading = true;
             state.token = action.payload.accessToken;
             state.user = action.payload.user;
             state.isLoading = false;
+
+            console.log("bye");
+
         },
         userForgotPassword: (state, action: PayloadAction<{ resetToken: string }>) => {
             state.reset_token = action.payload.resetToken;
             console.log("Reset token", state.reset_token);
         },
         userLoggedOut: (state) => {
+            state.isLoading = true;
             state.token = "";
             state.user = "";
+            state.isLoading = false;
         },
         sellerRegistration: (state, action: PayloadAction<{ token: string }>) => {
             state.token = action.payload.token;

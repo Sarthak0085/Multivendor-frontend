@@ -7,7 +7,6 @@ export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_PUBLIC_API_URL,
     }),
-    tagTypes: ['Wishlist'],
     endpoints: (builder) => ({
         // refreshToken: builder.query({
         //     query: () => ({
@@ -31,6 +30,8 @@ export const apiSlice = createApi({
                             user: result.data.user
                         })
                     )
+                    console.log("result", result);
+
                 } catch (error) {
                     console.log(error);
 

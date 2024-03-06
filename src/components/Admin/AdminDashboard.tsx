@@ -3,10 +3,10 @@ import { CiMoneyBill } from "react-icons/ci";
 import { FaArrowRight } from "react-icons/fa6";
 import { FiPackage } from "react-icons/fi";
 import { MdBorderClear } from "react-icons/md";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useGetAllOrdersBySellerQuery } from "../../redux/features/orders/orderApi";
-import { useGetAllShopProductsQuery } from "../../redux/features/product/productApi";
+import { useAdminGetAllOrdersQuery } from "../../redux/features/orders/orderApi";
+import { useAdminGetAllProductsQuery } from "../../redux/features/product/productApi";
+import { useGetAllWithdrawRequestByAdminQuery } from "../../redux/features/withdraw/withdrawApi";
 import { IOrder } from "../../types/order";
 import { IProduct } from "../../types/product";
 import Loader from "../Layout/Loader";
@@ -17,6 +17,8 @@ import {
   ProductDataType,
   dashboardProductColumns,
 } from "../shared/Tables/ProductColumns";
+import SellersAnalytics from "./Analytics/SellersAnalytics";
+import UsersAnalytics from "./Analytics/UsersAnalytics";
 
 const northStates = ["RJ", "HP", "PB", "JK", "UP", "HR", "CH", "DL", "UK"];
 
@@ -26,13 +28,14 @@ const eastStates = ["WB", "JH", "OR", "BR", "SK", "AS", "MN", "ML", "TR", "NL"];
 
 const westStates = ["GJ", "MH", "DD"];
 
-const DashboardHero = () => {
-  const { seller } = useSelector((state: any) => state?.auth);
-
-  const { data, isLoading } = useGetAllOrdersBySellerQuery(seller?._id, {});
+const AdminDashboard = () => {
+  const { data, isLoading } = useAdminGetAllOrdersQuery({});
 
   const { data: productData, isLoading: productLoading } =
-    useGetAllShopProductsQuery(seller?._id, {});
+    useAdminGetAllProductsQuery({});
+
+  const { data: withdrawData, isLoading: withdrawLoading } =
+    useGetAllWithdrawRequestByAdminQuery({});
 
   console.log("data:", data);
 
@@ -47,6 +50,13 @@ const DashboardHero = () => {
       return 0;
     })
     ?.slice(0, 5);
+
+  const withdrawRequestToday = withdrawData?.withdraws.filter(
+    (item: any) =>
+      item?.createdAt?.slice(0, 10) === new Date().toISOString().slice(0, 10)
+  );
+
+  console.log(withdrawRequestToday);
 
   // Filter orders for North region
   const northRegionOrders = data?.orders.filter((item: any) => {
@@ -196,6 +206,40 @@ const DashboardHero = () => {
     },
   ];
 
+  // function getRefundOrdersForToday() {
+  //   const today = new Date();
+
+  //   const refundOrdersToday = data?.orders.filter((order: IOrder) => {
+  //     return (
+  //       order.status === "Processing Refund" &&
+  //       order.updatedAt !== undefined &&
+  //       order?.updatedAt.slice(0, 10) ===
+  //         today.toISOString().slice(0, 10)
+  //     );
+  //   });
+
+  //   return refundOrdersToday;
+  // }
+
+  const refundOrdersToday = data?.orders.filter(
+    (order: any) =>
+      order?.status === "Processing Refund" &&
+      order?.updatedAt &&
+      order?.updatedAt?.slice(0, 10) === new Date().toISOString().slice(0, 10)
+  );
+
+  //   const orderCancelData = [
+  //     {
+  //       name: "Cancelled",
+  //       value: refundProcess.length + refundSuccess.length,
+  //     },
+  //     {
+  //       name: "",
+  //       value:
+  //         data?.orders.length - (refundProcess.length + refundSuccess.length),
+  //     },
+  //   ];
+
   console.log("status: ", statusData);
 
   const ProductTablecomponent = TableHOC<ProductDataType>(
@@ -231,9 +275,13 @@ const DashboardHero = () => {
     productsData?.length > 10 ? true : false
   );
 
-  const availableBalance = seller?.availableBalance.toFixed(0);
+  const adminEarning =
+    data?.orders &&
+    data?.orders
+      ?.reduce((acc: number, item: IOrder) => acc + item.totalPrice * 0.1, 0)
+      .toFixed(0);
 
-  return isLoading || productLoading ? (
+  return isLoading || productLoading || withdrawLoading ? (
     <Loader />
   ) : (
     <div className="w-full p-1 pt-10 500px:p-8">
@@ -245,7 +293,7 @@ const DashboardHero = () => {
               Account Balance
             </h2>
             <h3 className="text-[20px] leading-[24px] font-bold text-[#5a5c69] mt-[5px]">
-              &#8377;. {availableBalance}
+              &#8377;. {adminEarning}
             </h3>
             <Link to="/dashboard-withdraw-money">
               <h5 className="text-[#077f9c] underline text-[13px]">
@@ -305,26 +353,17 @@ const DashboardHero = () => {
         </div>
       </div>
 
-      <div className="1300px:flex-row flex flex-col mt-[22px] w-full gap-[30px]">
-        <div className="basis-[100%] 1300px:w-[60%]  border bg-white shadow-md cursor-pointer rounded-[4px]">
+      <div className="flex flex-col mt-[22px] w-full gap-[30px]">
+        <div className="basis-[100%] 1300px:basis[70%] border bg-white shadow-md cursor-pointer rounded-[4px]">
           <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
-            <h2 className="text-[16px] font-bold">Popular Products</h2>
+            <h2 className="text-[16px] font-bold">Latest Orders</h2>
           </div>
           <div className="px-4 pb-4">
-            {productData && productData?.length !== 0 && (
-              <ProductTablecomponent />
-            )}
-          </div>
-        </div>
-        <div className="13300px:basis-[30%] basis-[50%] border bg-white shadow-md cursor-pointer rounded-[4px]">
-          <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
-            <h2 className="text-[16px] font-bold">Sales by Regions</h2>
-          </div>
-          <div className="flex items-center justify-center">
-            <PieChartAnalytics data={pieChartData} />
+            {orderData && orderData?.length !== 0 && <OrderTableComponent />}
           </div>
         </div>
       </div>
+
       <div className="1300px:flex-row flex flex-col mt-[22px] w-full gap-[30px]">
         <div className="basis-[100%] 1300px:basis[60%] border bg-white shadow-md cursor-pointer rounded-[4px]">
           <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
@@ -373,13 +412,85 @@ const DashboardHero = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col mt-[22px] w-full gap-[30px]">
-        <div className="basis-[100%] 1300px:basis[70%] border bg-white shadow-md cursor-pointer rounded-[4px]">
+
+      <div className="1300px:flex-row flex flex-col mt-[22px] w-full gap-[30px]">
+        <div className="basis-[100%] 1300px:w-[60%]  border bg-white shadow-md cursor-pointer rounded-[4px]">
           <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
-            <h2 className="text-[16px] font-bold">Latest Orders</h2>
+            <h2 className="text-[16px] font-bold">Sellers Analytics</h2>
           </div>
           <div className="px-4 pb-4">
-            {orderData && orderData?.length !== 0 && <OrderTableComponent />}
+            <SellersAnalytics isDashboard={true} />
+          </div>
+        </div>
+        <div className="13300px:basis-[40%] basis-[50%] border bg-white shadow-md cursor-pointer rounded-[4px]">
+          <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
+            <h2 className="text-[16px] font-bold">Withdraw Requests (Today)</h2>
+          </div>
+          <div className="flex flex-col items-center justify-center">
+            {withdrawRequestToday?.length !== 0 ? (
+              withdrawRequestToday.map((item: IOrder, index: number) => (
+                <div key={index} className="flex items-center justify-around">
+                  <h3 className="text-[14px]">{item?._id.slice(0, 6)}</h3>
+                  <h2 className="text-[14px]">{item?.user?.fullName}</h2>
+                  <h3 className="text-[14px]">{item?.status}</h3>
+                </div>
+              ))
+            ) : (
+              <div className="text-emerald-500 text-[25px] py-auto text-center font-bold">
+                No Withdraw Request Today
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="1300px:flex-row flex flex-col mt-[22px] w-full gap-[30px]">
+        <div className="basis-[100%] 1300px:w-[60%]  border bg-white shadow-md cursor-pointer rounded-[4px]">
+          <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
+            <h2 className="text-[16px] font-bold">User Analytics</h2>
+          </div>
+          <div className="px-4 pb-4">
+            <UsersAnalytics isDashboard={true} />
+          </div>
+        </div>
+        <div className="13300px:basis-[40%] basis-[50%] border bg-white shadow-md cursor-pointer rounded-[4px]">
+          <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
+            <h2 className="text-[16px] font-bold">Orders Cancelled (Today)</h2>
+          </div>
+          <div className="flex flex-col items-center justify-center">
+            {refundOrdersToday?.length !== 0 ? (
+              refundOrdersToday.map((item: IOrder, index: number) => (
+                <div key={index} className="flex items-center justify-around">
+                  <h3 className="text-[14px]">{item?._id.slice(0, 6)}</h3>
+                  <h2 className="text-[14px]">{item?.user?.fullName}</h2>
+                  <h3 className="text-[14px]">{item?.status}</h3>
+                </div>
+              ))
+            ) : (
+              <div className="text-emerald-500 text-[25px] py-auto text-center font-bold">
+                No Order Cancelled today
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="1300px:flex-row flex flex-col mt-[22px] w-full gap-[30px]">
+        <div className="basis-[100%] 1300px:w-[60%]  border bg-white shadow-md cursor-pointer rounded-[4px]">
+          <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
+            <h2 className="text-[16px] font-bold">Popular Products</h2>
+          </div>
+          <div className="px-4 pb-4">
+            {productData && productData?.length !== 0 && (
+              <ProductTablecomponent />
+            )}
+          </div>
+        </div>
+        <div className="13300px:basis-[30%] basis-[50%] border bg-white shadow-md cursor-pointer rounded-[4px]">
+          <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
+            <h2 className="text-[16px] font-bold">Sales by Regions</h2>
+          </div>
+          <div className="flex items-center justify-center">
+            <PieChartAnalytics data={pieChartData} />
           </div>
         </div>
       </div>
@@ -407,4 +518,4 @@ const DashboardHero = () => {
   );
 };
 
-export default DashboardHero;
+export default AdminDashboard;

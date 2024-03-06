@@ -5,9 +5,9 @@ import DashboardSideBar from "../../components/Shop/Layout/DashboardSidebar";
 const ShopCreateProduct = () => {
   return (
     <div>
-      <DashboardHeader />
+      <DashboardHeader active={4} />
       <div className="flex items-center justify-between w-full">
-        <div className="w-auto hidden sm:block 1100px:w-[250px]">
+        <div className="w-auto hidden sm:block 1100px:w-[300px]">
           <DashboardSideBar active={4} />
         </div>
         <div className="w-full justify-center flex">

@@ -125,7 +125,7 @@ const CreateProduct = () => {
   };
 
   return (
-    <div className="w-[90%] 800px:w-[50%] bg-white border border-blue-200 shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
+    <div className="w-[90%] 800px:w-[50%] bg-slate-50 border border-blue-200 shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
       <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
       {/* create product form */}
       <form onSubmit={handleSubmit(createProduct)}>
@@ -142,7 +142,7 @@ const CreateProduct = () => {
           name="name"
         />
 
-        <div>
+        {/* <div>
           <label className="pb-2">
             Name <span className="text-red-500">*</span>
           </label>
@@ -155,9 +155,11 @@ const CreateProduct = () => {
           {errors.name && (
             <span className="text-red-500">{errors.name.message}</span>
           )}
-        </div>
+        </div> */}
+
         <br />
-        <div>
+
+        {/* <div>
           <label className="pb-2">
             Description <span className="text-red-500">*</span>
           </label>
@@ -172,8 +174,9 @@ const CreateProduct = () => {
             <span className="text-red-500">{errors.description.message}</span>
           )}
         </div>
-        <br />
-        <div>
+        <br /> */}
+
+        {/* <div>
           <label className="pb-2">
             Category <span className="text-red-500">*</span>
           </label>
@@ -192,9 +195,11 @@ const CreateProduct = () => {
           {errors.category && (
             <span className="text-red-500">{errors.category.message}</span>
           )}
-        </div>
-        <br />
-        <div>
+        </div> */}
+
+        {/* <br /> */}
+
+        {/* <div>
           <label className="pb-2">Tags</label>
           <input
             type="text"
@@ -205,9 +210,11 @@ const CreateProduct = () => {
           {errors.tags && (
             <span className="text-red-500">{errors.tags.message}</span>
           )}
-        </div>
-        <br />
-        <div>
+        </div> */}
+
+        {/* <br /> */}
+
+        {/* <div>
           <label className="pb-2">Original Price</label>
           <input
             type="number"
@@ -218,10 +225,10 @@ const CreateProduct = () => {
           {errors.originalPrice && (
             <span className="text-red-500">{errors.originalPrice.message}</span>
           )}
-        </div>
+        </div> */}
 
         <div>
-          <label className="block text-sm sm:text-[16px] lg:text-[18px] font-medium text-gray-700">
+          <label className="block text-sm lg:text-[15px] 1300px:text-[18px] font-medium text-gray-700">
             Product Description <span className="text-red-500">*</span>
           </label>
           <div className="mt-1 relative">
@@ -231,7 +238,7 @@ const CreateProduct = () => {
               rows={8}
               cols={10}
               className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm 
-              placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-[16px] lg:text-[18px] text-sm"
+              placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm lg:text-[15px] 1300px:text-[18px]"
             />
             <MdOutlineDescription
               className="absolute left-2 top-2 cursor-pointer"
@@ -244,7 +251,9 @@ const CreateProduct = () => {
             </span>
           )}
         </div>
+
         <br />
+
         <Select
           name="category"
           defaultOption="Choose a Category"
@@ -256,7 +265,7 @@ const CreateProduct = () => {
           data={categoriesData}
         />
 
-        <div>
+        {/* <div>
           <label className="pb-2">
             Category <span className="text-red-500">*</span>
           </label>
@@ -275,7 +284,7 @@ const CreateProduct = () => {
           {errors.category && (
             <span className="text-red-500">{errors.category.message}</span>
           )}
-        </div>
+        </div> */}
         <br />
 
         <Input
@@ -285,11 +294,11 @@ const CreateProduct = () => {
           register={register}
           errors={errors}
           Icon={BsTags}
-          required={true}
+          required={false}
           name="tags"
         />
 
-        <div>
+        {/* <div>
           <label className="pb-2">Tags</label>
           <input
             type="text"
@@ -300,7 +309,7 @@ const CreateProduct = () => {
           {errors.tags && (
             <span className="text-red-500">{errors.tags.message}</span>
           )}
-        </div>
+        </div> */}
         <br />
 
         <Input
@@ -315,7 +324,7 @@ const CreateProduct = () => {
           valueAsNumber={true}
         />
 
-        <div>
+        {/* <div>
           <label className="pb-2">Original Price</label>
           <input
             type="number"
@@ -326,7 +335,8 @@ const CreateProduct = () => {
           {errors.originalPrice && (
             <span className="text-red-500">{errors.originalPrice.message}</span>
           )}
-        </div>
+        </div> */}
+
         <br />
 
         <Input
@@ -341,7 +351,7 @@ const CreateProduct = () => {
           valueAsNumber={true}
         />
 
-        <div>
+        {/* <div>
           <label className="pb-2">
             Price (With Discount) <span className="text-red-500">*</span>
           </label>
@@ -354,7 +364,8 @@ const CreateProduct = () => {
           {errors.discountPrice && (
             <span className="text-red-500">{errors.discountPrice.message}</span>
           )}
-        </div>
+        </div> */}
+
         <br />
 
         <Input
@@ -369,7 +380,7 @@ const CreateProduct = () => {
           valueAsNumber={true}
         />
 
-        <div>
+        {/* <div>
           <label className="pb-2">
             Product Stock <span className="text-red-500">*</span>
           </label>
@@ -382,12 +393,14 @@ const CreateProduct = () => {
           {errors.stock && (
             <span className="text-red-500">{errors.stock.message}</span>
           )}
-        </div>
+        </div> */}
+
         <br />
+
         <div>
           <label className="pb-2">Brand</label>
           <select
-            className="w-full mt-2 border h-[35px] rounded-[5px] "
+            className="w-full mt-2 border h-[35px] rounded-[5px] text-sm lg:text-[15px] 1300px:text-[18px]"
             {...register("brand", { required: true })}
           >
             <option value="">Select a brand</option>
@@ -404,7 +417,7 @@ const CreateProduct = () => {
         <div>
           <label className="pb-2">Colors</label>
           <select
-            className="w-full mt-2 border h-[35px] rounded-[5px] flex-grow"
+            className="w-full mt-2 border h-[35px] rounded-[5px] flex-grow text-sm lg:text-[15px] 1300px:text-[18px]"
             {...register("colors", { required: true })}
           >
             <option value="red">Red</option>
@@ -421,7 +434,7 @@ const CreateProduct = () => {
         </div>
 
         <br />
-        <div>
+        {/* <div>
           <label className="pb-2">
             Price (With Discount) <span className="text-red-500">*</span>
           </label>
@@ -434,9 +447,9 @@ const CreateProduct = () => {
           {errors.discountPrice && (
             <span className="text-red-500">{errors.discountPrice.message}</span>
           )}
-        </div>
-        <br />
-        <div>
+        </div> */}
+        {/* <br /> */}
+        {/* <div>
           <label className="pb-2">
             Product Stock <span className="text-red-500">*</span>
           </label>
@@ -482,7 +495,7 @@ const CreateProduct = () => {
             <span className="text-red-500">{errors.colors.message}</span>
           )}
         </div>
-        <br />
+        <br /> */}
         <div>
           <label className="pb-2">
             Upload Images <span className="text-red-500">*</span> (Select upto 6
@@ -512,7 +525,7 @@ const CreateProduct = () => {
           </div>
         </div>
         <br />
-        <div className="text-[18px]">
+        {/* <div className="text-[18px]">
           <button
             type="submit"
             disabled={isLoading}
@@ -520,6 +533,19 @@ const CreateProduct = () => {
             hover:bg-blue-400 hover:text-white border-blue-400 w-full ${
               isLoading && "cursor-not-allowed"
             }`}
+          >
+            Create
+          </button>
+        </div> */}
+        <div className="text-[18px]">
+          <button
+            className={`mt-2 text-[18px] border text-center text-[#3a24db] font-medium 
+             hover:text-white border-[#3a24db] w-full p-1 rounded hover:bg-[#3a24db] ${
+               isLoading && "cursor-not-allowed"
+             }`}
+            aria-disabled={isLoading ? true : false}
+            disabled={isLoading}
+            type="submit"
           >
             Create
           </button>

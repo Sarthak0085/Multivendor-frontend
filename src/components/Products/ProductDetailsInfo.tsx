@@ -136,7 +136,9 @@ const ProductDetailsInfo = ({
               <h5 className="font-[600]">
                 Joined on:{" "}
                 <span className="font-[500]">
-                  {data?.shop?.createdAt?.slice(0, 10)}
+                  {new Date(data?.shop.createdAt as Date)
+                    .toISOString()
+                    .slice(0, 10)}
                 </span>
               </h5>
               <h5 className="font-[600] pt-3">

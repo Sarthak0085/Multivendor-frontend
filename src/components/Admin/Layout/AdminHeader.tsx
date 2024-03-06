@@ -1,20 +1,33 @@
-import { AiOutlineFolderAdd, AiOutlineGift } from "react-icons/ai";
-import { MdOutlineLocalOffer } from "react-icons/md";
+import { useRef, useState } from "react";
+import { BiMenuAltLeft, BiMessageSquareDetail } from "react-icons/bi";
 import { FiPackage, FiShoppingBag } from "react-icons/fi";
+import { MdOutlineLocalOffer } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { BiMenuAltLeft, BiMessageSquareDetail } from "react-icons/bi";
-import { useRef, useState } from "react";
-import { RxDashboard } from "react-icons/rx";
-import { VscNewFile } from "react-icons/vsc";
-import { CiMoneyBill, CiSettings } from "react-icons/ci";
-import { HiOutlineReceiptRefund } from "react-icons/hi";
 import useClickOutside from "../../../hooks/useClickOutside";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { FaArrowLeft } from "react-icons/fa6";
+import { GrWorkshop } from "react-icons/gr";
+import { RxDashboard } from "react-icons/rx";
+import { CiMoneyBill } from "react-icons/ci";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { BsHandbag } from "react-icons/bs";
+import {
+  AiOutlineSetting,
+  AiOutlineOrderedList,
+  AiOutlineGift,
+} from "react-icons/ai";
+import { BiCategory } from "react-icons/bi";
+import { SiGoogleanalytics } from "react-icons/si";
+import { TbBrandProducthunt, TbBrandAnsible } from "react-icons/tb";
+import { IoAnalytics } from "react-icons/io5";
+import { MdEventNote } from "react-icons/md";
+import { RiCoupon2Line } from "react-icons/ri";
+import { TbFileAnalytics } from "react-icons/tb";
+import { IoIosAnalytics } from "react-icons/io";
+import { FaArrowLeft, FaQ } from "react-icons/fa6";
+import { GiKnightBanner } from "react-icons/gi";
 
-const DashboardHeader = ({ active }: { active: number }) => {
-  const { seller } = useSelector((state: any) => state?.auth);
+const AdminHeader = ({ active }: { active?: number }) => {
+  const { user } = useSelector((state: any) => state.auth);
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -40,7 +53,7 @@ const DashboardHeader = ({ active }: { active: number }) => {
       </div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
-          <Link to="/dashboard-coupons" className="800px:block hidden">
+          <Link to="/admin-coupons" className="800px:block hidden">
             <AiOutlineGift
               title="Discount Coupons"
               color={`${active === 9 ? "crimson" : "#555"}`}
@@ -48,7 +61,7 @@ const DashboardHeader = ({ active }: { active: number }) => {
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-events" className="800px:block hidden">
+          <Link to="/admin-events" className="800px:block hidden">
             <MdOutlineLocalOffer
               title="All Events"
               color={`${active === 5 ? "crimson" : "#555"}`}
@@ -56,7 +69,7 @@ const DashboardHeader = ({ active }: { active: number }) => {
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-products" className="800px:block hidden">
+          <Link to="/admin-products" className="800px:block hidden">
             <FiPackage
               title="All Products"
               color={`${active === 3 ? "crimson" : "#555"}`}
@@ -64,7 +77,7 @@ const DashboardHeader = ({ active }: { active: number }) => {
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-orders" className="800px:block hidden">
+          <Link to="/admin-orders" className="800px:block hidden">
             <FiShoppingBag
               title="All Orders"
               color={`${active === 2 ? "crimson" : "#555"}`}
@@ -72,7 +85,7 @@ const DashboardHeader = ({ active }: { active: number }) => {
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-messages" className="800px:block hidden">
+          <Link to="/admin-messages" className="800px:block hidden">
             <BiMessageSquareDetail
               title="Inbox"
               color={`${active === 8 ? "crimson" : "#555"}`}
@@ -80,10 +93,10 @@ const DashboardHeader = ({ active }: { active: number }) => {
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to={`/shop/${seller._id}`}>
+          <Link to={`/profile/${user._id}`}>
             <img
-              src={`${seller.avatar?.url}`}
-              alt={seller?.name}
+              src={`${user.avatar?.url}`}
+              alt={user?.name}
               className="w-[50px] h-[50px] rounded-full object-cover"
             />
           </Link>
@@ -106,14 +119,13 @@ const DashboardHeader = ({ active }: { active: number }) => {
               <Link to="/">
                 <img
                   src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                  alt=""
+                  alt={user?.email}
                 />
               </Link>
             </div>
-            <div className="w-full flex items-center justify-center p-4 pt-10">
-              <Link to="/dashboard" className="w-full flex items-center">
+            <div className="w-full flex items-center p-4">
+              <Link to="/admin/dashboard" className="w-full flex items-center">
                 <RxDashboard
-                  title="Seller Dashboard"
                   size={30}
                   color={`${active === 1 ? "crimson" : "#555"}`}
                 />
@@ -128,14 +140,13 @@ const DashboardHeader = ({ active }: { active: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/dashboard-orders" className="w-full flex items-center">
+              <Link to="/admin-orders" className="w-full flex items-center">
                 <FiShoppingBag
-                  title="All Orders"
                   size={30}
                   color={`${active === 2 ? "crimson" : "#555"}`}
                 />
                 <h5
-                  className={` pl-2 text-[18px] font-[400] ${
+                  className={`pl-2 text-[18px] font-[400] ${
                     active === 2 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
@@ -146,17 +157,102 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
-                to="/dashboard-products"
+                to="/admin-orders-analytics"
                 className="w-full flex items-center"
               >
-                <FiPackage
-                  title="All Products"
+                <AiOutlineOrderedList
                   size={30}
                   color={`${active === 3 ? "crimson" : "#555"}`}
                 />
                 <h5
-                  className={` pl-2 text-[18px] font-[400] ${
+                  className={`pl-2 text-[18px] font-[400] ${
                     active === 3 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Orders Analytics
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link to="/admin-sellers" className="w-full flex items-center">
+                <GrWorkshop
+                  size={30}
+                  color={`${active === 4 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 4 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  All Sellers
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link
+                to="/admin-sellers-analytics"
+                className="w-full flex items-center"
+              >
+                <SiGoogleanalytics
+                  size={30}
+                  color={`${active === 5 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 5 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Sellers Analytics
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link to="/admin-users" className="w-full flex items-center">
+                <HiOutlineUserGroup
+                  size={30}
+                  color={`${active === 6 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 6 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  All Users
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link
+                to="/admin-users-analytics"
+                className="w-full flex items-center"
+              >
+                <IoAnalytics
+                  size={30}
+                  color={`${active === 7 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 7 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Users Analytics
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link to="/admin-products" className="w-full flex items-center">
+                <BsHandbag
+                  size={30}
+                  color={`${active === 8 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 8 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   All Products
@@ -166,34 +262,32 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
-                to="/dashboard-create-product"
+                to="/admin-products-analytics"
                 className="w-full flex items-center"
               >
-                <AiOutlineFolderAdd
-                  title="Create Product"
+                <TbBrandProducthunt
                   size={30}
-                  color={`${active === 4 ? "crimson" : "#555"}`}
+                  color={`${active === 9 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 4 ? "text-[crimson]" : "text-[#555]"
+                    active === 9 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
-                  Create Product
+                  Products Analytics
                 </h5>
               </Link>
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/dashboard-events" className="w-full flex items-center">
+              <Link to="/admin-events" className="w-full flex items-center">
                 <MdOutlineLocalOffer
-                  title="All Events"
                   size={30}
-                  color={`${active === 5 ? "crimson" : "#555"}`}
+                  color={`${active === 10 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 5 ? "text-[crimson]" : "text-[#555]"
+                    active === 10 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   All Events
@@ -203,125 +297,26 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
-                to="/dashboard-create-event"
+                to="/admin-events-analytics"
                 className="w-full flex items-center"
               >
-                <VscNewFile
-                  title="Create Event"
+                <MdEventNote
                   size={30}
-                  color={`${active === 6 ? "crimson" : "#555"}`}
-                />
-                <h5
-                  className={`pl-2 text-[18px] font-[400] ${
-                    active === 6 ? "text-[crimson]" : "text-[#555]"
-                  }`}
-                >
-                  Create Event
-                </h5>
-              </Link>
-            </div>
-
-            <div className="w-full flex items-center p-4">
-              <Link
-                to="/dashboard-withdraw-money"
-                className="w-full flex items-center"
-              >
-                <CiMoneyBill
-                  title="Withdraw Money"
-                  size={30}
-                  color={`${active === 7 ? "crimson" : "#555"}`}
-                />
-                <h5
-                  className={`pl-2 text-[18px] font-[400] ${
-                    active === 7 ? "text-[crimson]" : "text-[#555]"
-                  }`}
-                >
-                  Withdraw Money
-                </h5>
-              </Link>
-            </div>
-
-            <div className="w-full flex items-center p-4">
-              <Link
-                to="/dashboard-messages"
-                className="w-full flex items-center"
-              >
-                <BiMessageSquareDetail
-                  title="Inbox"
-                  size={30}
-                  color={`${active === 8 ? "crimson" : "#555"}`}
-                />
-                <h5
-                  className={`pl-2 text-[18px] font-[400] ${
-                    active === 8 ? "text-[crimson]" : "text-[#555]"
-                  }`}
-                >
-                  Shop Inbox
-                </h5>
-              </Link>
-            </div>
-
-            <div className="w-full flex items-center p-4">
-              <Link
-                to="/dashboard-coupons"
-                className="w-full flex items-center"
-              >
-                <AiOutlineGift
-                  title="Discount Coupons"
-                  size={30}
-                  color={`${active === 9 ? "crimson" : "#555"}`}
-                />
-                <h5
-                  className={`pl-2 text-[18px] font-[400] ${
-                    active === 9 ? "text-[crimson]" : "text-[#555]"
-                  }`}
-                >
-                  Discount Codes
-                </h5>
-              </Link>
-            </div>
-
-            <div className="w-full flex items-center p-4">
-              <Link
-                to="/dashboard-refunds"
-                className="w-full flex items-center"
-              >
-                <HiOutlineReceiptRefund
-                  title="All Refund Orders"
-                  size={30}
-                  color={`${active === 10 ? "crimson" : "#555"}`}
-                />
-                <h5
-                  className={`pl-2 text-[18px] font-[400] ${
-                    active === 10 ? "text-[crimson]" : "text-[#555]"
-                  }`}
-                >
-                  Refunds
-                </h5>
-              </Link>
-            </div>
-
-            <div className="w-full flex items-center p-4">
-              <Link to="/settings" className="w-full flex items-center">
-                <RiLockPasswordLine
-                  title="Change Password"
-                  size={22}
-                  color={`${active === 11 ? "text-[crimson]" : "text-[#555]"}`}
+                  color={`${active === 11 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
                     active === 11 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
-                  Change Password
+                  Events Analytics
                 </h5>
               </Link>
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/settings" className="w-full flex items-center">
-                <CiSettings
-                  title="Settings"
+              <Link to="/admin-categories" className="w-full flex items-center">
+                <BiCategory
                   size={30}
                   color={`${active === 12 ? "crimson" : "#555"}`}
                 />
@@ -330,18 +325,150 @@ const DashboardHeader = ({ active }: { active: number }) => {
                     active === 12 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
-                  Settings
+                  All Categories
                 </h5>
               </Link>
             </div>
 
-            {/* <button
-              className={`pl-3 self-start ${
-                active === 6 ? "text-[red]" : ""
-              } 1100px:block hidden`}
-            >
-              Change Password
-            </button> */}
+            <div className="w-full flex items-center p-4">
+              <Link to="/admin-brands" className="w-full flex items-center">
+                <TbBrandAnsible
+                  size={30}
+                  color={`${active === 13 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 13 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  All Brands
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link to="/admin-coupons" className="w-full flex items-center">
+                <RiCoupon2Line
+                  size={30}
+                  color={`${active === 14 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 14 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  All Coupons
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link
+                to="/admin-coupons-analytics"
+                className="w-full flex items-center"
+              >
+                <IoIosAnalytics
+                  size={30}
+                  color={`${active === 15 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 15 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Coupons Analytics
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link
+                to="/admin-withdraw-request"
+                className="w-full flex items-center"
+              >
+                <CiMoneyBill
+                  size={30}
+                  color={`${active === 16 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 16 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Withdraw Request
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link
+                to="/admin-withdraw-analytics"
+                className="w-full flex items-center"
+              >
+                <TbFileAnalytics
+                  size={30}
+                  color={`${active === 17 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 17 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Withdraw Analytics
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link to="/admin-edit-faq" className="w-full flex items-center">
+                <FaQ
+                  size={30}
+                  color={`${active === 18 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 18 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Edit FAQ
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link to="/admin-edit-hero" className="w-full flex items-center">
+                <GiKnightBanner
+                  size={30}
+                  color={`${active === 19 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 19 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Edit Banner
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link
+                to={`/profile/${user?._id}`}
+                className="w-full flex items-center"
+              >
+                <AiOutlineSetting
+                  size={30}
+                  color={`${active === 19 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 19 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  Settings
+                </h5>
+              </Link>
+            </div>
           </div>
         </div>
       )}
@@ -349,4 +476,4 @@ const DashboardHeader = ({ active }: { active: number }) => {
   );
 };
 
-export default DashboardHeader;
+export default AdminHeader;

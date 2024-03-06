@@ -1,18 +1,19 @@
 import { FaArrowRight } from "react-icons/fa6";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useGetAllOrdersBySellerQuery } from "../../redux/features/orders/orderApi";
+import { useAdminGetAllOrdersQuery } from "../../redux/features/orders/orderApi";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
 import { OrderDataType, orderColumns } from "../shared/Tables/OrderColumns";
+import { useSelector } from "react-redux";
 
 const AllOrders = () => {
-  const { seller } = useSelector((state: any) => state.auth);
-  // console.log("seller:", seller?._id);
+  const { isLoading: authLoading } = useSelector((state: any) => state.auth);
 
-  const { data, isLoading } = useGetAllOrdersBySellerQuery(seller?._id, {});
+  console.log(authLoading);
 
-  // console.log("data:", data);
+  const { data, isLoading } = useAdminGetAllOrdersQuery({});
+
+  console.log("data:", data);
 
   const TableComponent = TableHOC<OrderDataType>(
     orderColumns.map((column) => {
@@ -36,8 +37,8 @@ const AllOrders = () => {
       }
     }),
     data?.orders,
-    `All ${seller?.name}'s Orders`,
-    data?.orders.length > 10 ? true : false
+    `All Orders`,
+    data?.orders?.length > 10 ? true : false
   );
 
   return (
@@ -46,31 +47,29 @@ const AllOrders = () => {
         <Loader />
       ) : (
         <div className="w-full mx-8 pt-1 mt-10 bg-white overflow-x-hidden">
-          {data?.orders && data?.orders?.length !== 0 ? (
+          {data?.orders?.length !== 0 ? (
             <TableComponent />
           ) : (
             <div className="w-full h-full space-y-2 flex flex-col items-center justify-center">
               <h2 className="text-3xl font-bold mb-2 text-red-500">
-                No Orders Yet 😔
+                No Orders Found 😔
               </h2>
               <p className="text-lg text-gray-600 mb-2">
-                You haven't received any orders{" "}
+                It seems there are no orders in the system at the moment.
               </p>
               <p className="text-lg text-gray-600 mb-2">
-                You haven't received any orders yet.
+                Keep monitoring your storefront for incoming orders.
               </p>
               <p className="text-lg text-gray-600 mb-2">
-                Keep promoting your products to attract orders.
-              </p>
-              <p className="text-lg text-gray-600 mb-2">
-                Consider optimizing your product listings for better visibility.
+                You can also inspire sellers to create events for more reach
+                towards the customer.
               </p>
               <Link
-                to="/dashboard-products"
+                to="/admin/orders"
                 className="text-blue-500 flex items-center justify-center gap-1 font-semibold hover:underline text-lg"
               >
-                Manage Your Products
-                <FaArrowRight title="Manage Your Products" />
+                View All Orders
+                <FaArrowRight title="View All Orders" />
               </Link>
             </div>
           )}

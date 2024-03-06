@@ -1,7 +1,6 @@
 import {
   Area,
   AreaChart,
-  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -10,6 +9,8 @@ import {
 import { useGetUsersAnalyticsQuery } from "../../../redux/features/analytics/analyticsApi";
 import styles from "../../../styles/styles";
 import Loader from "../../Layout/Loader";
+import { useEffect, useState } from "react";
+import { IoFilter } from "react-icons/io5";
 
 type Props = {
   isDashboard?: boolean;
@@ -21,7 +22,6 @@ const CustomizedDot = (props: {
   payload: { count: number; name: string };
 }) => {
   const { cx, cy, payload } = props;
-  console.log(props);
 
   if (payload.count > 0) {
     return (
@@ -53,13 +53,20 @@ const CustomizedDot = (props: {
 };
 
 const UsersAnalytics = ({ isDashboard }: Props) => {
-  const { data, isLoading } = useGetUsersAnalyticsQuery({});
-  console.log(data);
+  const [timeFrame, setTimeFrame] = useState<string>("last12Months");
+  const [open, setOpen] = useState<boolean>(false);
+  const { data, isLoading, refetch } = useGetUsersAnalyticsQuery(timeFrame, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [timeFrame]);
 
   const analyticsData: any = [];
 
-  data?.users?.last12Months.forEach((item: any) =>
-    analyticsData.push({ name: item.month, count: item.count })
+  data?.users?.analyticsData.forEach((item: any) =>
+    analyticsData.push({ name: item.name, count: item.count })
   );
 
   return (
@@ -69,22 +76,50 @@ const UsersAnalytics = ({ isDashboard }: Props) => {
       ) : (
         <div
           className={`${
-            isDashboard
-              ? "mt-[30px] bg-[#111c43]  shadow-sm rounded-sm pb-5"
-              : "mt-[30px]"
+            isDashboard ? "mt-[30px] shadow-sm rounded-sm pb-5" : "mt-[30px]"
           }`}
         >
-          <div className={`${isDashboard ? "!ml-8 mb-5" : ""}`}>
+          <div
+            className={`${
+              isDashboard ? "!ml-8" : ""
+            } flex items-center justify-between relative`}
+          >
             <h1
               className={`${styles.title} !text-start px-5 ${
-                isDashboard && "!text-[20px]"
+                isDashboard && "!hidden !text-[20px]"
               }`}
             >
-              Users Analytics
+              Users Analytics (
+              {(timeFrame === "last12Months" && "Last 12 Months") ||
+                (timeFrame === "last30Days" && "Last 30 Days") ||
+                (timeFrame === "last24Hours" && "Last 24 Hours")}
+              )
             </h1>
+            <div className="pr-6 cursor-pointer" onClick={() => setOpen(!open)}>
+              <IoFilter size={33} color="blue" />
+            </div>
+            {open && (
+              <div
+                className={`absolute z-10 ${
+                  isDashboard ? "left-8" : "right-0 -top-4"
+                }`}
+              >
+                <select
+                  className="mr-6 p-1 appearance-none cursor-pointer text-[20px] font-bold"
+                  onChange={(e) => setTimeFrame(e.target.value)}
+                >
+                  <option value={"last12Months"}>Last 12 Months</option>
+                  <option value={"last30Days"}>Last 30 Days</option>
+                  <option value={"last24Hours"}>Last 24 hours</option>
+                </select>
+              </div>
+            )}
             {isDashboard && (
               <p className={`${styles.label} px-5`}>
-                Last 12 months Analytics data
+                {(timeFrame === "last12Months" && "Last 12 Months") ||
+                  (timeFrame === "last30Days" && "Last 30 Days") ||
+                  (timeFrame === "last24Hours" && "Last 24 Hours")}{" "}
+                Analytics data
               </p>
             )}
           </div>
@@ -94,10 +129,7 @@ const UsersAnalytics = ({ isDashboard }: Props) => {
               isDashboard ? "h-[50vh]" : "h-[75vh]"
             }`}
           >
-            <ResponsiveContainer
-              width={isDashboard ? "100%" : "90%"}
-              height={isDashboard ? "50%" : "100%"}
-            >
+            <ResponsiveContainer width={isDashboard ? "100%" : "90%"}>
               <AreaChart
                 data={analyticsData}
                 margin={{
@@ -107,7 +139,6 @@ const UsersAnalytics = ({ isDashboard }: Props) => {
                   left: 0,
                 }}
               >
-                <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />

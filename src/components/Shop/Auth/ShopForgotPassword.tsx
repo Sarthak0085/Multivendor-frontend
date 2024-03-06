@@ -76,6 +76,7 @@ const ShopForgotPassword = () => {
           <button
             type="submit"
             disabled={isLoading}
+            aria-disabled={isLoading ? true : false}
             className={`group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent
              text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${
                isLoading && "cursor-not-allowed"

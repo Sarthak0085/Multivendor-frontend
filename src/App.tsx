@@ -1,49 +1,23 @@
 import { Route, Routes } from "react-router-dom";
-// import './App.css';
 import Register from "./components/Auth/Register";
 import ActivationPage from "./pages/ActivationPage";
 import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/auth/LoginPage";
 import ProductsPage from "./pages/ProductsPage";
 import ShopActivationPage from "./pages/Shop/ShopActivationPage";
-import ShopAllCoupons from "./pages/Shop/ShopAllCoupons";
-import ShopAllEvents from "./pages/Shop/ShopAllEvents";
-import ShopAllProducts from "./pages/Shop/ShopAllProducts";
-import ShopCreateEvents from "./pages/Shop/ShopCreateEvent";
-import ShopCreateProduct from "./pages/Shop/ShopCreateProduct";
-import ShopDashboardPage from "./pages/Shop/ShopDashboardPage";
-import ShopLoginPage from "./pages/ShopLoginPage";
-import ShopRegisterPage from "./pages/ShopRegisterPage";
-import AddressPage from "./pages/user/AddressPage";
-import AllOrdersPage from "./pages/user/AllOrderPage";
-import AllRefundOrdersPage from "./pages/user/AllRefundOrdersPage";
-import ChangePasswordPage from "./pages/user/ChangePasswordPage";
-import ProfilePage from "./pages/user/ProfilePage";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import SellerProtectedRoute from "./routes/SellerProtectedRoute";
-// import ProductDetailsPage from './pages/ProductDetailsPage';
+import ShopLoginPage from "./pages/auth/ShopLoginPage";
+import ShopRegisterPage from "./pages/auth/ShopRegisterPage";
+import ShopForgotPasswordPage from "./pages/auth/ShopForgotPasswordPage";
+import ShopResetPasswordPage from "./pages/auth/ShopResetPasswordPage";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Suspense, useEffect, useState } from "react";
-import BestSellingPage from "./pages/BestSellingPage";
-import CheckoutPage from "./pages/CheckoutPage";
-import EventsPage from "./pages/EventsPage";
-import FAQPage from "./pages/FaqPage";
-import OrderSuccessPage from "./pages/OrderSuccessPage";
-import PaymentPage from "./pages/PaymentPage";
-import ProductDetailsPage from "./pages/ProductDetailsPage";
-import ShopAllOrders from "./pages/Shop/ShopAllOrders";
-import ShopAllRefunds from "./pages/Shop/ShopAllRefundsPage";
-import ShopEditProductPage from "./pages/Shop/ShopEditProductPage";
-import ShopHomePage from "./pages/Shop/ShopHomePage";
-import ShopOrderDetails from "./pages/Shop/ShopOrderDetails";
-import ShopPreviewPage from "./pages/Shop/ShopPreviewPage";
-import ShopSettingsPage from "./pages/Shop/ShopSettingsPage";
-import ShopWithDrawMoneyPage from "./pages/Shop/ShopWithDrawMoneyPage";
+import { Suspense, lazy, useEffect, useState } from "react";
+const BestSellingPage = lazy(() => import("./pages/BestSellingPage"));
+const EventsPage = lazy(() => import("./pages/EventsPage"));
+const FAQPage = lazy(() => import("./pages/FaqPage"));
+const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
-import OrderDetailsPage from "./pages/user/OrderDetailsPage";
-import TrackOrderPage from "./pages/user/TrackOrderPage";
 import { useGetStripeApiKeyQuery } from "./redux/features/payment/paymentApi";
 import {
   AdminDashboardBrands,
@@ -54,6 +28,7 @@ import {
   AdminDashboardEditHero,
   AdminDashboardEvents,
   AdminDashboardEventsAnalytics,
+  AdminDashboardOrders,
   AdminDashboardOrdersAnalytics,
   AdminDashboardPage,
   AdminDashboardProducts,
@@ -66,9 +41,37 @@ import {
   AdminDashboardWithdrawAnalytics,
 } from "./routes/AdminRoutes";
 import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import SellerProtectedRoute from "./routes/SellerProtectedRoute";
 import Loader from "./components/Layout/Loader";
-import ShopForgotPasswordPage from "./pages/Shop/ShopForgotPasswordPage";
-import ShopResetPasswordPage from "./pages/Shop/ShopResetPasswordPage";
+import {
+  ShopAllCoupons,
+  ShopAllEvents,
+  ShopAllOrders,
+  ShopAllProducts,
+  ShopAllRefunds,
+  ShopCreateEvents,
+  ShopCreateProduct,
+  ShopDashboardPage,
+  ShopEditProductPage,
+  ShopHomePage,
+  ShopOrderDetails,
+  ShopPreviewPage,
+  ShopSettingsPage,
+  ShopWithDrawMoneyPage,
+} from "./routes/ShopRoutes";
+import {
+  AddressPage,
+  AllOrdersPage,
+  AllRefundOrdersPage,
+  ChangePasswordPage,
+  CheckoutPage,
+  OrderDetailsPage,
+  OrderSuccessPage,
+  PaymentPage,
+  ProfilePage,
+  TrackOrderPage,
+} from "./routes/AuthProtectedRoutes";
 
 function App() {
   const [stripeApikey, setStripeApiKey] = useState("");
@@ -116,7 +119,10 @@ function App() {
             path="/shop-forgot-password"
             element={<ShopForgotPasswordPage />}
           />
-          <Route path="/shop-reset-password" element={<ShopResetPasswordPage />} />
+          <Route
+            path="/shop-reset-password"
+            element={<ShopResetPasswordPage />}
+          />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
           <Route path="/faq" element={<FAQPage />} />
@@ -314,14 +320,14 @@ function App() {
               </ProtectedAdminRoute>
             }
           />
-          {/* <Route
-          path="/admin-orders"
-          element={
-            <ProtectedAdminRoute>
-            <AdminDashboardOrders />
-            </ProtectedAdminRoute>
-          }
-        /> */}
+          <Route
+            path="/admin-orders"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardOrders />
+              </ProtectedAdminRoute>
+            }
+          />
           <Route
             path="/admin-products"
             element={

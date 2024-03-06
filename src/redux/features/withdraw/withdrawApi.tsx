@@ -13,15 +13,15 @@ export const withdrawApi = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `/withdraw/create-withdraw-request`,
         method: "POST",
-        body: { data },
+        body: data,
         credentials: "include" as const,
       }),
     }),
     updateWithdrawRequestByAdmin: builder.mutation({
-      query: ({ data, id }) => ({
-        url: `/withdraw//update-withdraw-request/${id}`,
+      query: (data) => ({
+        url: `/withdraw//update-withdraw-request/${data?._id}`,
         method: "PUT",
-        body: { data },
+        body: data,
         credentials: "include" as const,
       }),
     }),

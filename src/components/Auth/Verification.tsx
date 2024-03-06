@@ -24,7 +24,7 @@ const Verification = () => {
     2: "",
     3: "",
   });
-  const [activation, { isSuccess, error }] = useActivationMutation();
+  const [activation, { isSuccess, error, isLoading }] = useActivationMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -112,7 +112,12 @@ const Verification = () => {
       <br />
       <br />
       <div className="w-full flex justify-center">
-        <button className={styles.btn} onClick={verificationHandler}>
+        <button
+          disabled={isLoading}
+          aria-disabled={isLoading ? true : false}
+          className={`${styles.btn} ${isLoading && "cursor-not-allowed"}`}
+          onClick={verificationHandler}
+        >
           Verify OTP
         </button>
       </div>

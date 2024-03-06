@@ -1,4 +1,4 @@
-import AdminHeader from "../../components/Layout/AdminHeader";
+import AdminHeader from "../../components/Admin/Layout/AdminHeader";
 import AdminSideBar from "../../components/Admin/Layout/AdminSideBar";
 import AllEvents from "../../components/Admin/AllEvents";
 

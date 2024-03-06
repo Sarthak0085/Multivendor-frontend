@@ -7,6 +7,7 @@ import { CiMoneyBill, CiSettings } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { BiMessageSquareDetail } from "react-icons/bi";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 const DashboardSideBar = ({ active }: { active: number }) => {
   return (
@@ -184,6 +185,23 @@ const DashboardSideBar = ({ active }: { active: number }) => {
             }`}
           >
             Refunds
+          </h5>
+        </Link>
+      </div>
+
+      <div className="w-full flex items-center p-4">
+        <Link to="/change-password" className="w-full flex items-center">
+          <RiLockPasswordLine
+            title="Change Password"
+            size={22}
+            color={`${active === 11 ? "text-[crimson]" : "text-[#555]"}`}
+          />
+          <h5
+            className={`hidden 1100px:block pl-2 text-[18px] font-[400] ${
+              active === 11 ? "text-[crimson]" : "text-[#555]"
+            }`}
+          >
+            Change Password
           </h5>
         </Link>
       </div>

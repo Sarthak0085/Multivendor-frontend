@@ -5,12 +5,14 @@ import DashboardSideBar from "../../components/Shop/Layout/DashboardSidebar";
 const ShopSettingsPage = () => {
   return (
     <div>
-      <DashboardHeader />
+      <DashboardHeader active={12} />
       <div className="flex items-start justify-between w-full">
-        <div className="w-auto hidden sm:block 1100px:w-[250px]">
-          <DashboardSideBar active={11} />
+        <div className="w-auto fixed hidden sm:block 1100px:w-[300px] overflow-y-auto">
+          <DashboardSideBar active={12} />
         </div>
-        <ShopSettings />
+        <div className="flex justify-between w-full mx-10 sm:mr-5 sm:ml-[85px] 1100px:ml-[250px] overflow-x-hidden overflow-y-auto">
+          <ShopSettings />
+        </div>
       </div>
     </div>
   );

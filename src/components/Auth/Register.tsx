@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaRegUser } from "react-icons/fa6";
@@ -14,15 +14,20 @@ import {
 } from "../../validations/RegisterValidation";
 import { setErrorOptions, setSuccessOptions } from "../options";
 import Input from "../shared/Input";
+import { RxAvatar } from "react-icons/rx";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [avatar, setAvatar] = useState<string>("");
 
-  const [registerMutation, { isSuccess, data, error }] = useRegisterMutation();
+  const [registerMutation, { isSuccess, data, error, isLoading }] =
+    useRegisterMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      const message = data?.message || "Registration successful";
+      const message =
+        data?.message ||
+        "Registration successful. Please enter code to activate your account. The code has been sent onto your email.";
       toast.success(message, {
         style: setSuccessOptions,
       });
@@ -42,6 +47,20 @@ const Register = () => {
     }
   }, [isSuccess, error, navigate, data?.message]);
 
+  const handleFileImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result as string);
+      }
+    };
+
+    if (e.target.files !== null) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -53,7 +72,13 @@ const Register = () => {
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     console.log(data);
     const { fullName, email, password } = data;
-    await registerMutation({ fullName, email, password });
+    const response = await registerMutation({
+      fullName,
+      email,
+      password,
+      avatar,
+    });
+    console.log(response);
   };
 
   return (
@@ -106,6 +131,41 @@ const Register = () => {
               required={true}
             />
 
+            <div>
+              <label
+                htmlFor="avatar"
+                className="block text-sm font-medium text-gray-700"
+              ></label>
+              <div className="mt-2 flex items-center">
+                <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
+                  {avatar ? (
+                    <img
+                      src={avatar}
+                      alt="avatar"
+                      className="h-full w-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <RxAvatar className="h-8 w-8" />
+                  )}
+                </span>
+                <label
+                  htmlFor="file-input"
+                  className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  <span>Upload a file</span>
+                  <span className="text-[red]">*</span>
+                  <input
+                    type="file"
+                    name="avatar"
+                    id="file-input"
+                    accept=".jpg,.jpeg,.png"
+                    onChange={handleFileImage}
+                    className="sr-only"
+                  />
+                </label>
+              </div>
+            </div>
+
             {/* <div>
               <label
                 htmlFor="avatar"
@@ -143,7 +203,12 @@ const Register = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                disabled={isLoading}
+                aria-disabled={isLoading ? true : false}
+                className={`group relative w-full h-[40px] flex justify-center py-2 px-4 border 
+                border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${
+                  isLoading && "cursor-not-allowed"
+                }`}
               >
                 Submit
               </button>

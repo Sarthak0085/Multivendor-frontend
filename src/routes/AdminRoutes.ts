@@ -1,30 +1,30 @@
-import React from "react";
+import { lazy } from "react";
 
-const AdminDashboardPage = React.lazy(() => import("../pages/admin/AdminDashboardPage"));
-const AdminDashboardUsers = React.lazy(() => import("../pages/admin/AdminDashboardUsers"));
-const AdminDashboardSellers = React.lazy(() => import("../pages/admin/AdminDashboardSellers"));
-// const AdminDashboardOrders = React.lazy(() => import("../pages/admin/AdminDashboardOrders"));
-const AdminDashboardProducts = React.lazy(() => import("../pages/admin/AdminDashboardProducts"));
-const AdminDashboardEvents = React.lazy(() => import("../pages/admin/AdminDashboardEvents"));
-const AdminDashboardWithdraw = React.lazy(() => import("../pages/admin/AdminDashboardWithdraw"));
-const AdminDashboardCategories = React.lazy(() => import("../pages/admin/AdminDashboardCategory"));
-const AdminDashboardBrands = React.lazy(() => import("../pages/admin/AdminDashboardBrands"));
-const AdminDashboardProductsAnalytics = React.lazy(() => import("../pages/admin/analytics/AdminDashboardProductsAnalytics"));
-const AdminDashboardEventsAnalytics = React.lazy(() => import("../pages/admin/analytics/AdminDashboardEventsAnalytics"));
-const AdminDashboardCouponsAnalytics = React.lazy(() => import("../pages/admin/analytics/AdminDashboardCouponsAnalytics"));
-const AdminDashboardOrdersAnalytics = React.lazy(() => import("../pages/admin/analytics/AdminDashboardOrdersAnalytics"));
-const AdminDashboardSellersAnalytics = React.lazy(() => import("../pages/admin/analytics/AdminDashboardSellersAnalytics"));
-const AdminDashboardWithdrawAnalytics = React.lazy(() => import("../pages/admin/analytics/AdminDashboardWithdrawAnalytics"));
-const AdminDashboardUsersAnalytics = React.lazy(() => import("../pages/admin/analytics/AdminDashboardUsersAnalytics"));
-const AdminDashboardEditFaq = React.lazy(() => import("../pages/admin/customization/AdminEditFAQ"));
-const AdminDashboardEditHero = React.lazy(() => import("../pages/admin/customization/AdminDashboardEditHero"));
-const AdminDashboardCoupons = React.lazy(() => import("../pages/admin/AdminDashboardCoupons"));
+const AdminDashboardPage = lazy(() => import("../pages/admin/AdminDashboardPage"));
+const AdminDashboardUsers = lazy(() => import("../pages/admin/AdminDashboardUsers"));
+const AdminDashboardSellers = lazy(() => import("../pages/admin/AdminDashboardSellers"));
+const AdminDashboardOrders = lazy(() => import("../pages/admin/AdminDashboardOrders"));
+const AdminDashboardProducts = lazy(() => import("../pages/admin/AdminDashboardProducts"));
+const AdminDashboardEvents = lazy(() => import("../pages/admin/AdminDashboardEvents"));
+const AdminDashboardWithdraw = lazy(() => import("../pages/admin/AdminDashboardWithdraw"));
+const AdminDashboardCategories = lazy(() => import("../pages/admin/AdminDashboardCategory"));
+const AdminDashboardBrands = lazy(() => import("../pages/admin/AdminDashboardBrands"));
+const AdminDashboardProductsAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardProductsAnalytics"));
+const AdminDashboardEventsAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardEventsAnalytics"));
+const AdminDashboardCouponsAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardCouponsAnalytics"));
+const AdminDashboardOrdersAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardOrdersAnalytics"));
+const AdminDashboardSellersAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardSellersAnalytics"));
+const AdminDashboardWithdrawAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardWithdrawAnalytics"));
+const AdminDashboardUsersAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardUsersAnalytics"));
+const AdminDashboardEditFaq = lazy(() => import("../pages/admin/customization/AdminEditFAQ"));
+const AdminDashboardEditHero = lazy(() => import("../pages/admin/customization/AdminDashboardEditHero"));
+const AdminDashboardCoupons = lazy(() => import("../pages/admin/AdminDashboardCoupons"));
 
 export {
     AdminDashboardPage,
     AdminDashboardUsers,
     AdminDashboardSellers,
-    // AdminDashboardOrders,
+    AdminDashboardOrders,
     AdminDashboardProducts,
     AdminDashboardEvents,
     AdminDashboardWithdraw,

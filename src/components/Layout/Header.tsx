@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
 import { categoriesData } from "../../static/data";
@@ -23,12 +23,7 @@ import Wishlist from "../Wishlist/Wishlist";
 import useClickOutside from "../../hooks/useClickOutside";
 
 const Header = ({ activeHeading }: { activeHeading?: number }) => {
-  // const { isAuthenticated, user } = useSelector((state) => state.user);
   const { user, seller } = useSelector((state: any) => state?.auth);
-  // const { isSeller } = useSelector((state) => state.seller);
-  // const { wishlist } = useSelector((state) => state.wishlist);
-  // const { cart } = useSelector((state) => state.cart);
-  // const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState<string | null>("");
   const [searchData, setSearchData] = useState<IProduct[] | null>(null);
   const [active, setActive] = useState(false);
@@ -37,15 +32,13 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const { data: cartData, isLoading } = useGetCartQuery(user?._id, {});
-  const { data: wishlistData, isLoading: wishlistLoading } =
-    useGetWishlistQuery(user?._id, {
-      refetchOnMountOrArgChange: true,
-    });
-  const { data: productData, isLoading: productsLoading } =
-    useGetAllProductsQuery({});
+  const { data: cartData } = useGetCartQuery(user?._id, {});
+  const { data: wishlistData } = useGetWishlistQuery(user?._id, {
+    refetchOnMountOrArgChange: true,
+  });
+  const { data: productData } = useGetAllProductsQuery({});
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     console.log(term);
     setSearchTerm(term);
@@ -86,6 +79,9 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
   const modalRef = useRef(null);
   useClickOutside(modalRef, () => setSearchData(null));
 
+  const anotherModalRef = useRef(null);
+  useClickOutside(anotherModalRef, () => setOpen(false));
+
   return (
     <>
       <div className={`${styles.section}`}>
@@ -103,7 +99,7 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
             <input
               type="text"
               placeholder="Search Product..."
-              value={searchTerm}
+              value={searchTerm as any}
               onChange={handleSearchChange}
               className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
             />
@@ -142,9 +138,6 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                 <IoIosArrowForward className="ml-1" />
               </h1>
             </Link>
-            {/* <h1 className="text-white flex items-center">
-              <IoIosArrowForward className="ml-1" />
-            </h1> */}
           </div>
         </div>
       </div>
@@ -285,7 +278,7 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
             >
               <AiOutlineShoppingCart size={30} />
               <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                {user ? cartData?.cart && cartData?.cart.length : 0}
+                {user ? cartData?.cart && cartData?.cart?.products?.length : 0}
               </span>
             </div>
           </div>
@@ -305,7 +298,10 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
           <div
             className={`fixed w-full bg-[#0000005f] z-20 h-full top-0 left-0`}
           >
-            <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
+            <div
+              ref={anotherModalRef}
+              className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll"
+            >
               <div className="w-full justify-between flex pr-3">
                 <div>
                   <div
@@ -317,7 +313,9 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                   >
                     <AiOutlineHeart size={30} className="mt-5 ml-3" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                      {wishlistData?.wishlist && wishlistData?.wishlist.length}
+                      {wishlistData?.wishlist
+                        ? wishlistData?.wishlist?.products?.length
+                        : 0}
                     </span>
                   </div>
                 </div>
@@ -333,7 +331,7 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                   type="search"
                   placeholder="Search Product..."
                   className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
-                  value={searchTerm}
+                  value={searchTerm as any}
                   onChange={handleSearchChange}
                 />
                 {searchData && (
@@ -363,7 +361,8 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
               <div className={`${styles.button} ml-4 !rounded-[4px]`}>
                 <Link to="/shop-create">
                   <h1 className="text-[#fff] flex items-center">
-                    Become Seller <IoIosArrowForward className="ml-1" />
+                    {seller ? "Go Dashboard" : "Become Seller"}{" "}
+                    <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>
               </div>
@@ -392,7 +391,7 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                       to="/login"
                       className="text-[18px] pr-[10px] text-[#000000b7]"
                     >
-                      Login
+                      Login /
                     </Link>
                     <Link
                       to="/sign-up"

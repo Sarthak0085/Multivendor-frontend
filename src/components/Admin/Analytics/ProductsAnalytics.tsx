@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
+import { IoFilter } from "react-icons/io5";
 import {
   Bar,
   BarChart,
   BarProps,
-  CartesianGrid,
   Cell,
   ResponsiveContainer,
   Tooltip,
@@ -88,12 +89,22 @@ const colors = [
 ];
 
 const ProductAnalytics = ({ isDashboard }: Props) => {
-  const { data, isLoading } = useGetProductsAnalyticsQuery({});
+  const [timeFrame, setTimeFrame] = useState<string>("last12Months");
+  const [open, setOpen] = useState<boolean>(false);
+  const { data, isLoading, refetch } = useGetProductsAnalyticsQuery(timeFrame, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log(data);
+
+  useEffect(() => {
+    refetch();
+  }, [timeFrame]);
 
   const analyticsData: any = [];
 
-  data?.products?.last12Months.forEach((item: any) =>
-    analyticsData.push({ name: item.month, count: item.count })
+  data?.products?.analyticsData.forEach((item: any) =>
+    analyticsData.push({ name: item.name, count: item.count })
   );
   return (
     <>
@@ -107,17 +118,43 @@ const ProductAnalytics = ({ isDashboard }: Props) => {
               : "mt-[30px]"
           }`}
         >
-          <div className={`${isDashboard ? "!ml-8 mb-5" : ""}`}>
+          <div
+            className={`${
+              isDashboard ? "!ml-8 mb-5" : ""
+            } flex items-center justify-between relative`}
+          >
             <h1
               className={`${styles.title} !text-start px-5 ${
                 isDashboard && "!text-[20px]"
               }`}
             >
-              Products Analytics
+              Products Analytics (
+              {(timeFrame === "last12Months" && "Last 12 Months") ||
+                (timeFrame === "last30Days" && "Last 30 Days") ||
+                (timeFrame === "last24Hours" && "Last 24 Hours")}
+              )
             </h1>
+            <div className="pr-6 cursor-pointer" onClick={() => setOpen(!open)}>
+              <IoFilter size={33} color="blue" />
+            </div>
+            {open && (
+              <div className="absolute z-10 right-0 -top-4">
+                <select
+                  className="mr-6 p-1 appearance-none cursor-pointer text-[20px] font-bold"
+                  onChange={(e) => setTimeFrame(e.target.value)}
+                >
+                  <option value={"last12Months"}>Last 12 Months</option>
+                  <option value={"last30Days"}>Last 30 Days</option>
+                  <option value={"last24Hours"}>Last 24 hours</option>
+                </select>
+              </div>
+            )}
             {isDashboard && (
               <p className={`${styles.label} px-5`}>
-                Last 12 months Analytics data
+                {(timeFrame === "last12Months" && "Last 12 Months") ||
+                  (timeFrame === "last30Days" && "Last 30 Days") ||
+                  (timeFrame === "last24Hours" && "Last 24 Hours")}{" "}
+                Analytics data
               </p>
             )}
           </div>
@@ -135,7 +172,6 @@ const ProductAnalytics = ({ isDashboard }: Props) => {
                 data={analyticsData}
                 margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
               >
-                <CartesianGrid strokeDasharray="1 1" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
@@ -147,7 +183,7 @@ const ProductAnalytics = ({ isDashboard }: Props) => {
                   shape={(props: any) => <CustomBar {...props} />}
                 >
                   {analyticsData.map((entry: any, index: number) => (
-                    <Cell key={`cell-${index}`} fill={colors[index % 20]} />
+                    <Cell key={`cell-${index}`} fill={colors[index % 12]} />
                   ))}
                 </Bar>
               </BarChart>

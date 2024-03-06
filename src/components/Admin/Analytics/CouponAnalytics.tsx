@@ -10,28 +10,30 @@ import {
 } from "recharts";
 import Loader from "../../Layout/Loader";
 import styles from "../../../styles/styles";
+import { useEffect, useState } from "react";
+import { IoFilter } from "react-icons/io5";
 
 type Props = {
   isDashboard?: boolean;
 };
 
-// const analyticsData = [
-//     {name:"January", count:200},
-//     {name:"Febuary", count:100},
-//     {name:"March", count:20},
-//     {name:"April", count:290},
-//     {name:"May", count:90},
-//     {name:"June", count:100},
-//     {name:"July", count:50},
-// ]
-
 const CouponsAnalytics = ({ isDashboard }: Props) => {
-  const { data, isLoading } = useGetCouponsAnalyticsQuery({});
+  const [timeFrame, setTimeFrame] = useState<string>("last12Months");
+  const [open, setOpen] = useState<boolean>(false);
+  const { data, isLoading, refetch } = useGetCouponsAnalyticsQuery(timeFrame, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log(data);
+
+  useEffect(() => {
+    refetch();
+  }, [timeFrame]);
 
   const analyticsData: any = [];
 
-  data?.events?.last12Months.forEach((item: any) =>
-    analyticsData.push({ name: item.month, count: item.count })
+  data?.coupons?.analyticsData.forEach((item: any) =>
+    analyticsData.push({ name: item.name, count: item.count })
   );
 
   const tickFormatter = (name: string) => {
@@ -48,21 +50,47 @@ const CouponsAnalytics = ({ isDashboard }: Props) => {
         <div
           className={`${
             isDashboard
-              ? "mt-[50px] dark:bg-[#111c43] bg-gray-100 shadow-sm rounded-sm pb-5"
-              : "mt-[50px]"
+              ? "mt-[30px] dark:bg-[#111c43] bg-gray-100 shadow-sm rounded-sm pb-5"
+              : "mt-[30px]"
           }`}
         >
-          <div className={`${isDashboard ? "!ml-8 mb-5" : ""}`}>
+          <div
+            className={`${
+              isDashboard ? "!ml-8 mb-5" : ""
+            } flex items-center justify-between relative`}
+          >
             <h1
               className={`${styles.title} !text-start px-1 sm:px-5 ${
                 isDashboard && "!text-[20px]"
               }`}
             >
-              Coupons Analytics
+              Coupons Analytics (
+              {(timeFrame === "last12Months" && "Last 12 Months") ||
+                (timeFrame === "last30Days" && "Last 30 Days") ||
+                (timeFrame === "last24Hours" && "Last 24 Hours")}
+              )
             </h1>
+            <div className="pr-6 cursor-pointer" onClick={() => setOpen(!open)}>
+              <IoFilter size={33} color="blue" />
+            </div>
+            {open && (
+              <div className="absolute z-10 right-0 -top-4">
+                <select
+                  className="mr-6 p-1 appearance-none cursor-pointer text-[20px] font-bold"
+                  onChange={(e) => setTimeFrame(e.target.value)}
+                >
+                  <option value={"last12Months"}>Last 12 Months</option>
+                  <option value={"last30Days"}>Last 30 Days</option>
+                  <option value={"last24Hours"}>Last 24 hours</option>
+                </select>
+              </div>
+            )}
             {isDashboard && (
               <p className={`${styles.label} px-5`}>
-                Last 12 months Analytics data
+                {(timeFrame === "last12Months" && "Last 12 Months") ||
+                  (timeFrame === "last30Days" && "Last 30 Days") ||
+                  (timeFrame === "last24Hours" && "Last 24 Hours")}{" "}
+                Analytics data
               </p>
             )}
           </div>

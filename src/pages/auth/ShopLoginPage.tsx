@@ -1,13 +1,13 @@
-import Login from "../components/Auth/Login";
+import ShopLogin from "../../components/Shop/Auth/ShopLogin";
 
-const LoginPage = () => {
+const ShopLoginPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <Login />
+        <ShopLogin />
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default ShopLoginPage;

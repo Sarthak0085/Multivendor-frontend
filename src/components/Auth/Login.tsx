@@ -14,7 +14,7 @@ import Input from "../shared/Input";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [login, { isSuccess, data, error }] = useLoginMutation();
+  const [login, { isSuccess, data, error, isLoading }] = useLoginMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -48,7 +48,8 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     console.log(data);
-    await login(data);
+    const response = await login(data);
+    console.log("login", response);
   };
 
   return (
@@ -88,7 +89,12 @@ const Login = () => {
         <div>
           <button
             type="submit"
-            className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+            disabled={isLoading}
+            aria-disabled={isLoading ? true : false}
+            className={`group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent
+             text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${
+               isLoading && "cursor-not-allowed"
+             }`}
           >
             Submit
           </button>

@@ -18,7 +18,7 @@ export interface ProductDataType {
 export const productColumns: Column<ProductDataType>[] = [
   {
     Header: "Product Id",
-    accessor: "_id",
+    accessor: (data) => data?._id.slice(0, 10),
   },
   {
     Header: "Name",
@@ -45,6 +45,50 @@ export const productColumns: Column<ProductDataType>[] = [
   {
     Header: "Colors",
     accessor: "colors",
+  },
+  {
+    Header: "Original Price",
+    accessor: "originalPrice",
+    Cell: ({ value }) => <span>₹. {value}</span>,
+  },
+  {
+    Header: "Discount Price",
+    accessor: "discountPrice",
+    Cell: ({ value }) => <span>₹. {value}</span>,
+  },
+  {
+    Header: "Stock",
+    accessor: "stock",
+  },
+  {
+    Header: "Sold",
+    accessor: "sold_out",
+  },
+  {
+    Header: "Created Date",
+    accessor: "createdAt",
+    Cell: ({ cell }) => (
+      <span>{new Date(cell.value).toLocaleDateString()}</span>
+    ),
+  },
+  {
+    Header: "Actions",
+    accessor: "actions",
+  },
+];
+
+export const dashboardProductColumns: Column<ProductDataType>[] = [
+  {
+    Header: "Product Id",
+    accessor: (data) => data?._id.slice(0, 10),
+  },
+  {
+    Header: "Name",
+    accessor: "name",
+  },
+  {
+    Header: "Category",
+    accessor: "category",
   },
   {
     Header: "Original Price",

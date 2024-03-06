@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-// import { getAllOrdersOfShop } from "../../redux/actions/order";
 import styles from "../../styles/styles";
-// import axios from "axios";
-// import { server } from "../../server";
 import { toast } from "react-toastify";
-// import { loadSeller } from "../../redux/actions/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import PaymentModal from "../../modals/PaymentModal";
-import { useGetAllOrdersBySellerQuery } from "../../redux/features/orders/orderApi";
+import { useLoadSellerQuery } from "../../redux/features/api/apiSlice";
 import {
   useDeleteWithdrawMethodMutation,
   useUpdatePaymentMethodMutation,
@@ -20,7 +16,6 @@ import {
   addPaymentSchema,
 } from "../../validations/PaymentMethod";
 import { setErrorOptions, setSuccessOptions } from "../options";
-import { useLoadSellerQuery } from "../../redux/features/api/apiSlice";
 
 const WithdrawMoney = () => {
   const [open, setOpen] = useState(false);
@@ -29,25 +24,6 @@ const WithdrawMoney = () => {
   const [paymentMethod, setPaymentMethod] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState(50);
   const { refetch } = useLoadSellerQuery({ refetchOnMountOrArgChange: true });
-  // const [bankInfo, setBankInfo] = useState({
-  //   bankName: "",
-  //   bankCountry: "",
-  //   bankSwiftCode: null,
-  //   bankAccountNumber: null,
-  //   bankHolderName: "",
-  //   bankAddress: "",
-  // });
-
-  // useEffect(() => {
-  //   dispatch(getAllOrdersOfShop(seller._id));
-  // }, [dispatch]);
-
-  // const { data, isLoading, refetch } = useGetAllOrdersBySellerQuery(
-  //   seller?._id,
-  //   {
-  //     refetchOnMountOrArgChange: true,
-  //   }
-  // );
 
   const [
     updatePayment,
@@ -149,43 +125,10 @@ const WithdrawMoney = () => {
     };
     console.log(withdrawMethod);
     await updatePayment(withdrawMethod);
-    // console.log(response);
-
-    // await axios
-    //   .put(
-    //     `${server}/shop/update-payment-methods`,
-    //     {
-    //       withdrawMethod,
-    //     },
-    //     { withCredentials: true }
-    //   )
-    //   .then((res) => {
-    //     toast.success("Withdraw method added successfully!");
-    //     dispatch(loadSeller());
-    //     setBankInfo({
-    //       bankName: "",
-    //       bankCountry: "",
-    //       bankSwiftCode: null,
-    //       bankAccountNumber: null,
-    //       bankHolderName: "",
-    //       bankAddress: "",
-    //     });
-    //   })
-    // .catch((error) => {
-    //   console.log(error.response.data.message);
-    // });
   };
 
   const deleteHandler = async () => {
     await deleteWithdraw({});
-    // await axios
-    //   .delete(`${server}/shop/delete-withdraw-method`, {
-    //     withCredentials: true,
-    //   })
-    //   .then((res) => {
-    //     toast.success("Withdraw method deleted successfully!");
-    //     dispatch(loadSeller());
-    //   });
   };
 
   const error = () => {
@@ -198,17 +141,10 @@ const WithdrawMoney = () => {
         "You can't withdraw this amount!. You not have enough balance to withdraw!"
       );
     } else {
-      const amount = withdrawAmount;
-      await createWithdraw(amount);
-      // await axios
-      //   .post(
-      //     `${server}/withdraw/create-withdraw-request`,
-      //     { amount },
-      //     { withCredentials: true }
-      //   )
-      //   .then((res) => {
-      //     toast.success("Withdraw money request is successful!");
-      //   });
+      const data = { amount: withdrawAmount };
+      console.log("amount :", data);
+
+      await createWithdraw(data);
     }
   };
 

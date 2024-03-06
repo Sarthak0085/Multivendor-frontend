@@ -5,7 +5,7 @@ import OrderDetails from "../../components/Shop/OrderDetails";
 const ShopOrderDetails = () => {
   return (
     <div>
-      <DashboardHeader />
+      <DashboardHeader active={0} />
       <OrderDetails />
       <Footer />
     </div>

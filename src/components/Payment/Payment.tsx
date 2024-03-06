@@ -11,8 +11,6 @@ import {
 } from "@stripe/react-stripe-js";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
-// import axios from "axios";
-// import { server } from "../../server";
 import { toast } from "react-hot-toast";
 import { RxCross1 } from "react-icons/rx";
 import { useCreateOrderMutation } from "../../redux/features/orders/orderApi";
@@ -21,9 +19,10 @@ import {
   useEmptyCartMutation,
   useGetCartQuery,
 } from "../../redux/features/cart/cartApi";
+import { IOrder } from "../../types/order";
 
 const Payment = () => {
-  const [orderData, setOrderData] = useState([]);
+  const [orderData, setOrderData] = useState<IOrder | null>();
   const [open, setOpen] = useState(false);
   const { user } = useSelector((state: any) => state?.auth);
   const navigate = useNavigate();
@@ -34,10 +33,8 @@ const Payment = () => {
     refetchOnMountOrArgChange: true,
   });
   const [orderCreation, { isSuccess, error }] = useCreateOrderMutation();
-  const [processPayment, { isSuccess: paymentSuccess, error: paymentError }] =
-    usePaymentProcessMutation();
-  const [emptyCart, { isSuccess: cartSuccess, error: cartError }] =
-    useEmptyCartMutation();
+  const [processPayment, { error: paymentError }] = usePaymentProcessMutation();
+  const [emptyCart, { isSuccess: cartSuccess }] = useEmptyCartMutation();
 
   useEffect(() => {
     const orderData = JSON.parse(localStorage.getItem("latestOrder") as string);
@@ -50,10 +47,10 @@ const Payment = () => {
     if (isSuccess) {
       setOpen(false);
       emptyCart(user?._id);
+      window.location.reload();
       navigate("/order/success");
       toast.success("Order successful!");
       localStorage.setItem("latestOrder", JSON.stringify([]));
-      //   window.location.reload();
     }
     if (cartSuccess) {
       refetch();
@@ -64,7 +61,6 @@ const Payment = () => {
         toast.error(errorData.message);
       }
     }
-    //   if(cartSuccess){}
     if (error) {
       if ("data" in error) {
         const errorData = error?.data as Error;
@@ -75,27 +71,26 @@ const Payment = () => {
     }
   }, [isSuccess, error]);
 
-  const createOrder = (data, actions) => {
-    return actions.order
-      .create({
-        purchase_units: [
-          {
-            description: "Sunflower",
-            amount: {
-              currency_code: "inr",
-              value: orderData?.totalPrice,
-            },
-          },
-        ],
-        // not needed if a shipping address is actually needed
-        application_context: {
-          shipping_preference: "NO_SHIPPING",
-        },
-      })
-      .then((orderID) => {
-        return orderID;
-      });
-  };
+  // const createOrder = (data, actions) => {
+  //   return actions.order
+  //     .create({
+  //       purchase_units: [
+  //         {
+  //           description: "Sunflower",
+  //           amount: {
+  //             currency_code: "inr",
+  //             value: orderData?.totalPrice,
+  //           },
+  //         },
+  //       ],
+  //       application_context: {
+  //         shipping_preference: "NO_SHIPPING",
+  //       },
+  //     })
+  //     .then((orderID) => {
+  //       return orderID;
+  //     });
+  // };
 
   const order = {
     cart: orderData?.cart,
@@ -105,42 +100,42 @@ const Payment = () => {
     totalPrice: orderData?.totalPrice,
   };
 
-  const onApprove = async (data, actions) => {
-    return actions.order.capture().then(function (details) {
-      const { payer } = details;
+  // const onApprove = async (data, actions) => {
+  //   return actions.order.capture().then(function (details) {
+  //     const { payer } = details;
 
-      let paymentInfo = payer;
+  //     const paymentInfo = payer;
 
-      if (paymentInfo !== undefined) {
-        paypalPaymentHandler(paymentInfo);
-      }
-    });
-  };
+  //     if (paymentInfo !== undefined) {
+  //       paypalPaymentHandler(paymentInfo);
+  //     }
+  //   });
+  // };
 
-  const paypalPaymentHandler = async (paymentInfo) => {
-    // Define the order object with necessary data
-    const orderData = {
-      paymentInfo: {
-        id: paymentInfo.payer_id,
-        status: "succeeded",
-        type: "Paypal",
-      },
-      // Include other properties like cart, shippingAddress, etc.
-    };
+  // const paypalPaymentHandler = async (paymentInfo) => {
+  //   // Define the order object with necessary data
+  //   const orderData = {
+  //     paymentInfo: {
+  //       id: paymentInfo.payer_id,
+  //       status: "succeeded",
+  //       type: "Paypal",
+  //     },
+  //     // Include other properties like cart, shippingAddress, etc.
+  //   };
 
-    await orderCreation(orderData).unwrap();
+  //   await orderCreation(orderData).unwrap();
 
-    // try {
-    //   // Call the createOrder mutation using the mutate function
-    //   await orderCreation(orderData).unwrap();
+  //   // try {
+  //   //   // Call the createOrder mutation using the mutate function
+  //   //   await orderCreation(orderData).unwrap();
 
-    //   // Handle successful response
-    // } catch (error) {
-    //   // Handle error
-    //   console.error(error);
-    //   // Handle error message or other actions
-    // }
-  };
+  //   //   // Handle successful response
+  //   // } catch (error) {
+  //   //   // Handle error
+  //   //   console.error(error);
+  //   //   // Handle error message or other actions
+  //   // }
+  // };
 
   //   const paypalPaymentHandler = async (paymentInfo) => {
   //     const config = {
@@ -168,23 +163,23 @@ const Payment = () => {
   //   };
 
   const paymentData = {
-    amount: Math.round(orderData?.totalPrice),
+    amount: Math.round(orderData?.totalPrice as number),
   };
 
   console.log(paymentData);
 
-  const paymentHandler = async (e) => {
+  const paymentHandler = async (e: any) => {
     e.preventDefault();
     try {
       const paymentResponse = await processPayment({
-        amount: Math.round(orderData?.totalPrice),
+        amount: Math.round(orderData?.totalPrice as number),
       });
 
       if (paymentError) {
         return;
       }
 
-      console.log("payment Response:", paymentResponse?.data);
+      // console.log("payment Response:", paymentResponse?.data);
 
       const client_secret: string = paymentResponse?.data?.client_secret;
 
@@ -196,7 +191,7 @@ const Payment = () => {
       });
 
       if (result.error) {
-        toast.error((result.error as Error).message);
+        toast.error(result.error.message);
       } else {
         if (result.paymentIntent.status === "succeeded") {
           order.paymentInfo = {
@@ -218,7 +213,7 @@ const Payment = () => {
         }
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error((error as Error).message);
     }
   };
 
