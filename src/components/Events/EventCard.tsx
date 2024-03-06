@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 // import { addTocart } from "../../redux/actions/cart";
 
-const EventCard = ({ active, data }: { active: boolean; data: IEvent }) => {
+const EventCard = ({ active, data }: { active?: boolean; data: IEvent }) => {
   const { user } = useSelector((state: any) => state?.auth);
   const [addToCart, { isSuccess, error }] = useAddToCartMutation();
   const { refetch } = useGetCartQuery(user?._id, {

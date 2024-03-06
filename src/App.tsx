@@ -4,7 +4,7 @@ import ActivationPage from "./pages/ActivationPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import ProductsPage from "./pages/ProductsPage";
-import ShopActivationPage from "./pages/Shop/ShopActivationPage";
+import ShopActivationPage from "./pages/shop/ShopActivationPage";
 import ShopLoginPage from "./pages/auth/ShopLoginPage";
 import ShopRegisterPage from "./pages/auth/ShopRegisterPage";
 import ShopForgotPasswordPage from "./pages/auth/ShopForgotPasswordPage";

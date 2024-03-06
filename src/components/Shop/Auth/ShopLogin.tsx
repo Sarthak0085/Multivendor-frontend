@@ -53,7 +53,6 @@ const ShopLogin = () => {
     console.log(data);
     try {
       const response = await login(data);
-      // Handle successful registration response
       console.log(response);
     } catch (error) {
       console.log(error);

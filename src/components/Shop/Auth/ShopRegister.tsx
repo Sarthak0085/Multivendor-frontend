@@ -9,7 +9,6 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { RxAvatar, RxPerson } from "react-icons/rx";
 import { TbMapPinCode } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
-import { useShopRegisterMutation } from "../../../redux/features/shop-auth/shopAuthApi";
 import styles from "../../../styles/styles";
 import {
   ShopRegisterFormData,
@@ -17,6 +16,7 @@ import {
 } from "../../../validations/ShopRegistrationValidation";
 import { setErrorOptions, setSuccessOptions } from "../../options";
 import Input from "../../shared/Input";
+import { useShopRegisterMutation } from "../../../redux/features/auth/authApi";
 
 const ShopRegister = () => {
   const navigate = useNavigate();

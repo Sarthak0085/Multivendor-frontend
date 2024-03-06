@@ -1,6 +1,5 @@
 import AllProducts from "../../components/Shop/AllProducts";
 import DashboardHeader from "../../components/Shop/Layout/DashboardHeader";
-// import AllProducts from "../../components/Shop/AllProducts";
 import DashboardSideBar from "../../components/Shop/Layout/DashboardSidebar";
 
 const ShopAllProducts = () => {

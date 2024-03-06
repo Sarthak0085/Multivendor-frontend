@@ -4,7 +4,6 @@ import Loader from "../components/Layout/Loader";
 import { useGetAllEventsQuery } from "../redux/features/events/eventApi";
 
 const EventsPage = () => {
-  //   const { allEvents, isLoading } = useSelector((state) => state.events);
   const { data: eventData, isLoading } = useGetAllEventsQuery({});
   return (
     <>

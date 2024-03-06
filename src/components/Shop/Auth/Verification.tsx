@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import styles from "../../../styles/styles";
 import { Link, useNavigate } from "react-router-dom";
-import { useShopActivationMutation } from "../../../redux/features/shop-auth/shopAuthApi";
+import { useShopActivationMutation } from "../../../redux/features/auth/authApi";
 
 type VerifyNumber = {
   "0": string;
