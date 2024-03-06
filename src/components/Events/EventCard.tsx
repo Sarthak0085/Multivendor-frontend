@@ -42,7 +42,7 @@ const EventCard = ({ active, data }: { active?: boolean; data: IEvent }) => {
     data: IEvent;
     count: number;
   }) => {
-    if (data.stock < 1) {
+    if (data?.stock < 1) {
       toast.error("Stock data limited", {
         style: setErrorOptions,
       });
@@ -87,7 +87,7 @@ const EventCard = ({ active, data }: { active?: boolean; data: IEvent }) => {
         <CountDown data={data} />
         <br />
         <div className="flex items-center">
-          <Link to={`/product/${data._id}?isEvent=true`}>
+          <Link to={`/product/${data?._id}?isEvent=true`}>
             <div className={`${styles.button} text-[#fff]`}>See Details</div>
           </Link>
           <div
