@@ -70,7 +70,7 @@ const EventCard = ({ active, data }: { active?: boolean; data: IEvent }) => {
       </div>
       <div className="w-full lg:w-[50%] lg:mx-[30px] flex flex-col justify-center">
         <h2 className={`${styles.productTitle}`}>{data?.name}</h2>
-        <p>{data.description}</p>
+        <p>{data?.description}</p>
         <div className="flex py-2 justify-between">
           <div className="flex">
             <h5 className="font-[500] text-[18px] text-[#d55b45] pr-3 line-through">
