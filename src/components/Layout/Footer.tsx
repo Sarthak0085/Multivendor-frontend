@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AiFillFacebook,
   AiFillInstagram,
@@ -64,7 +63,7 @@ const Footer = () => {
           {footerProductLinks.map((link, index) => (
             <li key={index}>
               <Link
-                to={link && link.link}
+                to={link.link ? link.link : "/"}
                 className="text-gray-400 hover:text-teal-400 duration-300
                 text-sm cursor-pointer leading-6"
               >
@@ -81,7 +80,7 @@ const Footer = () => {
               <Link
                 className="text-gray-400 hover:text-teal-400 duration-300
                    text-sm cursor-pointer leading-6"
-                to={link.link}
+                to={link?.link ? link?.link : "/"}
               >
                 {link.name}
               </Link>
@@ -96,7 +95,7 @@ const Footer = () => {
               <Link
                 className="text-gray-400 hover:text-teal-400 duration-300
                    text-sm cursor-pointer leading-6"
-                to={link.link}
+                to={link.link ? link.link : "/"}
               >
                 {link.name}
               </Link>
@@ -109,7 +108,7 @@ const Footer = () => {
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10
          text-center pt-2 text-gray-400 text-sm pb-8"
       >
-        <span>© 2020 Becodemy. All rights reserved.</span>
+        <span>© 2023 TrendFlex. All rights reserved.</span>
         <span>Terms · Privacy Policy</span>
         <div className="sm:block flex items-center justify-center w-full">
           <img

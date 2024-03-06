@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
-import { categoriesData } from "../../static/data";
 import {
   AiOutlineHeart,
   AiOutlineSearch,
@@ -21,6 +20,7 @@ import { IProduct } from "../../types/product";
 import { useGetCartQuery } from "../../redux/features/cart/cartApi";
 import Wishlist from "../Wishlist/Wishlist";
 import useClickOutside from "../../hooks/useClickOutside";
+import { useGetAllCategoryQuery } from "../../redux/features/category/categoryApi";
 
 const Header = ({ activeHeading }: { activeHeading?: number }) => {
   const { user, seller } = useSelector((state: any) => state?.auth);
@@ -31,6 +31,8 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
   const [openCart, setOpenCart] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const { data } = useGetAllCategoryQuery({});
 
   const { data: cartData } = useGetCartQuery(user?._id, {});
   const { data: wishlistData } = useGetWishlistQuery(user?._id, {
@@ -165,7 +167,7 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
               />
               {dropDown ? (
                 <DropDown
-                  categoriesData={categoriesData}
+                  categoriesData={data?.categories}
                   setDropDown={setDropDown}
                 />
               ) : null}
@@ -173,7 +175,13 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
           </div>
           {/* navitems */}
           <div className={`${styles.noramlFlex}`}>
-            <Navbar active={activeHeading} />
+            <Navbar
+              active={
+                activeHeading !== undefined && typeof activeHeading === "number"
+                  ? activeHeading
+                  : 0
+              }
+            />
           </div>
 
           <div className="flex">
@@ -357,7 +365,14 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                 )}
               </div>
 
-              <Navbar active={activeHeading} />
+              <Navbar
+                active={
+                  activeHeading !== undefined &&
+                  typeof activeHeading === "number"
+                    ? activeHeading
+                    : 0
+                }
+              />
               <div className={`${styles.button} ml-4 !rounded-[4px]`}>
                 <Link to="/shop-create">
                   <h1 className="text-[#fff] flex items-center">

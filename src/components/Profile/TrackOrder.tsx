@@ -1,95 +1,3 @@
-// import { useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
-// import { useGetAllOrdersByUserQuery } from "../../redux/features/orders/orderApi";
-// import Loader from "../Layout/Loader";
-
-// const TrackOrder = () => {
-//   const { user } = useSelector((state: any) => state?.auth);
-
-//   const { id } = useParams();
-
-//   const { data, isLoading } = useGetAllOrdersByUserQuery(user?._id, {});
-
-//   const dataInfo =
-//     data?.orders && data?.orders.find((item: any) => item._id === id);
-
-//   return (
-//     <div className="w-full h-[80vh] flex justify-center items-center">
-//       {isLoading ? (
-//         <Loader />
-//       ) : (
-//         <>
-//           {dataInfo && dataInfo?.status === "Processing" ? (
-//             <div className="flex flex-col items-center justify-center gap-2">
-//               <h1 className="text-[20px] font-semibold text-[#FFA500]">
-//                 Your Order is processing in shop.
-//               </h1>
-//               <h1 className="text-[20px] font-semibold">
-//                 You will get your order within 7 days.
-//               </h1>
-//             </div>
-//           ) : dataInfo?.status === "Transferred to delivery partner" ? (
-//             <>
-//               <h1 className="text-[20px] font-semibold text-[#007bff]">
-//                 Your Order is on the way for delivery partner.
-//               </h1>
-//               <h1 className="text-[20px] font-semibold">
-//                 You will get your order within 7 days.
-//               </h1>
-//             </>
-//           ) : dataInfo?.status === "Shipping" ? (
-//             <>
-//               <h1 className="text-[20px] font-semibold">
-//                 Your Order is on the way with our delivery partner.
-//               </h1>
-//               <h1 className="text-[20px] font-semibold">
-//                 You will get your order within 5 days.
-//               </h1>
-//             </>
-//           ) : dataInfo?.status === "Received" ? (
-//             <>
-//               <h1 className="text-[20px]  font-semibold text-[#28a745]">
-//                 Your Order is in your city. Our Delivery man will deliver it.
-//               </h1>
-//               <h1 className="text-[20px] font-semibold">
-//                 You will get your order within 3 days.
-//               </h1>
-//             </>
-//           ) : dataInfo?.status === "On the way" ? (
-//             <>
-//               <h1 className="text-[20px]  font-semibold text-[#FFA500]">
-//                 Our Delivery man is going to deliver your order.
-//               </h1>
-//               <h1 className="text-[20px] font-semibold">
-//                 You will get your order within 3 days.
-//               </h1>
-//             </>
-//           ) : dataInfo?.status === "Delivered" ? (
-//             <h1 className="text-[20px]  font-semibold text-[#00FF00]">
-//               Your order is delivered!
-//             </h1>
-//           ) : dataInfo?.status === "Processing refund" ? (
-//             <>
-//               <h1 className="text-[20px]  font-semibold text-[#FFA500]">
-//                 Your refund is processing!
-//               </h1>
-//               <h1 className="text-[20px] font-semibold">
-//                 You request will be processed within 3 business days.
-//               </h1>
-//             </>
-//           ) : dataInfo?.status === "Refund Success" ? (
-//             <h1 className="text-[20px] font-semibold text-[#00FF00]">
-//               Your Refund is success!
-//             </h1>
-//           ) : null}
-//         </>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default TrackOrder;
-
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useGetAllOrdersByUserQuery } from "../../redux/features/orders/orderApi";
@@ -127,18 +35,21 @@ const TrackOrder = () => {
     if (dataInfo !== undefined) {
       const processingDate = new Date(dataInfo?.createdAt as Date);
       const deliveryDate = new Date(processingDate);
-      if (dataInfo?.status === "Processing") {
-        deliveryDate.setDate(deliveryDate.getDate() + 7);
-      } else if (dataInfo?.status === "Transferred to delivery partner") {
+      if (
+        dataInfo?.status === "Processing" ||
+        dataInfo?.status === "Transferred to delivery partner"
+      ) {
         deliveryDate.setDate(deliveryDate.getDate() + 7);
       } else if (dataInfo?.status === "Shipping") {
         deliveryDate.setDate(deliveryDate.getDate() + 5);
-      } else if (dataInfo?.status === "Received") {
+      } else if (
+        dataInfo?.status === "Received" ||
+        dataInfo?.status === "On the way"
+      ) {
         deliveryDate.setDate(deliveryDate.getDate() + 3);
-      } else if (dataInfo?.status === "On the way") {
-        deliveryDate.setDate(deliveryDate.getDate() + 3);
-      } else {
-        deliveryDate.setDate(dataInfo?.deliveredAt);
+      } else if (dataInfo?.status === "Delivered" && dataInfo?.deliveredAt) {
+        const deliveredDate = new Date(dataInfo?.deliveredAt);
+        deliveryDate.setDate(deliveredDate.getDate());
       }
 
       // Get current date
@@ -283,7 +194,6 @@ const TrackOrder = () => {
                     {getExpectedDelivery()}
                   </p>
                 </div>
-                {/* Add more sections for additional information */}
               </>
             )}
           </div>

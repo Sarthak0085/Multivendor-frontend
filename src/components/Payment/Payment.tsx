@@ -1,29 +1,43 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "../../styles/styles";
-import { useEffect } from "react";
 import {
-  CardNumberElement,
   CardCvcElement,
   CardExpiryElement,
-  useStripe,
+  CardNumberElement,
   useElements,
+  useStripe,
 } from "@stripe/react-stripe-js";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { useSelector } from "react-redux";
+import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { RxCross1 } from "react-icons/rx";
-import { useCreateOrderMutation } from "../../redux/features/orders/orderApi";
-import { usePaymentProcessMutation } from "../../redux/features/payment/paymentApi";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   useEmptyCartMutation,
   useGetCartQuery,
 } from "../../redux/features/cart/cartApi";
-import { IOrder } from "../../types/order";
+import { useCreateOrderMutation } from "../../redux/features/orders/orderApi";
+import { usePaymentProcessMutation } from "../../redux/features/payment/paymentApi";
+import styles from "../../styles/styles";
+import { IProductInCart } from "../../types/cart";
+import { IUser } from "../../types/user";
+
+interface ICreateOrder {
+  paymentInfo: { type: string };
+  cart: IProductInCart;
+  shippingAddress: {
+    country: string;
+    city: string;
+    address1: string;
+    address2?: string;
+    pinCode: number;
+    addressType: string;
+  };
+  user: IUser;
+  userId: string;
+  totalPrice: number;
+}
 
 const Payment = () => {
-  const [orderData, setOrderData] = useState<IOrder | null>();
-  const [open, setOpen] = useState(false);
+  const [orderData, setOrderData] = useState<any>();
+  // const [open, setOpen] = useState(false);
   const { user } = useSelector((state: any) => state?.auth);
   const navigate = useNavigate();
   const stripe = useStripe();
@@ -45,7 +59,7 @@ const Payment = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setOpen(false);
+      // setOpen(false);
       emptyCart(user?._id);
       window.location.reload();
       navigate("/order/success");
@@ -92,12 +106,15 @@ const Payment = () => {
   //     });
   // };
 
-  const order = {
+  const order: ICreateOrder = {
     cart: orderData?.cart,
     shippingAddress: orderData?.shippingAddress,
     user: user && user,
     userId: user && user?._id,
     totalPrice: orderData?.totalPrice,
+    paymentInfo: {
+      type: "",
+    },
   };
 
   // const onApprove = async (data, actions) => {
@@ -168,7 +185,7 @@ const Payment = () => {
 
   console.log(paymentData);
 
-  const paymentHandler = async (e: any) => {
+  const paymentHandler = async (e: FormEvent) => {
     e.preventDefault();
     try {
       const paymentResponse = await processPayment({
@@ -181,35 +198,37 @@ const Payment = () => {
 
       // console.log("payment Response:", paymentResponse?.data);
 
-      const client_secret: string = paymentResponse?.data?.client_secret;
+      if ("data" in paymentResponse) {
+        const client_secret: string = paymentResponse?.data?.client_secret;
 
-      if (!stripe || !elements) return;
-      const result = await stripe.confirmCardPayment(client_secret, {
-        payment_method: {
-          card: elements.getElement(CardNumberElement) as any,
-        },
-      });
+        if (!stripe || !elements) return;
+        const result = await stripe.confirmCardPayment(client_secret, {
+          payment_method: {
+            card: elements.getElement(CardNumberElement) as any,
+          },
+        });
 
-      if (result.error) {
-        toast.error(result.error.message);
-      } else {
-        if (result.paymentIntent.status === "succeeded") {
-          order.paymentInfo = {
-            status: "succeeded",
-          };
-          await orderCreation(order); // Pass the order data here
+        if (result.error) {
+          toast.error((result.error as any).message);
+        } else {
+          if (result.paymentIntent.status === "succeeded") {
+            order.paymentInfo = {
+              type: "succeeded",
+            };
+            await orderCreation(order); // Pass the order data here
 
-          //     if (orderError) {
-          //       toast.error(orderError.message); // Handle order creation error
-          //       return;
-          //     }
+            //     if (orderError) {
+            //       toast.error(orderError.message); // Handle order creation error
+            //       return;
+            //     }
 
-          //     setOpen(false);
-          //     navigate("/order/success");
-          //     toast.success("Order successful!");
-          //     localStorage.setItem("cartItems", JSON.stringify([]));
-          //     localStorage.setItem("latestOrder", JSON.stringify([]));
-          //     window.location.reload();
+            //     setOpen(false);
+            //     navigate("/order/success");
+            //     toast.success("Order successful!");
+            //     localStorage.setItem("cartItems", JSON.stringify([]));
+            //     localStorage.setItem("latestOrder", JSON.stringify([]));
+            //     window.location.reload();
+          }
         }
       }
     } catch (error) {
@@ -293,7 +312,7 @@ const Payment = () => {
   //       });
   //   };
 
-  const cashOnDeliveryHandler = async (e) => {
+  const cashOnDeliveryHandler = async (e: FormEvent) => {
     e.preventDefault();
 
     order.paymentInfo = {
@@ -309,10 +328,10 @@ const Payment = () => {
         <div className="w-full 800px:w-[65%]">
           <PaymentInfo
             user={user}
-            open={open}
-            setOpen={setOpen}
-            onApprove={onApprove}
-            createOrder={createOrder}
+            // open={open}
+            // setOpen={setOpen}
+            // onApprove={onApprove}
+            // createOrder={createOrder}
             paymentHandler={paymentHandler}
             cashOnDeliveryHandler={cashOnDeliveryHandler}
           />
@@ -325,15 +344,21 @@ const Payment = () => {
   );
 };
 
+interface IPaymentInfo {
+  user: any;
+  paymentHandler: any;
+  cashOnDeliveryHandler: any;
+}
+
 const PaymentInfo = ({
   user,
-  open,
-  setOpen,
-  onApprove,
-  createOrder,
+  // open,
+  // setOpen,
+  // onApprove,
+  // createOrder,
   paymentHandler,
   cashOnDeliveryHandler,
-}) => {
+}: IPaymentInfo) => {
   const [select, setSelect] = useState(1);
 
   return (
@@ -450,7 +475,7 @@ const PaymentInfo = ({
 
       <br />
       {/* paypal payment */}
-      <div>
+      {/* <div>
         <div className="flex w-full pb-5 border-b mb-2">
           <div
             className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
@@ -466,7 +491,7 @@ const PaymentInfo = ({
         </div>
 
         {/* pay with payement */}
-        {select === 2 ? (
+      {/* {select === 2 ? (
           <div className="w-full flex border-b">
             <div
               className={`${styles.button} !bg-[#f63b60] text-white h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
@@ -504,7 +529,7 @@ const PaymentInfo = ({
             )}
           </div>
         ) : null}
-      </div>
+      </div>  */}
 
       <br />
       {/* cash on delivery */}
@@ -540,8 +565,8 @@ const PaymentInfo = ({
   );
 };
 
-const CartData = ({ orderData }) => {
-  const shipping = orderData?.shipping?.toFixed(2);
+const CartData = ({ orderData }: { orderData: any }) => {
+  const shipping = orderData?.shippingAddress.toFixed(2);
   return (
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">

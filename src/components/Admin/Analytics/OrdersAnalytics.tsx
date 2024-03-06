@@ -153,7 +153,7 @@ const OrdersAnalytics = ({ isDashboard }: Props) => {
                   fill="#767616"
                   shape={(props: any) => <TriangleBar {...props} />}
                 >
-                  {analyticsData.map((entry: any, index: number) => (
+                  {analyticsData.map((_entry: any, index: number) => (
                     <Cell key={`cell-${index}`} fill={colors[index % 12]} />
                   ))}
                 </Bar>

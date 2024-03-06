@@ -59,7 +59,7 @@ const PieChartAnalytics = ({ data }: { data: any }) => {
           fill="#8884d8"
           dataKey="value"
         >
-          {data.map((entry: any, index: number) => (
+          {data.map((_entry: any, index: number) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>

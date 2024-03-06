@@ -24,7 +24,7 @@ export const authApi = apiSlice.injectEndpoints({
                 body: data,
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
                 try {
                     const result = await queryFulfilled;
                     dispatch(
@@ -44,7 +44,7 @@ export const authApi = apiSlice.injectEndpoints({
                 body: data,
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
                 try {
                     const result = await queryFulfilled;
                     console.log("result:", result);
@@ -82,7 +82,7 @@ export const authApi = apiSlice.injectEndpoints({
                 },
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
                 try {
                     const result = await queryFulfilled;
                     dispatch(
@@ -104,7 +104,7 @@ export const authApi = apiSlice.injectEndpoints({
                 body: data,
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
                 try {
                     const result = await queryFulfilled;
                     dispatch(
@@ -124,7 +124,7 @@ export const authApi = apiSlice.injectEndpoints({
                 body: data,
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
                 try {
                     const result = await queryFulfilled;
                     console.log("result:", result);
@@ -155,7 +155,7 @@ export const authApi = apiSlice.injectEndpoints({
                 },
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
                 try {
                     const result = await queryFulfilled;
                     dispatch(
@@ -186,7 +186,7 @@ export const authApi = apiSlice.injectEndpoints({
                 },
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
                 try {
                     const result = await queryFulfilled;
                     dispatch(
@@ -206,7 +206,7 @@ export const authApi = apiSlice.injectEndpoints({
                 method: "POST",
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { dispatch }) {
+            async onQueryStarted(_arg, { dispatch }) {
                 try {
                     dispatch(
                         userLoggedOut()
@@ -223,7 +223,7 @@ export const authApi = apiSlice.injectEndpoints({
                 method: "POST",
                 credentials: "include" as const,
             }),
-            async onQueryStarted(arg, { dispatch }) {
+            async onQueryStarted(_arg, { dispatch }) {
                 try {
                     dispatch(
                         sellerLoggedOut()

@@ -2,29 +2,62 @@ import styles from "../../styles/styles";
 import CountDown from "./CountDown";
 import { Link } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import toast from "react-hot-toast";
+import {
+  useAddToCartMutation,
+  useGetCartQuery,
+} from "../../redux/features/cart/cartApi";
+import { IEvent } from "../../types/event";
+import { setErrorOptions, setSuccessOptions } from "../options";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 // import { addTocart } from "../../redux/actions/cart";
 
-interface IEvent {
-  active?: boolean;
-  data: any;
-}
+const EventCard = ({ active, data }: { active: boolean; data: IEvent }) => {
+  const { user } = useSelector((state: any) => state?.auth);
+  const [addToCart, { isSuccess, error }] = useAddToCartMutation();
+  const { refetch } = useGetCartQuery(user?._id, {
+    refetchOnMountOrArgChange: true,
+  });
 
-const EventCard = ({ active, data }: IEvent) => {
-  // const { cart } = useSelector((state) => state.cart);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Product added to Cart successfully!", {
+        style: setSuccessOptions,
+      });
+      refetch();
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error?.data as Error;
+        toast.error(errorData?.message);
+      }
+    }
+  }, [isSuccess, error]);
 
-  const addToCartHandler = (data) => {
-    // const isItemExists = cart && cart.find((i) => i._id === data._id);
-    // if (isItemExists) {
-    //   toast.error("Item already in cart!");
-    // } else {
-    //   if (data.stock < 1) {
-    //     toast.error("Product stock limited!");
-    //   } else {
-    //     const cartData = { ...data, qty: 1 };
-    //     dispatch(addTocart(cartData));
-    //     toast.success("Item added to cart successfully!");
-    //   }
-    // }
+  const addToCartHandler = async ({
+    data,
+    count = 1,
+  }: {
+    data: IEvent;
+    count: number;
+  }) => {
+    if (data.stock < 1) {
+      toast.error("Stock data limited", {
+        style: setErrorOptions,
+      });
+    } else {
+      const cartData = {
+        productId: data?._id,
+        shopId: data?.shop?._id,
+        color: data?.colors[0],
+        count,
+        price: data?.discountPrice,
+      };
+      console.log(cartData);
+
+      await addToCart(cartData);
+    }
   };
   return (
     <div
@@ -59,7 +92,7 @@ const EventCard = ({ active, data }: IEvent) => {
           </Link>
           <div
             className={`${styles.button} text-[#fff] ml-5`}
-            onClick={() => addToCartHandler(data)}
+            onClick={() => addToCartHandler({ data, count: 1 })}
           >
             <AiOutlineShoppingCart
               size={20}

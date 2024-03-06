@@ -189,7 +189,7 @@ const WithdrawAnalytics = ({ isDashboard }: Props) => {
                   fill="#4d62d9"
                   shape={(props: any) => <CustomBar {...props} />}
                 >
-                  {analyticsData.map((entry: any, index: number) => (
+                  {analyticsData.map((_entry: any, index: number) => (
                     <Cell key={`cell-${index}`} fill={colors[index % 12]} />
                   ))}
                 </Bar>

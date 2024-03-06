@@ -116,17 +116,9 @@ const ProductCard = ({
       productId: data?._id,
       shopId: data?.shop?._id,
       color: data?.colors[0],
-      // category: data?.category,
       price: data?.discountPrice,
     };
     await removeFromWishlist(wishlistData);
-    // if (removeData?.success === true) {
-    //   toast.success("Product Removed From Wishlist Successfully.", {
-    //     style: setSuccessOptions,
-    //   });
-    //   setClick(!click);
-    //   refetch();
-    // }
   };
 
   const addToWishlistHandler = async (data: IProduct) => {
@@ -139,8 +131,6 @@ const ProductCard = ({
     console.log("Wishlist :", wishlistData);
 
     await addToWishlist(wishlistData);
-    // if (addData.success === true) {
-    // }
   };
 
   const addToCartHandler = async ({
@@ -182,7 +172,6 @@ const ProductCard = ({
         className={`w-full sm:w-[300px] border border-blue-200 max-w-[350px] h-[370px]
        bg-white rounded-lg shadow-sm relative cursor-pointer mr-5`}
       >
-        {/* <div className="flex justify-end"></div> */}
         <Link
           to={`${
             isEvent === true

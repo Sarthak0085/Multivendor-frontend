@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../../styles/styles";
 import ProductCard from "../../Products/ProductCard";
 import { useGetAllProductsQuery } from "../../../redux/features/product/productApi";
 import useWindowSize from "../../../hooks/useWindowSize";
 import Loader from "../../Layout/Loader";
+import { IProduct } from "../../../types/product";
 
 const BestDeals = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<IProduct[]>();
   const { data: productData, isLoading } = useGetAllProductsQuery({});
   console.log(productData);
   useEffect(() => {
-    const allProductsData = productData?.products ? [...productData.products] : [];
+    const allProductsData = productData?.products
+      ? [...productData.products]
+      : [];
     const sortedData = allProductsData?.sort((a, b) => b.sold_out - a.sold_out);
     const firstFive = sortedData && sortedData.slice(0, 5);
     setData(firstFive);
@@ -30,7 +33,6 @@ const BestDeals = () => {
     border: "0",
   };
 
-
   return (
     <div className={`${styles.section}`}>
       <div className={`${styles.heading}`}>
@@ -45,9 +47,7 @@ const BestDeals = () => {
           data.length !== 0 && (
             <>
               {data &&
-                data?.map((i, index) => (
-                  <ProductCard data={i} key={index} />
-                ))}
+                data?.map((i, index) => <ProductCard data={i} key={index} />)}
             </>
           )
         )}

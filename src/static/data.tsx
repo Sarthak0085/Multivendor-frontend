@@ -265,43 +265,37 @@ export const categoriesData = [
     id: 1,
     title: "Fiction",
     subTitle: "",
-    image_Url:
-      "fictionImage.jpg",
+    image_Url: "fictionImage.jpg",
   },
   {
     id: 2,
     title: "Non-Fiction",
     subTitle: "",
-    image_Url:
-      "non-fiction.jpg",
+    image_Url: "non-fiction.jpg",
   },
   {
     id: 3,
     title: "Business & Economics",
     subTitle: "",
-    image_Url:
-      "business.jpg",
+    image_Url: "business.jpg",
   },
   {
     id: 4,
     title: "Psychology",
     subTitle: "",
-    image_Url:
-      "psychology.jpg",
+    image_Url: "psychology.jpg",
   },
   {
     id: 5,
     title: "Poetry",
     subTitle: "",
-    image_Url:
-      "poetry.jpg",
+    image_Url: "poetry.jpg",
   },
   {
     id: 6,
     title: "Science",
     subTitle: "",
-    image_Url:
-      "science.jpg",
+    image_Url: "science.jpg",
   },
   {
     id: 7,
@@ -313,22 +307,19 @@ export const categoriesData = [
     id: 8,
     title: "Children",
     subTitle: "",
-    image_Url:
-      "children.jpg",
+    image_Url: "children.jpg",
   },
   {
     id: 9,
     title: "Spiritual",
     subTitle: "",
-    image_Url:
-      "spiritual.jpg",
+    image_Url: "spiritual.jpg",
   },
   {
     id: 10,
     title: "Others",
     subTitle: "",
-    image_Url:
-      "others.jpg",
+    image_Url: "others.jpg",
   },
 ];
 
@@ -448,7 +439,7 @@ export const productData = [
         url: "https://www.hatchwise.com/wp-content/uploads/2022/05/amazon-logo-1024x683.png",
       },
       ratings: 4.2,
-      category: "Others"
+      category: "Others",
     },
     price: 100,
     discount_price: 79,
@@ -524,7 +515,7 @@ export const productData = [
     ],
     total_sell: 20,
     stock: 10,
-    category: "Music and Gaming"
+    category: "Music and Gaming",
   },
   {
     id: 4,
@@ -666,11 +657,11 @@ export const productData = [
 export const footerProductLinks = [
   {
     name: "About us",
-    link: "/about"
+    link: "/about",
   },
   {
     name: "Careers",
-    link: "/carrers"
+    link: "/carrers",
   },
   {
     name: "Store Locations",
@@ -686,6 +677,7 @@ export const footerProductLinks = [
 export const footercompanyLinks = [
   {
     name: "Game & Video",
+    link: "/product?category=game&video",
   },
   {
     name: "Phone &Tablets",
@@ -704,17 +696,22 @@ export const footercompanyLinks = [
 export const footerSupportLinks = [
   {
     name: "FAQ",
+    link: "/faq",
   },
   {
     name: "Reviews",
+    link: "/",
   },
   {
     name: "Contact Us",
+    link: "/contact",
   },
   {
     name: "Shipping",
+    link: "/trackOrder",
   },
   {
     name: "Live chat",
+    link: "/",
   },
 ];

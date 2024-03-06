@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import styles from "../../styles/styles";
 import { City, Country, State } from "country-state-city";
 import { useNavigate } from "react-router-dom";
@@ -8,17 +8,18 @@ import { toast } from "react-toastify";
 import { useGetCartQuery } from "../../redux/features/cart/cartApi";
 import { useGetCouponValueQuery } from "../../redux/features/coupon/couponApi";
 import { IProductInCart } from "../../types/cart";
+import { IAddress, IUser } from "../../types/user";
 
 const Checkout = () => {
   const { user } = useSelector((state: any) => state.auth);
   const { data: cartData } = useGetCartQuery(user?._id, {});
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
+  const [country, setCountry] = useState<string>("");
+  const [city, setCity] = useState<string>("");
   const [state, setState] = useState("");
   const [userInfo, setUserInfo] = useState(false);
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
-  const [zipCode, setZipCode] = useState(null);
+  const [zipCode, setZipCode] = useState<number>(0);
   const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState<number | null>(null);
   // const [name, setName] = useState<string>("");
@@ -92,11 +93,10 @@ const Checkout = () => {
 
   // // this is shipping cost variable
   const shipping = subTotalPrice * 0.1;
-  const discountPercentenge = couponCodeData ? discountPrice : "";
-
+  const discountPercentage = couponCodeData ? discountPrice : 0;
   const totalPrice = couponCodeData
-    ? discountPercentenge &&
-      (subTotalPrice + shipping - discountPercentenge).toFixed(2)
+    ? discountPercentage &&
+      (subTotalPrice + shipping - discountPercentage).toFixed(2)
     : (subTotalPrice + shipping).toFixed(2);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -172,7 +172,7 @@ const Checkout = () => {
             subTotalPrice={subTotalPrice}
             couponCode={couponCode}
             setCouponCode={setCouponCode}
-            discountPercentenge={discountPercentenge}
+            discountPercentage={discountPercentage}
           />
         </div>
       </div>
@@ -185,6 +185,24 @@ const Checkout = () => {
     </div>
   );
 };
+
+interface IShippingInfo {
+  user: IUser;
+  country: string;
+  setCountry: (country: string) => void;
+  city: string;
+  setCity: (city: string) => void;
+  userInfo: boolean;
+  setUserInfo: (userInfo: boolean) => void;
+  address1: string;
+  setAddress1: (address1: string) => void;
+  address2: string;
+  setAddress2: (address2: string) => void;
+  state: string;
+  setState: (state: string) => void;
+  zipCode: number;
+  setZipCode: (zipCode: number) => void;
+}
 
 const ShippingInfo = ({
   user,
@@ -202,7 +220,7 @@ const ShippingInfo = ({
   setState,
   zipCode,
   setZipCode,
-}) => {
+}: IShippingInfo) => {
   return (
     <div className="w-full 800px:w-[95%] bg-white rounded-md p-5 pb-8">
       <h5 className="text-[18px] font-[500]">Shipping Address</h5>
@@ -244,7 +262,7 @@ const ShippingInfo = ({
             <input
               type="number"
               value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
+              onChange={(e) => setZipCode(parseInt(e.target.value, 10))}
               required
               className={`${styles.input}`}
             />
@@ -340,21 +358,21 @@ const ShippingInfo = ({
       </h5>
       {userInfo && (
         <div>
-          {user &&
-            user.addresses.map((item, index) => (
-              <div className="w-full flex mt-1">
+          {user?.addresses &&
+            user?.addresses.map((item: IAddress, index: number) => (
+              <div key={index} className="w-full flex mt-1">
                 <input
                   type="checkbox"
                   className="mr-3"
                   value={item.addressType}
-                  onClick={() =>
-                    setAddress1(item.address1) ||
-                    setAddress2(item.address2) ||
-                    setZipCode(item.pinCode) ||
-                    setCountry(item.country) ||
-                    setState(item.state) ||
-                    setCity(item.city)
-                  }
+                  onClick={() => {
+                    setAddress1(item.address1);
+                    setAddress2(item?.address2);
+                    setZipCode(item.pinCode);
+                    setCountry(item.country);
+                    setState(item.state);
+                    setCity(item.city);
+                  }}
                 />
                 <h2>{item.addressType}</h2>
               </div>
@@ -365,6 +383,16 @@ const ShippingInfo = ({
   );
 };
 
+interface ICartData {
+  handleSubmit: (e: FormEvent) => void;
+  totalPrice: number;
+  shipping: number;
+  subTotalPrice: number;
+  couponCode: string;
+  setCouponCode: (couponCode: string) => void;
+  discountPercentage: number | null;
+}
+
 const CartData = ({
   handleSubmit,
   totalPrice,
@@ -372,8 +400,8 @@ const CartData = ({
   subTotalPrice,
   couponCode,
   setCouponCode,
-  discountPercentenge,
-}) => {
+  discountPercentage,
+}: ICartData) => {
   return (
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
@@ -396,7 +424,7 @@ const CartData = ({
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
         <h5 className="text-[18px] font-[600]">
           - &#8377;.
-          {discountPercentenge ? discountPercentenge.toString() : 0}
+          {discountPercentage ? discountPercentage.toString() : 0}
         </h5>
       </div>
       <h5 className="text-[18px] font-[600] text-end pt-3">
