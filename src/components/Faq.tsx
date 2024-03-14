@@ -16,6 +16,7 @@ const Faq = () => {
   const toggleQuestions = (id: any) => {
     setActiveQuestion(activeQuestion === id ? null : id);
   };
+
   console.log(questions, data);
 
   return isLoading ? (
@@ -32,19 +33,19 @@ const Faq = () => {
               <div
                 key={q._id}
                 className={`${
-                  q._id !== questions[0]._id && "border-t"
+                  q._id !== questions[0]?._id && "border-t"
                 } border-gray-200 pt-6`}
               >
                 <dt className="text-lg">
                   <button
                     className="flex items-start justify-between text-black dark:text-white w-full text-left focus:outline-none"
-                    onClick={() => toggleQuestions(q._id)}
+                    onClick={() => toggleQuestions(q?._id)}
                   >
                     <span className="font-medium text-black dark:text-white">
-                      {index + 1}. {q.question}
+                      {index + 1}. {q?.question}
                     </span>
                     <span className="ml-6 flex-shrink-0">
-                      {activeQuestion === q._id ? (
+                      {activeQuestion === q?._id ? (
                         <HiMinus className="h-6 w-6" />
                       ) : (
                         <HiPlus className="h-6 w-6" />
@@ -52,7 +53,7 @@ const Faq = () => {
                     </span>
                   </button>
                 </dt>
-                {activeQuestion === q._id && (
+                {activeQuestion === q?._id && (
                   <dd className="mt-5 pr-12">
                     <span className="text-base font-Poppins text-black dark:text-white">
                       {q.answer}

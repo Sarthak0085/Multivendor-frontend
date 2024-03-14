@@ -49,25 +49,25 @@ const AdminDashboard = () => {
   console.log(withdrawRequestToday);
 
   // Filter orders for North region
-  const northRegionOrders = data?.orders.filter((item: any) => {
+  const northRegionOrders = data?.orders?.filter((item: any) => {
     return northStates.includes(
       item?.shippingAddress && item?.shippingAddress?.state
     );
   });
 
-  const southRegionsOrders = data?.orders.filter((item: any) => {
+  const southRegionsOrders = data?.orders?.filter((item: any) => {
     return southStates.includes(
       item?.shippingAddress && item?.shippingAddress?.state
     );
   });
 
-  const eastRegionsOrders = data?.orders.filter((item: any) => {
+  const eastRegionsOrders = data?.orders?.filter((item: any) => {
     return eastStates.includes(
       item?.shippingAddress && item?.shippingAddress?.state
     );
   });
 
-  const westRegionOrders = data?.orders.filter((item: any) => {
+  const westRegionOrders = data?.orders?.filter((item: any) => {
     return westStates.includes(
       item?.shippingAddress && item?.shippingAddress?.state
     );
@@ -107,28 +107,28 @@ const AdminDashboard = () => {
   console.log(paymentStatusData);
 
   const processing = data?.orders?.filter(
-    (item: any) => item.status === "Processing"
+    (item: any) => item?.status === "Processing"
   );
   const transferredToDelivery = data?.orders?.filter(
-    (item: IOrder) => item.status === "Transferred to delivery partner"
+    (item: IOrder) => item?.status === "Transferred to delivery partner"
   );
   const received = data?.orders?.filter(
-    (item: IOrder) => item.status === "Received"
+    (item: IOrder) => item?.status === "Received"
   );
   const delivered = data?.orders?.filter(
-    (item: IOrder) => item.status === "Delivered"
+    (item: IOrder) => item?.status === "Delivered"
   );
   const onTheWay = data?.orders?.filter(
-    (item: IOrder) => item.status === "On the way"
+    (item: IOrder) => item?.status === "On the way"
   );
   const shipping = data?.orders?.filter(
-    (item: IOrder) => item.status === "Shipping"
+    (item: IOrder) => item?.status === "Shipping"
   );
   const refundProcess = data?.orders?.filter(
-    (item: IOrder) => item.status === "Processing Refund"
+    (item: IOrder) => item?.status === "Processing Refund"
   );
   const refundSuccess = data?.orders?.filter(
-    (item: IOrder) => item.status === "Refund Success"
+    (item: IOrder) => item?.status === "Refund Success"
   );
 
   const statusData = [
@@ -192,11 +192,11 @@ const AdminDashboard = () => {
   //   return refundOrdersToday;
   // }
 
-  const refundOrdersToday = data?.orders.filter(
+  const refundOrdersToday = data?.orders?.filter(
     (order: any) =>
       order?.status === "Processing Refund" &&
       order?.updatedAt &&
-      order?.updatedAt?.slice(0, 10) === new Date().toISOString().slice(0, 10)
+      order?.updatedAt?.slice(0, 10) === new Date().toISOString()?.slice(0, 10)
   );
 
   //   const orderCancelData = [
@@ -212,14 +212,14 @@ const AdminDashboard = () => {
   //   ];
 
   const ProductTablecomponent = TableHOC<ProductDataType>(
-    dashboardProductColumns.map((column) => {
+    dashboardProductColumns?.map((column) => {
       if (column.accessor === "actions") {
         return {
           ...column,
           Cell: ({ row }) => (
             <div className="flex items-center justify-center space-x-2">
               <Link
-                to={`/product/${row.original?._id}`}
+                to={`/product/${row?.original?._id}`}
                 aria-label="View Details"
               >
                 <AiOutlineEye
@@ -244,8 +244,8 @@ const AdminDashboard = () => {
   const adminEarning =
     data?.orders &&
     data?.orders
-      ?.reduce((acc: number, item: IOrder) => acc + item.totalPrice * 0.1, 0)
-      .toFixed(0);
+      ?.reduce((acc: number, item: IOrder) => acc + item?.totalPrice * 0.1, 0)
+      ?.toFixed(0);
 
   return isLoading || productLoading || withdrawLoading ? (
     <Loader />
@@ -275,7 +275,7 @@ const AdminDashboard = () => {
               All Orders
             </h2>
             <h3 className="text-[20px] leading-[24px] font-bold text-[#5a5c69] mt-[5px]">
-              {data?.orders && data?.orders.length}
+              {data?.orders && data?.orders?.length}
             </h3>
             <Link to="/dashboard-orders">
               <h5 className="text-[#077f9c] underline text-[13px]">
@@ -291,7 +291,7 @@ const AdminDashboard = () => {
               All Products
             </h2>
             <h3 className="text-[20px] leading-[24px] font-bold text-[#5a5c69] mt-[5px]">
-              {productData?.products.length}
+              {productData?.products?.length}
             </h3>
             <Link to="/dashboard-products">
               <h5 className="text-[#077f9c] underline text-[13px]">
@@ -307,7 +307,7 @@ const AdminDashboard = () => {
               All Coupons
             </h2>
             <h3 className="text-[20px] leading-[24px] font-bold text-[#5a5c69] mt-[5px]">
-              {productData?.products.length}
+              {productData?.products?.length}
             </h3>
             <Link to="/dashboard-coupons">
               <h5 className="text-[#077f9c] underline text-[13px]">
@@ -335,18 +335,18 @@ const AdminDashboard = () => {
           <div className="bg-[#F9F8FC] flex items-center justify-between py-[15px] px-[20px] border-b-[1px] border-[#EDEDED] mb-[20px]">
             <h2 className="text-[16px] font-bold">Order Status</h2>
           </div>
-          {statusData.map(
+          {statusData?.map(
             (
               item: { name: string; value: string; color: string },
               index: number
             ) => {
-              const value = Number(item.value);
+              const value = Number(item?.value);
 
               return (
                 <div
                   key={index}
                   style={{ color: `${item?.color}` }}
-                  className={`px-4 pb-4 flex flex-col text-[${item.color}] `}
+                  className={`px-4 pb-4 flex flex-col text-[${item?.color}] `}
                 >
                   <div className="font-semibold mb-2">{item?.name}</div>
                   <div className="flex items-center">
@@ -355,7 +355,7 @@ const AdminDashboard = () => {
                       className={`h-[10px] w-full bg-white rounded-md border border-[${item.color}] mr-2`}
                     >
                       <div
-                        className={`h-[9px] bg-[${item.color}]`}
+                        className={`h-[9px] bg-[${item?.color}]`}
                         style={{
                           width: `${value}%`,
                           backgroundColor: `${item?.color}`,
@@ -394,9 +394,9 @@ const AdminDashboard = () => {
           </div>
           <div className="flex flex-col items-center justify-center">
             {withdrawRequestToday?.length !== 0 ? (
-              withdrawRequestToday.map((item: IOrder, index: number) => (
+              withdrawRequestToday?.map((item: IOrder, index: number) => (
                 <div key={index} className="flex items-center justify-around">
-                  <h3 className="text-[14px]">{item?._id.slice(0, 6)}</h3>
+                  <h3 className="text-[14px]">{item?._id?.slice(0, 6)}</h3>
                   <h2 className="text-[14px]">{item?.user?.fullName}</h2>
                   <h3 className="text-[14px]">{item?.status}</h3>
                 </div>
@@ -425,7 +425,7 @@ const AdminDashboard = () => {
           </div>
           <div className="flex flex-col items-center justify-center">
             {refundOrdersToday?.length !== 0 ? (
-              refundOrdersToday.map((item: IOrder, index: number) => (
+              refundOrdersToday?.map((item: IOrder, index: number) => (
                 <div key={index} className="flex items-center justify-around">
                   <h3 className="text-[14px]">{item?._id.slice(0, 6)}</h3>
                   <h2 className="text-[14px]">{item?.user?.fullName}</h2>

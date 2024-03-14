@@ -16,13 +16,13 @@ import {
   AiOutlineGift,
 } from "react-icons/ai";
 import { BiCategory } from "react-icons/bi";
-import { SiGoogleanalytics } from "react-icons/si";
+import { SiGoogleanalytics, SiZendesk } from "react-icons/si";
 import { TbBrandProducthunt, TbBrandAnsible } from "react-icons/tb";
 import { IoAnalytics } from "react-icons/io5";
 import { MdEventNote } from "react-icons/md";
 import { RiCoupon2Line } from "react-icons/ri";
 import { TbFileAnalytics } from "react-icons/tb";
-import { IoIosAnalytics } from "react-icons/io";
+import { IoIosAnalytics, IoMdColorFilter } from "react-icons/io";
 import { FaArrowLeft, FaQ } from "react-icons/fa6";
 import { GiKnightBanner } from "react-icons/gi";
 
@@ -446,6 +446,50 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="All Colors"
+                to="/admin-colors"
+                className="w-full flex items-center"
+              >
+                <IoMdColorFilter
+                  aria-label="All Colors"
+                  title="All Colors"
+                  size={30}
+                  color={`${active === 14 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 14 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  All Colors
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link
+                aria-label="All Sizes"
+                to="/admin-brands"
+                className="w-full flex items-center"
+              >
+                <SiZendesk
+                  aria-label="All Sizes"
+                  title="All Sizes"
+                  size={30}
+                  color={`${active === 15 ? "crimson" : "#555"}`}
+                />
+                <h5
+                  className={`pl-2 text-[18px] font-[400] ${
+                    active === 15 ? "text-[crimson]" : "text-[#555]"
+                  }`}
+                >
+                  All Sizes
+                </h5>
+              </Link>
+            </div>
+
+            <div className="w-full flex items-center p-4">
+              <Link
                 aria-label="All Coupons"
                 to="/admin-coupons"
                 className="w-full flex items-center"
@@ -454,11 +498,11 @@ const AdminHeader = ({ active }: { active?: number }) => {
                   aria-label="All Coupons"
                   title="All Coupons"
                   size={30}
-                  color={`${active === 14 ? "crimson" : "#555"}`}
+                  color={`${active === 16 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 14 ? "text-[crimson]" : "text-[#555]"
+                    active === 16 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   All Coupons
@@ -476,11 +520,11 @@ const AdminHeader = ({ active }: { active?: number }) => {
                   aria-label="Coupons Analytics"
                   title="Coupons Analytics"
                   size={30}
-                  color={`${active === 15 ? "crimson" : "#555"}`}
+                  color={`${active === 17 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 15 ? "text-[crimson]" : "text-[#555]"
+                    active === 17 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   Coupons Analytics
@@ -498,11 +542,11 @@ const AdminHeader = ({ active }: { active?: number }) => {
                   aria-label="Withdraw Request"
                   title="Withdraw Request"
                   size={30}
-                  color={`${active === 16 ? "crimson" : "#555"}`}
+                  color={`${active === 18 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 16 ? "text-[crimson]" : "text-[#555]"
+                    active === 18 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   Withdraw Request
@@ -520,11 +564,11 @@ const AdminHeader = ({ active }: { active?: number }) => {
                   aria-label="Withdraw Analytics"
                   title="Withdraw Analytics"
                   size={30}
-                  color={`${active === 17 ? "crimson" : "#555"}`}
+                  color={`${active === 19 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 17 ? "text-[crimson]" : "text-[#555]"
+                    active === 19 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   Withdraw Analytics
@@ -542,11 +586,11 @@ const AdminHeader = ({ active }: { active?: number }) => {
                   aria-label="Edit FAQ"
                   title="Edit FAQ"
                   size={30}
-                  color={`${active === 18 ? "crimson" : "#555"}`}
+                  color={`${active === 20 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 18 ? "text-[crimson]" : "text-[#555]"
+                    active === 20 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   Edit FAQ
@@ -564,11 +608,11 @@ const AdminHeader = ({ active }: { active?: number }) => {
                   aria-label="Edit Banner"
                   title="Edit Banner"
                   size={30}
-                  color={`${active === 19 ? "crimson" : "#555"}`}
+                  color={`${active === 21 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 19 ? "text-[crimson]" : "text-[#555]"
+                    active === 21 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   Edit Banner
@@ -586,11 +630,11 @@ const AdminHeader = ({ active }: { active?: number }) => {
                   aria-label={`Admin's Profile`}
                   title={`Admin's Profile`}
                   size={30}
-                  color={`${active === 20 ? "crimson" : "#555"}`}
+                  color={`${active === 22 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 20 ? "text-[crimson]" : "text-[#555]"
+                    active === 22 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   Settings
