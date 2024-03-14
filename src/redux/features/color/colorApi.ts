@@ -17,14 +17,6 @@ export const colorApi = apiSlice.injectEndpoints({
                 credentials: "include" as const,
             })
         }),
-        adminUpdateColor: builder.mutation({
-            query: ({ id, data }) => ({
-                url: `color/admin-update/${id}`,
-                method: "PUT",
-                body: data,
-                credentials: "include" as const,
-            })
-        }),
         adminDeleteColor: builder.mutation({
             query: (id) => ({
                 url: `color/admin-delete/${id}`,
@@ -42,4 +34,4 @@ export const colorApi = apiSlice.injectEndpoints({
     })
 });
 
-export const { useGetAllColorQuery, useAdminAddColorMutation, useAdminUpdateColorMutation, useAdminDeleteColorMutation, useAdminGetAllColorQuery } = colorApi;
+export const { useGetAllColorQuery, useAdminAddColorMutation, useAdminDeleteColorMutation, useAdminGetAllColorQuery } = colorApi;

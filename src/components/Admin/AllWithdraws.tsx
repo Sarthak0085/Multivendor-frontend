@@ -8,7 +8,11 @@ import {
 } from "../../redux/features/withdraw/withdrawApi";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import {
   WithdrawDataType,
   withdrawColumns,
@@ -26,9 +30,14 @@ const AllWithdraw = () => {
   const [updateWithdraw, { isSuccess, isLoading: updateLoading, error }] =
     useUpdateWithdrawRequestByAdminMutation();
 
-  console.log("data", data);
+  // console.log("data", data);
 
   useEffect(() => {
+    if (updateLoading) {
+      toast.loading("Updating Withdraw Status. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Withdraw Request Updated Successfully", {
         style: setSuccessOptions,
@@ -48,11 +57,11 @@ const AllWithdraw = () => {
         });
       }
     }
-  }, [isSuccess, error, refetch]);
+  }, [isSuccess, error, refetch, updateLoading]);
 
   const handleSubmit = async () => {
     const data = { _id: id, shopId, withdrawStatus };
-    console.log(data);
+    // console.log(data);
 
     await updateWithdraw(data);
   };
@@ -72,6 +81,7 @@ const AllWithdraw = () => {
                 }}
               >
                 <AiOutlineEdit
+                  aria-label="Update Withdraw Status"
                   title="Update Withdraw Status"
                   size={22}
                   className="text-green-500"

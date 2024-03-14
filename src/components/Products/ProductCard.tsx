@@ -117,6 +117,7 @@ const ProductCard = ({
       shopId: data?.shop?._id,
       color: data?.colors[0],
       price: data?.discountPrice,
+      size: data?.sizes[0],
     };
     await removeFromWishlist(wishlistData);
   };
@@ -127,8 +128,9 @@ const ProductCard = ({
       shopId: data?.shop?._id,
       color: data?.colors[0],
       price: data?.discountPrice,
+      size: data?.sizes[0],
     };
-    console.log("Wishlist :", wishlistData);
+    // console.log("Wishlist :", wishlistData);
 
     await addToWishlist(wishlistData);
   };
@@ -138,7 +140,7 @@ const ProductCard = ({
     count = 1,
   }: {
     data: IProduct;
-    count?: number;
+    count: number;
   }) => {
     if (data.stock < 1) {
       toast.error("Product stock limited!");
@@ -147,8 +149,10 @@ const ProductCard = ({
         productId: data?._id,
         shopId: data?.shop?._id,
         color: data?.colors[0],
-        count,
+        count: count || 1,
         price: data?.discountPrice,
+        size: data?.sizes[0],
+        gender: data?.gender,
       };
       console.log(cartData);
 
@@ -169,7 +173,7 @@ const ProductCard = ({
           }
         }}
         onMouseLeave={() => setShow(false)}
-        className={`w-full sm:w-[300px] border border-blue-200 max-w-[350px] h-[370px]
+        className={`w-full sm:w-[300px] border border-blue-200 max-w-[350px] h-[400px]
        bg-white rounded-lg shadow-sm relative cursor-pointer mr-5`}
       >
         <Link
@@ -178,15 +182,21 @@ const ProductCard = ({
               ? `/product/${data._id}?isEvent=true`
               : `/product/${data._id}`
           }`}
+          aria-label={data?._id}
+          title="Product Details Page"
         >
           <img
-            src={`${data.images && data.images[0]?.url}`}
-            alt=""
+            src={`${data?.images && data?.images[0]?.url}`}
+            alt={data?.name}
             className="w-full h-[220px] object-cover mb-4"
           />
         </Link>
-        <Link to={`/shop/preview/${data?.shop._id}`}>
-          <h5 className={`${styles.shop_name} px-2`}>{data.shop.name}</h5>
+        <Link
+          to={`/shop/preview/${data?.shop._id}`}
+          aria-label={data?.shop?._id}
+          title="Shop Preview Page"
+        >
+          <h5 className={`${styles.shop_name} px-2`}>{data?.shop?.name}</h5>
         </Link>
         <Link
           to={`${
@@ -194,6 +204,8 @@ const ProductCard = ({
               ? `/product/${data._id}?isEvent=true`
               : `/product/${data._id}`
           }`}
+          aria-label={data?.name}
+          title="Product Details Page"
         >
           <h4 className="pb-3 px-2 font-[500]">
             {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
@@ -224,7 +236,7 @@ const ProductCard = ({
         </Link>
 
         {/* side options */}
-        {show && (
+        {(windowSize.width <= 768 || show) && (
           <div>
             {click ? (
               <AiFillHeart
@@ -233,6 +245,7 @@ const ProductCard = ({
                 onClick={() => removeFromWishlistHandler(data)}
                 color={click ? "red" : "#333"}
                 title="Remove from wishlist"
+                aria-label="Remove from wishlist"
               />
             ) : (
               <AiOutlineHeart
@@ -241,6 +254,7 @@ const ProductCard = ({
                 onClick={() => addToWishlistHandler(data)}
                 color={click ? "red" : "#FF0000"}
                 title="Add to wishlist"
+                aria-label="Add to wishlist"
               />
             )}
             <AiOutlineEye
@@ -249,13 +263,15 @@ const ProductCard = ({
               onClick={() => setOpen(!open)}
               color="#0000FF"
               title="Quick Product Preview"
+              aria-label="Quick Product Preview"
             />
             <AiOutlineShoppingCart
               size={25}
               className="cursor-pointer absolute right-2 top-24"
-              onClick={() => addToCartHandler({ data })}
+              onClick={() => addToCartHandler({ data, count: 1 })}
               color="#3bc177"
               title="Add to cart"
+              aria-label="Add to cart"
             />
             {open ? (
               <ProductDetailsCard

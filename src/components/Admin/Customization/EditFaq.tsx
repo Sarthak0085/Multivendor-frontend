@@ -9,6 +9,11 @@ import {
 } from "../../../redux/features/layout/layoutApi";
 import styles from "../../../styles/styles";
 import Loader from "../../Layout/Loader";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../../options";
 
 const EditFaq = () => {
   const { data, isLoading, refetch } = useGetHeroLayoutQuery("FAQ", {
@@ -16,25 +21,39 @@ const EditFaq = () => {
   });
   const [questions, setQuestions] = useState<any[]>([]);
 
-  const [editLayout, { isSuccess, error }] = useEditLayoutMutation();
-  console.log(data);
+  const [editLayout, { isSuccess, error, isLoading: updateLoading }] =
+    useEditLayoutMutation();
+  // console.log(data);
 
   useEffect(() => {
     if (data) {
       setQuestions(data?.layout.faq);
     }
+    if (updateLoading) {
+      toast.loading("Updating FAQs. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       refetch();
-      toast.success("FAQ updated succesfully");
+      toast.success("FAQ updated succesfully", {
+        style: setSuccessOptions,
+      });
     }
 
     if (error) {
       if ("data" in error) {
         const errorData = error as any;
-        toast.error(errorData.data.message);
+        toast.error(errorData.data.message, {
+          style: setErrorOptions,
+        });
+      } else {
+        toast.error("An Unknown Error Occured.", {
+          style: setErrorOptions,
+        });
       }
     }
-  }, [isSuccess, error, data, refetch]);
+  }, [isSuccess, error, data, refetch, updateLoading]);
 
   const toggleQuestions = (id: any) => {
     setQuestions((prevQuestions: any) =>

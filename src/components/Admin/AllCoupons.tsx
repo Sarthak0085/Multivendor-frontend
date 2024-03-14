@@ -8,7 +8,11 @@ import {
 } from "../../redux/features/coupon/couponApi";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import { CouponDataType, couponColumns } from "../shared/Tables/CouponColumns";
 
 const AllCoupons = () => {
@@ -29,6 +33,11 @@ const AllCoupons = () => {
   console.log("data", data);
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Deleting Coupon. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Coupon Deleted Successfully", {
         style: setSuccessOptions,
@@ -47,7 +56,7 @@ const AllCoupons = () => {
         });
       }
     }
-  }, [isSuccess, error, refetch]);
+  }, [isSuccess, error, refetch, isLoading]);
 
   const TableComponent = TableHOC<CouponDataType>(
     couponColumns.map((column) => {
@@ -64,6 +73,7 @@ const AllCoupons = () => {
               >
                 <AiOutlineDelete
                   title="Delete Coupon"
+                  aria-label="Delete Coupon"
                   size={22}
                   className="text-red-500"
                 />

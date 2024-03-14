@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import styles from "../../../styles/styles";
 import { Link, useNavigate } from "react-router-dom";
 import { useShopActivationMutation } from "../../../redux/features/auth/authApi";
+import { setLoadingOptions } from "../../options";
 
 type VerifyNumber = {
   "0": string;
@@ -29,6 +30,11 @@ const Verification = () => {
     useShopActivationMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Activating new Shop. It will take time....", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message =
         "Account Activated Successfully. Please Login to Continue.";
@@ -45,7 +51,7 @@ const Verification = () => {
         setInvalidError(false);
       }
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, isLoading]);
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),

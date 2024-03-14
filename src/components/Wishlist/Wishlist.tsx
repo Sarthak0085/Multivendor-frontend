@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineHeart } from "react-icons/ai";
 import { CgTrashEmpty } from "react-icons/cg";
@@ -40,13 +40,18 @@ const Wishlist = ({
   ] = useRemoveFromWishlistMutation();
   const [emptyWishlist, { isSuccess: emptySuccess, error: emptyError }] =
     useEmptyWishlistMutation();
-  const [addTocart, { error }] = useAddToCartMutation();
+  const [addTocart, { error, isLoading: cartLoading }] = useAddToCartMutation();
+  const [color, setColor] = useState<string>(wishlistData?.color);
+  const [size, setSize] = useState<string>(
+    wishlistData?.size && wishlistData?.size
+  );
 
   const removeFromWishlistHandler = async (data: IProductInWishlist) => {
     const wishlistData = {
       productId: data?.product?._id,
       shopId: data?.shopId,
       color: data?.color,
+      size: data?.size,
       price: data?.price,
     };
     await removeFromWishlist(wishlistData);
@@ -63,16 +68,22 @@ const Wishlist = ({
   const addToCartHandler = async ({
     data,
     value,
+    color,
+    size,
   }: {
     data: IProductInWishlist;
     value: number;
+    color: string;
+    size: string;
   }) => {
     const cartData = {
       productId: data?.product?._id,
       shopId: data?.shopId,
       price: data?.price,
-      color: data?.color,
+      color: color,
       count: value,
+      size: size,
+      gender: data?.gender,
     };
     const response = await addTocart(cartData);
     console.log(response);
@@ -159,8 +170,8 @@ const Wishlist = ({
   useClickOutside(modalRef, () => setOpenWishlist(false));
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-[999]">
-      <div className="top-0 right-0 h-full w-[90%] sm:w-[70%] overflow-y-scroll 800px:w-[55%] 1100px:w-[45%] 1300px:w-[35%] bg-white flex flex-col justify-between shadow-sm">
+    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-[2000]">
+      <div className="fixed top-0 right-0 z-20 h-full w-[100%] sm:w-[80%] md:w-[60%] lg:w-[50%] 1300px:w-[38%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
         {isLoading ? (
           <Loader />
         ) : wishlistData?.wishlist &&
@@ -214,6 +225,11 @@ const Wishlist = ({
                         data={i}
                         removeFromWishlistHandler={removeFromWishlistHandler}
                         addToCartHandler={addToCartHandler}
+                        color={color}
+                        setColor={setColor}
+                        isLoading={cartLoading}
+                        size={size}
+                        setSize={setSize}
                       />
                     )
                   )}

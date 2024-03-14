@@ -15,11 +15,14 @@ import {
   addPaymentFormData,
   addPaymentSchema,
 } from "../../validations/PaymentMethod";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 
 const WithdrawMoney = () => {
   const [open, setOpen] = useState(false);
-  // const dispatch = useDispatch();
   const { seller } = useSelector((state: any) => state.auth);
   const [paymentMethod, setPaymentMethod] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState(50);
@@ -52,6 +55,16 @@ const WithdrawMoney = () => {
   });
 
   useEffect(() => {
+    if (updateLoading) {
+      toast.loading("Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
+    if (withdrawLoading) {
+      toast.loading("Just a Sec...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Payment Method Updated Successfully", {
         style: setSuccessOptions,
@@ -112,6 +125,8 @@ const WithdrawMoney = () => {
     updateError,
     withdrawError,
     withdrawSuccess,
+    withdrawLoading,
+    updateLoading,
   ]);
 
   const onSubmit: SubmitHandler<addPaymentFormData> = async (data) => {

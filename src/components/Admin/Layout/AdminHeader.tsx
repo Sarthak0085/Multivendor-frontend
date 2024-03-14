@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { BiMenuAltLeft, BiMessageSquareDetail } from "react-icons/bi";
+import { BiMenuAltLeft } from "react-icons/bi";
 import { FiPackage, FiShoppingBag } from "react-icons/fi";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { useSelector } from "react-redux";
@@ -37,14 +37,18 @@ const AdminHeader = ({ active }: { active?: number }) => {
   return (
     <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
-        <Link className="hidden sm:block" to="/">
+        <Link aria-label="Home" className="hidden sm:block" to="/" title="Home">
           <img
-            src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-            alt=""
+            src="https://res.cloudinary.com/dkzfopuco/image/upload/v1709903777/Trend_Flex__1_-removebg-preview_era9ij.svg"
+            alt="logo"
+            width={110}
+            height={100}
           />
         </Link>
         <button className="block sm:hidden">
           <BiMenuAltLeft
+            title="Open Admin's Sidebar"
+            aria-label="Open Admin's Sidebar"
             size={40}
             className="ml-4"
             onClick={() => setOpen(true)}
@@ -53,47 +57,68 @@ const AdminHeader = ({ active }: { active?: number }) => {
       </div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
-          <Link to="/admin-coupons" className="800px:block hidden">
+          <Link
+            aria-label="Discount Coupons"
+            to="/admin-coupons"
+            className="800px:block hidden"
+          >
             <AiOutlineGift
+              aria-label="Discount Coupons"
               title="Discount Coupons"
               color={`${active === 9 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/admin-events" className="800px:block hidden">
+          <Link
+            aria-label="All Events"
+            to="/admin-events"
+            className="800px:block hidden"
+          >
             <MdOutlineLocalOffer
+              aria-label="All Events"
               title="All Events"
               color={`${active === 5 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/admin-products" className="800px:block hidden">
+          <Link
+            aria-label="All Products"
+            to="/admin-products"
+            className="800px:block hidden"
+          >
             <FiPackage
+              aria-label="All Products"
               title="All Products"
               color={`${active === 3 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/admin-orders" className="800px:block hidden">
+          <Link
+            aria-label="All Orders"
+            to="/admin-orders"
+            className="800px:block hidden"
+          >
             <FiShoppingBag
+              aria-label="All Orders"
               title="All Orders"
               color={`${active === 2 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/admin-messages" className="800px:block hidden">
+          {/* <Link to="/admin-messages" className="800px:block hidden">
             <BiMessageSquareDetail
+              aria-label="Inbox"
               title="Inbox"
               color={`${active === 8 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
-          </Link>
-          <Link to={`/profile/${user._id}`}>
+          </Link> */}
+          <Link aria-label="Admin Profile" to={`/profile/${user._id}`}>
             <img
               src={`${user.avatar?.url}`}
               alt={user?.name}
@@ -113,19 +138,32 @@ const AdminHeader = ({ active }: { active?: number }) => {
               onClick={() => setOpen(false)}
               className="absolute mt-3 right-2 "
             >
-              <FaArrowLeft size={18} title="Close" color="crimson" />
+              <FaArrowLeft
+                aria-label="Close"
+                size={18}
+                title="Close"
+                color="crimson"
+              />
             </button>
             <div className="mt-12 flex items-center justify-center">
-              <Link to="/">
+              <Link aria-label="Home" to="/" title="Home">
                 <img
-                  src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                  alt={user?.email}
+                  src="https://res.cloudinary.com/dkzfopuco/image/upload/v1709903777/Trend_Flex__1_-removebg-preview_era9ij.svg"
+                  alt="logo"
+                  width={110}
+                  height={100}
                 />
               </Link>
             </div>
             <div className="w-full flex items-center p-4">
-              <Link to="/admin/dashboard" className="w-full flex items-center">
+              <Link
+                aria-label="Admin Dashboard"
+                to="/admin/dashboard"
+                className="w-full flex items-center"
+              >
                 <RxDashboard
+                  aria-label="Admin Dashboard"
+                  title="Admin Dashboard"
                   size={30}
                   color={`${active === 1 ? "crimson" : "#555"}`}
                 />
@@ -140,8 +178,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-orders" className="w-full flex items-center">
+              <Link
+                aria-label="All Orders"
+                to="/admin-orders"
+                className="w-full flex items-center"
+              >
                 <FiShoppingBag
+                  aria-label="All Orders"
+                  title="All Orders"
                   size={30}
                   color={`${active === 2 ? "crimson" : "#555"}`}
                 />
@@ -155,12 +199,18 @@ const AdminHeader = ({ active }: { active?: number }) => {
               </Link>
             </div>
 
-            <div className="w-full flex items-center p-4">
+            <div
+              title="Orders Analytics"
+              className="w-full flex items-center p-4"
+            >
               <Link
+                aria-label="Orders Analytics"
                 to="/admin-orders-analytics"
                 className="w-full flex items-center"
               >
                 <AiOutlineOrderedList
+                  aria-label="Orders Analytics"
+                  title="Orders Analytics"
                   size={30}
                   color={`${active === 3 ? "crimson" : "#555"}`}
                 />
@@ -175,8 +225,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-sellers" className="w-full flex items-center">
+              <Link
+                aria-label="All Sellers"
+                to="/admin-sellers"
+                className="w-full flex items-center"
+              >
                 <GrWorkshop
+                  aria-label="All Sellers"
+                  title="All Sellers"
                   size={30}
                   color={`${active === 4 ? "crimson" : "#555"}`}
                 />
@@ -192,10 +248,13 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Sellers Analytics"
                 to="/admin-sellers-analytics"
                 className="w-full flex items-center"
               >
                 <SiGoogleanalytics
+                  aria-label="Sellers Analytics"
+                  title="Sellers Analytics"
                   size={30}
                   color={`${active === 5 ? "crimson" : "#555"}`}
                 />
@@ -210,8 +269,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-users" className="w-full flex items-center">
+              <Link
+                aria-label="All Users"
+                to="/admin-users"
+                className="w-full flex items-center"
+              >
                 <HiOutlineUserGroup
+                  aria-label="All Users"
+                  title="All Users"
                   size={30}
                   color={`${active === 6 ? "crimson" : "#555"}`}
                 />
@@ -227,10 +292,13 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Users Analytics"
                 to="/admin-users-analytics"
                 className="w-full flex items-center"
               >
                 <IoAnalytics
+                  aria-label="Users Analytics"
+                  title="Users Analytics"
                   size={30}
                   color={`${active === 7 ? "crimson" : "#555"}`}
                 />
@@ -245,8 +313,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-products" className="w-full flex items-center">
+              <Link
+                aria-label="All Products"
+                to="/admin-products"
+                className="w-full flex items-center"
+              >
                 <BsHandbag
+                  aria-label="All Products"
+                  title="All Products"
                   size={30}
                   color={`${active === 8 ? "crimson" : "#555"}`}
                 />
@@ -262,10 +336,13 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Products Analytics"
                 to="/admin-products-analytics"
                 className="w-full flex items-center"
               >
                 <TbBrandProducthunt
+                  aria-label="Products Analytics"
+                  title="Products Analytics"
                   size={30}
                   color={`${active === 9 ? "crimson" : "#555"}`}
                 />
@@ -280,8 +357,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-events" className="w-full flex items-center">
+              <Link
+                aria-label="All Events"
+                to="/admin-events"
+                className="w-full flex items-center"
+              >
                 <MdOutlineLocalOffer
+                  aria-label="All Events"
+                  title="All Events"
                   size={30}
                   color={`${active === 10 ? "crimson" : "#555"}`}
                 />
@@ -297,10 +380,13 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Events Analytics"
                 to="/admin-events-analytics"
                 className="w-full flex items-center"
               >
                 <MdEventNote
+                  aria-label="Events Analytics"
+                  title="Events Analytics"
                   size={30}
                   color={`${active === 11 ? "crimson" : "#555"}`}
                 />
@@ -315,8 +401,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-categories" className="w-full flex items-center">
+              <Link
+                aria-label="All Categories"
+                to="/admin-categories"
+                className="w-full flex items-center"
+              >
                 <BiCategory
+                  aria-label="All Categories"
+                  title="All Categories"
                   size={30}
                   color={`${active === 12 ? "crimson" : "#555"}`}
                 />
@@ -331,8 +423,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-brands" className="w-full flex items-center">
+              <Link
+                aria-label="All Brands"
+                to="/admin-brands"
+                className="w-full flex items-center"
+              >
                 <TbBrandAnsible
+                  aria-label="All Brands"
+                  title="All Brands"
                   size={30}
                   color={`${active === 13 ? "crimson" : "#555"}`}
                 />
@@ -347,8 +445,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-coupons" className="w-full flex items-center">
+              <Link
+                aria-label="All Coupons"
+                to="/admin-coupons"
+                className="w-full flex items-center"
+              >
                 <RiCoupon2Line
+                  aria-label="All Coupons"
+                  title="All Coupons"
                   size={30}
                   color={`${active === 14 ? "crimson" : "#555"}`}
                 />
@@ -364,10 +468,13 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Coupons Analytics"
                 to="/admin-coupons-analytics"
                 className="w-full flex items-center"
               >
                 <IoIosAnalytics
+                  aria-label="Coupons Analytics"
+                  title="Coupons Analytics"
                   size={30}
                   color={`${active === 15 ? "crimson" : "#555"}`}
                 />
@@ -383,10 +490,13 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Withdraw Request"
                 to="/admin-withdraw-request"
                 className="w-full flex items-center"
               >
                 <CiMoneyBill
+                  aria-label="Withdraw Request"
+                  title="Withdraw Request"
                   size={30}
                   color={`${active === 16 ? "crimson" : "#555"}`}
                 />
@@ -402,10 +512,13 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Withdraw Analytics"
                 to="/admin-withdraw-analytics"
                 className="w-full flex items-center"
               >
                 <TbFileAnalytics
+                  aria-label="Withdraw Analytics"
+                  title="Withdraw Analytics"
                   size={30}
                   color={`${active === 17 ? "crimson" : "#555"}`}
                 />
@@ -420,8 +533,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-edit-faq" className="w-full flex items-center">
+              <Link
+                aria-label="Edit FAQ"
+                to="/admin-edit-faq"
+                className="w-full flex items-center"
+              >
                 <FaQ
+                  aria-label="Edit FAQ"
+                  title="Edit FAQ"
                   size={30}
                   color={`${active === 18 ? "crimson" : "#555"}`}
                 />
@@ -436,8 +555,14 @@ const AdminHeader = ({ active }: { active?: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/admin-edit-hero" className="w-full flex items-center">
+              <Link
+                aria-label="Edit Banner"
+                to="/admin-edit-hero"
+                className="w-full flex items-center"
+              >
                 <GiKnightBanner
+                  aria-label="Edit Banner"
+                  title="Edit Banner"
                   size={30}
                   color={`${active === 19 ? "crimson" : "#555"}`}
                 />
@@ -453,16 +578,19 @@ const AdminHeader = ({ active }: { active?: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label={`Admin's Profile`}
                 to={`/profile/${user?._id}`}
                 className="w-full flex items-center"
               >
                 <AiOutlineSetting
+                  aria-label={`Admin's Profile`}
+                  title={`Admin's Profile`}
                   size={30}
-                  color={`${active === 19 ? "crimson" : "#555"}`}
+                  color={`${active === 20 ? "crimson" : "#555"}`}
                 />
                 <h5
                   className={`pl-2 text-[18px] font-[400] ${
-                    active === 19 ? "text-[crimson]" : "text-[#555]"
+                    active === 20 ? "text-[crimson]" : "text-[#555]"
                   }`}
                 >
                   Settings

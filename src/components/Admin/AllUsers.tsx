@@ -9,7 +9,11 @@ import {
 } from "../../redux/features/user/userApi";
 import userColumns, { UserDataType } from "../shared/Tables/UserColumns";
 import toast from "react-hot-toast";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import DeleteConfirmationModal from "../../modals/DeleteModal";
 import UpdateStatusModal from "../../modals/UpdateStatusModal";
 
@@ -54,6 +58,16 @@ const AllUsers = () => {
   };
 
   useEffect(() => {
+    if (updateLoading) {
+      toast.loading("Updating User Status. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
+    if (deleteLoading) {
+      toast.loading("Deleting User. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (deleteSuccess) {
       toast.success("User Deleted from Database successfully", {
         style: setSuccessOptions,
@@ -90,7 +104,15 @@ const AllUsers = () => {
         });
       }
     }
-  }, [deleteSuccess, deleteError, updateSuccess, updateError, refetch]);
+  }, [
+    deleteSuccess,
+    deleteError,
+    updateSuccess,
+    updateError,
+    refetch,
+    updateLoading,
+    deleteLoading,
+  ]);
 
   const TableComponent = TableHOC<UserDataType>(
     userColumns.map((column) => {
@@ -107,6 +129,7 @@ const AllUsers = () => {
                   }}
                 >
                   <AiOutlineEdit
+                    aria-label="Change User Status"
                     title="Change User Status"
                     size={22}
                     className="text-green-500"
@@ -121,6 +144,7 @@ const AllUsers = () => {
                   }}
                 >
                   <AiOutlineDelete
+                    aria-label="Delete User"
                     title="Delete User"
                     size={22}
                     className="text-red-500"

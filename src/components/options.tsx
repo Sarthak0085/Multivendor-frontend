@@ -12,8 +12,8 @@ export const setSuccessOptions = {
 };
 
 export const setLoadingOptions = {
-  color: "yellow",
-  backgroundColor: "whiteSmoke",
+  color: "#FFFFFF",
+  backgroundColor: "#FFA500",
   fontSize: "18px",
   fontWeight: "600",
 };

@@ -16,7 +16,11 @@ import {
   productSchema,
 } from "../../validations/CreateProductValidation";
 import Loader from "../Layout/Loader";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 
 const EditProduct = () => {
   const { seller } = useSelector((state: any) => state?.auth);
@@ -67,6 +71,11 @@ const EditProduct = () => {
     useUpdateProductMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Updating Product. Please Wait....", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Product Updated Successfully", {
         style: setSuccessOptions,
@@ -87,7 +96,7 @@ const EditProduct = () => {
         });
       }
     }
-  }, [isSuccess, error, navigate]);
+  }, [isSuccess, error, navigate, isLoading]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files as FileList);

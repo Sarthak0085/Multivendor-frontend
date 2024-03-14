@@ -14,7 +14,7 @@ const ShopOrderDetails = lazy(() => import("../pages/Shop/ShopOrderDetails"));
 const ShopPreviewPage = lazy(() => import("../pages/Shop/ShopPreviewPage"));
 const ShopSettingsPage = lazy(() => import("../pages/Shop/ShopSettingsPage"));
 const ShopWithDrawMoneyPage = lazy(() => import("../pages/Shop/ShopWithDrawMoneyPage"));
-const ShopActivationPage = lazy(() => import("../pages/Shop/ShopActivationPage"));
+const ShopActivationPage = lazy(() => import("../pages/auth/ShopActivationPage"));
 
 export {
     ShopAllCoupons,

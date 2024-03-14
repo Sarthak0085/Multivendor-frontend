@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CgTrashEmpty } from "react-icons/cg";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { RxCross1 } from "react-icons/rx";
@@ -38,7 +38,9 @@ const Cart = ({
 
   const [removeFromCart, { isSuccess: RemoveSuccess, error: RemoveError }] =
     useRemoveFromCartMutation();
-  // console.log("remove", removeData);
+  const [color, setColor] = useState<string>("");
+  const [size, setSize] = useState<string>("");
+  const [value, setValue] = useState<number>(1);
 
   useEffect(() => {
     if (isSuccess) {
@@ -54,8 +56,10 @@ const Cart = ({
       refetch();
     }
     if (emptySuccess) {
-      toast.success("Cart Empty Successfully.");
       refetch();
+      toast.success("Cart Empty Successfully.");
+      setOpenCart(false);
+      // window.location.reload();
     }
     if (RemoveError) {
       if ("data" in RemoveError) {
@@ -95,7 +99,7 @@ const Cart = ({
     }
   }, [RemoveSuccess, RemoveError, emptySuccess, emptyError, isSuccess, error]);
 
-  const handleEmptyCart = async() => {
+  const handleEmptyCart = async () => {
     await emptyCart(userId);
   };
 
@@ -105,15 +109,23 @@ const Cart = ({
     console.log(response);
   };
 
-  // const totalPrice = cartData?.cart.reduce(
-  //   (acc, item) => acc + item.qty * item.discountPrice,
-  //   0
-  // );
-
   const totalPrice = cartData?.cart?.cartTotal;
 
-  const quantityChangeHandler = (data: IProductInCart) => {
-    addTocart(data);
+  const quantityChangeHandler = async (data: IProductInCart) => {
+    console.log("value: ", value);
+
+    const cart = {
+      productId: data?.productId,
+      shopId: data?.shopId,
+      price: data?.price,
+      color: color || data?.color,
+      count: data.count,
+      size: size || data?.size,
+      gender: data?.gender,
+    };
+    console.log(cart);
+
+    await addTocart(cart);
     // dispatch(addTocart(data));
   };
 
@@ -122,8 +134,8 @@ const Cart = ({
   useClickOutside(modalRef, () => setOpenCart(false));
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-      <div className="fixed top-0 right-0 h-full w-[80%] 800px:w-[35%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
+    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-[2000]">
+      <div className="fixed top-0 right-0 z-[2000] h-full w-[100%] sm:w-[80%] md:w-[60%] lg:w-[50%] 1300px:w-[38%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
         {isLoading ? (
           <Loader />
         ) : typeof cartData !== "undefined" &&
@@ -161,13 +173,19 @@ const Cart = ({
 
               {/* cart Single Items */}
               <br />
-              <div className="w-full border-t">
+              <div className="w-full border-t space-y-4">
                 {cartData?.cart &&
                   cartData?.cart?.products?.map(
                     (i: IProductInCart, index: number) => (
                       <CartItemCard
                         key={index}
                         data={i}
+                        color={color}
+                        setColor={setColor}
+                        size={size}
+                        value={value}
+                        setValue={setValue}
+                        setSize={setSize}
                         quantityChangeHandler={quantityChangeHandler}
                         removeFromCartHandler={removeFromCartHandler}
                       />

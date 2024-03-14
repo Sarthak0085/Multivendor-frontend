@@ -21,7 +21,7 @@ const ProductDetailsInfo = ({
   const [active, setActive] = useState(1);
 
   return (
-    <div className="bg-[#f5f6fb] px-3 mt-5 800px:px-10 py-2 rounded">
+    <div className="bg-[#f5f6fb] mt-20 px-3 800px:px-10 py-2 rounded">
       <div className="w-full flex justify-between border-b pt-10 pb-2">
         <div className="relative">
           <h5

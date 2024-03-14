@@ -22,6 +22,93 @@ export const navItems = [
   },
 ];
 
+export const genderData = [
+  {
+    title: "Men",
+  },
+  {
+    title: "Women",
+  },
+];
+
+export const priceRange = [
+  {
+    title: "0-500",
+  },
+  {
+    title: "500-1000",
+  },
+  {
+    title: "1000-1500",
+  },
+  {
+    title: "1500-2000",
+  },
+  {
+    title: "2000-3000",
+  },
+  {
+    title: "3000-4000",
+  },
+  {
+    title: "4000-5000",
+  },
+  {
+    title: "5000+",
+  },
+];
+
+export const discountPercent = [
+  {
+    title: "0-10",
+  },
+  {
+    title: "10-30",
+  },
+  {
+    title: "30-50",
+  },
+  {
+    title: "50-60",
+  },
+  {
+    title: "60-65",
+  },
+  {
+    title: "65-70",
+  },
+  {
+    title: "70-75",
+  },
+  {
+    title: "75-80",
+  },
+];
+
+export const sortData = [
+  {
+    title: "Recommended",
+  },
+  {
+    title: "Price: Low To High",
+  },
+  {
+    title: "Price: High To Low",
+  },
+  {
+    title: "Discount",
+  },
+  {
+    title: "New Arrivals",
+  },
+  {
+    title: "Random",
+  },
+  {
+    title: "Rating",
+  },
+];
+
 // branding data
 export const brandingData = [
   {

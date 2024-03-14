@@ -21,15 +21,21 @@ const AllOrders = () => {
             <div className="flex items-center justify-center space-x-2">
               <Link
                 to={`/profile/${user?._id}/track/order/${row.original?._id}`}
+                aria-label="Track your Order"
               >
                 <MdOutlineTrackChanges
+                  aria-label="Track your Order"
                   title="Track your order"
                   size={20}
                   className="text-[orange]"
                 />
               </Link>
-              <Link to={`/profile/${user?._id}/order/${row.original?._id}`}>
+              <Link
+                to={`/profile/${user?._id}/order/${row.original?._id}`}
+                aria-label="See Order Details"
+              >
                 <FaArrowRight
+                  aria-label="See Order Details"
                   title="See Order Details"
                   size={20}
                   className="text-blue-500"

@@ -14,8 +14,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
     <div className="w-full h-[90vh] pt-4 space-y-2 bg-gray-50 shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
       {/* single item */}
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard" className="w-full flex items-center">
+        <Link
+          aria-label="Seller Dashboard"
+          to="/dashboard"
+          className="w-full flex items-center"
+        >
           <RxDashboard
+            aria-label="Seller Dashboard"
             title="Seller Dashboard"
             size={30}
             color={`${active === 1 ? "crimson" : "#555"}`}
@@ -31,8 +36,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard-orders" className="w-full flex items-center">
+        <Link
+          aria-label="All Orders"
+          to="/dashboard-orders"
+          className="w-full flex items-center"
+        >
           <FiShoppingBag
+            aria-label="All Orders"
             title="All Orders"
             size={30}
             color={`${active === 2 ? "crimson" : "#555"}`}
@@ -48,8 +58,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard-products" className="w-full flex items-center">
+        <Link
+          aria-label="All Products"
+          to="/dashboard-products"
+          className="w-full flex items-center"
+        >
           <FiPackage
+            aria-label="All Products"
             title="All Products"
             size={30}
             color={`${active === 3 ? "crimson" : "#555"}`}
@@ -66,10 +81,12 @@ const DashboardSideBar = ({ active }: { active: number }) => {
 
       <div className="w-full flex items-center p-4">
         <Link
+          aria-label="Create Product"
           to="/dashboard-create-product"
           className="w-full flex items-center"
         >
           <AiOutlineFolderAdd
+            aria-label="Create Product"
             title="Create Product"
             size={30}
             color={`${active === 4 ? "crimson" : "#555"}`}
@@ -85,8 +102,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard-events" className="w-full flex items-center">
+        <Link
+          aria-label="All Events"
+          to="/dashboard-events"
+          className="w-full flex items-center"
+        >
           <MdOutlineLocalOffer
+            aria-label="All Events"
             title="All Events"
             size={30}
             color={`${active === 5 ? "crimson" : "#555"}`}
@@ -102,8 +124,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard-create-event" className="w-full flex items-center">
+        <Link
+          aria-label="Create Event"
+          to="/dashboard-create-event"
+          className="w-full flex items-center"
+        >
           <VscNewFile
+            aria-label="Create Event"
             title="Create Event"
             size={30}
             color={`${active === 6 ? "crimson" : "#555"}`}
@@ -120,10 +147,12 @@ const DashboardSideBar = ({ active }: { active: number }) => {
 
       <div className="w-full flex items-center p-4">
         <Link
+          aria-label="Withdraw Money"
           to="/dashboard-withdraw-money"
           className="w-full flex items-center"
         >
           <CiMoneyBill
+            aria-label="Withdraw Money"
             title="Withdraw Money"
             size={30}
             color={`${active === 7 ? "crimson" : "#555"}`}
@@ -139,9 +168,14 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard-messages" className="w-full flex items-center">
+        <Link
+          aria-label="Shop Inbox"
+          to="/dashboard-messages"
+          className="w-full flex items-center"
+        >
           <BiMessageSquareDetail
-            title="Inbox"
+            aria-label="Shop Inbox"
+            title="Shop Inbox"
             size={30}
             color={`${active === 8 ? "crimson" : "#555"}`}
           />
@@ -156,8 +190,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard-coupons" className="w-full flex items-center">
+        <Link
+          aria-label="Discount Coupons"
+          to="/dashboard-coupons"
+          className="w-full flex items-center"
+        >
           <AiOutlineGift
+            aria-label="Discount Coupons"
             title="Discount Coupons"
             size={30}
             color={`${active === 9 ? "crimson" : "#555"}`}
@@ -173,8 +212,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard-refunds" className="w-full flex items-center">
+        <Link
+          aria-label="All Refund Orders"
+          to="/dashboard-refunds"
+          className="w-full flex items-center"
+        >
           <HiOutlineReceiptRefund
+            aria-label="All Refund Orders"
             title="All Refund Orders"
             size={30}
             color={`${active === 10 ? "crimson" : "#555"}`}
@@ -190,8 +234,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/change-password" className="w-full flex items-center">
+        <Link
+          aria-label="Change Password"
+          to="/change-password"
+          className="w-full flex items-center"
+        >
           <RiLockPasswordLine
+            aria-label="Change Password"
             title="Change Password"
             size={22}
             color={`${active === 11 ? "text-[crimson]" : "text-[#555]"}`}
@@ -207,8 +256,13 @@ const DashboardSideBar = ({ active }: { active: number }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/settings" className="w-full flex items-center">
+        <Link
+          aria-label="Shop Profile Setting"
+          to="/settings"
+          className="w-full flex items-center"
+        >
           <CiSettings
+            aria-label="Shop Profile Setting"
             title="Settings"
             size={30}
             color={`${active === 11 ? "crimson" : "#555"}`}

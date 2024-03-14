@@ -1,12 +1,11 @@
-import { FormEvent, useState } from "react";
-import styles from "../../styles/styles";
 import { City, Country, State } from "country-state-city";
-import { useNavigate } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useGetCartQuery } from "../../redux/features/cart/cartApi";
 import { useGetCouponValueQuery } from "../../redux/features/coupon/couponApi";
+import styles from "../../styles/styles";
 import { IProductInCart } from "../../types/cart";
 import { IAddress, IUser } from "../../types/user";
 
@@ -26,7 +25,7 @@ const Checkout = () => {
   const [discountPrice, setDiscountPrice] = useState<number | null>(null);
   const navigate = useNavigate();
 
-  console.log("cartData :", cartData);
+  // console.log("cartData :", cartData);
 
   const cart = cartData?.cart;
 
@@ -109,8 +108,13 @@ const Checkout = () => {
     //   const shopId = res.data.couponCode?.shopId;
     const couponCodeValue = data.couponCode?.value;
     if (data.couponCode !== null) {
+      console.log("Cart", cart?.products);
+
       const isCouponValid =
-        cart && cart.filter((item: IProductInCart) => item.shopId === shopId);
+        cart &&
+        cart?.products.filter((item: IProductInCart) => item.shopId === shopId);
+
+      console.log(isCouponValid);
 
       if (isCouponValid.length === 0) {
         toast.error("Coupon code is not valid for this shop");

@@ -20,6 +20,8 @@ export type IProduct = {
     size?: string | number;
     stock: number;
     colors: string[];
+    sizes: string[];
+    gender: string;
     brand: string;
     images: {
         public_id: string;

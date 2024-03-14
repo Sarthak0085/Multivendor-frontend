@@ -4,6 +4,8 @@ import { IEvent } from "../../types/event";
 const CountDown = ({ data }: { data: IEvent }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
+  // const [deleteEvent] = useDeleteShopEventMutation();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
@@ -15,6 +17,7 @@ const CountDown = ({ data }: { data: IEvent }) => {
       typeof timeLeft.minutes === "undefined" &&
       typeof timeLeft.seconds === "undefined"
     ) {
+      // deleteEvent(data?._id);
       // axios.delete(`${server}/event/delete-shop-event/${data._id}`);
     }
     return () => clearTimeout(timer);

@@ -5,6 +5,8 @@ export type IEvent = {
     name: string;
     description: string;
     colors: string[];
+    sizes: string[];
+    gender: string;
     category: string;
     start_Date: Date;
     finish_Date: Date;

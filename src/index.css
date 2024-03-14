@@ -30,26 +30,6 @@
     border-radius: 6px;
 }
 
-.carousel {
-    width: 300px;
-    height: 300px;
-    /* Adjust height as needed */
-}
-
-.carousel-inner {
-    display: flex;
-    transition: transform 0.5s ease;
-}
-
-.carousel-slide {
-    flex: 0 0 100%;
-}
-
-.active {
-    opacity: 1;
-    transform: translateX(0);
-}
-
 /* Handle on hover */
 /* ::-webkit-scrollbar-thumb:hover {
     background: #555;

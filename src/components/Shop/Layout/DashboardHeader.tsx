@@ -24,14 +24,18 @@ const DashboardHeader = ({ active }: { active: number }) => {
   return (
     <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
-        <Link className="hidden sm:block" to="/">
+        <Link aria-label="Home" className="hidden sm:block" to="/" title="Home">
           <img
-            src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-            alt=""
+            src="https://res.cloudinary.com/dkzfopuco/image/upload/v1709903777/Trend_Flex__1_-removebg-preview_era9ij.svg"
+            alt="logo"
+            width={110}
+            height={100}
           />
         </Link>
         <button className="block sm:hidden">
           <BiMenuAltLeft
+            aria-label="Open Seller Dashboard"
+            title="Open Seller Dashboard"
             size={40}
             className="ml-4"
             onClick={() => setOpen(true)}
@@ -40,50 +44,78 @@ const DashboardHeader = ({ active }: { active: number }) => {
       </div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
-          <Link to="/dashboard-coupons" className="800px:block hidden">
+          <Link
+            aria-label="Discount Coupons"
+            to="/dashboard-coupons"
+            className="800px:block hidden"
+          >
             <AiOutlineGift
+              aria-label="Discount Coupons"
               title="Discount Coupons"
               color={`${active === 9 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-events" className="800px:block hidden">
+          <Link
+            aria-label="All Events"
+            to="/dashboard-events"
+            className="800px:block hidden"
+          >
             <MdOutlineLocalOffer
+              aria-label="All Events"
               title="All Events"
               color={`${active === 5 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-products" className="800px:block hidden">
+          <Link
+            aria-label="All Products"
+            to="/dashboard-products"
+            className="800px:block hidden"
+          >
             <FiPackage
+              aria-label="All Products"
               title="All Products"
               color={`${active === 3 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-orders" className="800px:block hidden">
+          <Link
+            aria-label="All Orders"
+            to="/dashboard-orders"
+            className="800px:block hidden"
+          >
             <FiShoppingBag
+              aria-label="All Orders"
               title="All Orders"
               color={`${active === 2 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-messages" className="800px:block hidden">
+          <Link
+            aria-label="Dashboard Messages"
+            to="/dashboard-messages"
+            className="800px:block hidden"
+          >
             <BiMessageSquareDetail
+              aria-label="Inbox"
               title="Inbox"
               color={`${active === 8 ? "crimson" : "#555"}`}
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to={`/shop/${seller._id}`}>
+          <Link
+            aria-label={`${seller?.name}'s Profile`}
+            to={`/shop/${seller?._id}`}
+          >
             <img
               src={`${seller.avatar?.url}`}
-              alt={seller?.name}
+              alt={`${seller?.name}'s Profile`}
               className="w-[50px] h-[50px] rounded-full object-cover"
             />
           </Link>
@@ -100,19 +132,31 @@ const DashboardHeader = ({ active }: { active: number }) => {
               onClick={() => setOpen(false)}
               className="absolute mt-3 right-2 "
             >
-              <FaArrowLeft size={18} title="Close" color="crimson" />
+              <FaArrowLeft
+                aria-label="Close"
+                size={18}
+                title="Close"
+                color="crimson"
+              />
             </button>
             <div className="mt-12 flex items-center justify-center">
-              <Link to="/">
+              <Link aria-label="Home" to="/">
                 <img
-                  src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                  alt=""
+                  src="https://res.cloudinary.com/dkzfopuco/image/upload/v1709903777/Trend_Flex__1_-removebg-preview_era9ij.svg"
+                  alt="logo"
+                  width={110}
+                  height={100}
                 />
               </Link>
             </div>
             <div className="w-full flex items-center justify-center p-4 pt-10">
-              <Link to="/dashboard" className="w-full flex items-center">
+              <Link
+                aria-label={`${seller?.name}'s Dashboard`}
+                to="/dashboard"
+                className="w-full flex items-center"
+              >
                 <RxDashboard
+                  aria-label={`${seller?.name}'s Dashboard`}
                   title="Seller Dashboard"
                   size={30}
                   color={`${active === 1 ? "crimson" : "#555"}`}
@@ -128,8 +172,13 @@ const DashboardHeader = ({ active }: { active: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/dashboard-orders" className="w-full flex items-center">
+              <Link
+                aria-label="All Orders"
+                to="/dashboard-orders"
+                className="w-full flex items-center"
+              >
                 <FiShoppingBag
+                  aria-label="All Orders"
                   title="All Orders"
                   size={30}
                   color={`${active === 2 ? "crimson" : "#555"}`}
@@ -146,10 +195,12 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="All Products"
                 to="/dashboard-products"
                 className="w-full flex items-center"
               >
                 <FiPackage
+                  aria-label="All Products"
                   title="All Products"
                   size={30}
                   color={`${active === 3 ? "crimson" : "#555"}`}
@@ -166,10 +217,12 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Create Product"
                 to="/dashboard-create-product"
                 className="w-full flex items-center"
               >
                 <AiOutlineFolderAdd
+                  aria-label="Create Product"
                   title="Create Product"
                   size={30}
                   color={`${active === 4 ? "crimson" : "#555"}`}
@@ -185,8 +238,13 @@ const DashboardHeader = ({ active }: { active: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/dashboard-events" className="w-full flex items-center">
+              <Link
+                aria-label="All Events"
+                to="/dashboard-events"
+                className="w-full flex items-center"
+              >
                 <MdOutlineLocalOffer
+                  aria-label="All Events"
                   title="All Events"
                   size={30}
                   color={`${active === 5 ? "crimson" : "#555"}`}
@@ -203,10 +261,12 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Create Event"
                 to="/dashboard-create-event"
                 className="w-full flex items-center"
               >
                 <VscNewFile
+                  aria-label="Create Event"
                   title="Create Event"
                   size={30}
                   color={`${active === 6 ? "crimson" : "#555"}`}
@@ -223,10 +283,12 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Withdraw Money"
                 to="/dashboard-withdraw-money"
                 className="w-full flex items-center"
               >
                 <CiMoneyBill
+                  aria-label="Withdraw Money"
                   title="Withdraw Money"
                   size={30}
                   color={`${active === 7 ? "crimson" : "#555"}`}
@@ -243,11 +305,13 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Shop Inbox"
                 to="/dashboard-messages"
                 className="w-full flex items-center"
               >
                 <BiMessageSquareDetail
-                  title="Inbox"
+                  title="Shop Inbox"
+                  aria-label="Shop Inbox"
                   size={30}
                   color={`${active === 8 ? "crimson" : "#555"}`}
                 />
@@ -263,10 +327,12 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="Dashboard Coupons"
                 to="/dashboard-coupons"
                 className="w-full flex items-center"
               >
                 <AiOutlineGift
+                  aria-label="Discount Coupons"
                   title="Discount Coupons"
                   size={30}
                   color={`${active === 9 ? "crimson" : "#555"}`}
@@ -283,10 +349,12 @@ const DashboardHeader = ({ active }: { active: number }) => {
 
             <div className="w-full flex items-center p-4">
               <Link
+                aria-label="All Refund Orders"
                 to="/dashboard-refunds"
                 className="w-full flex items-center"
               >
                 <HiOutlineReceiptRefund
+                  aria-label="All Refund Orders"
                   title="All Refund Orders"
                   size={30}
                   color={`${active === 10 ? "crimson" : "#555"}`}
@@ -302,8 +370,13 @@ const DashboardHeader = ({ active }: { active: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/settings" className="w-full flex items-center">
+              <Link
+                aria-label="Change Password"
+                to="/settings"
+                className="w-full flex items-center"
+              >
                 <RiLockPasswordLine
+                  aria-label="Change Password"
                   title="Change Password"
                   size={22}
                   color={`${active === 11 ? "text-[crimson]" : "text-[#555]"}`}
@@ -319,8 +392,13 @@ const DashboardHeader = ({ active }: { active: number }) => {
             </div>
 
             <div className="w-full flex items-center p-4">
-              <Link to="/settings" className="w-full flex items-center">
+              <Link
+                aria-label="Seller Profile Settings"
+                to="/settings"
+                className="w-full flex items-center"
+              >
                 <CiSettings
+                  aria-label="Seller Profile Settings"
                   title="Settings"
                   size={30}
                   color={`${active === 12 ? "crimson" : "#555"}`}
@@ -334,14 +412,6 @@ const DashboardHeader = ({ active }: { active: number }) => {
                 </h5>
               </Link>
             </div>
-
-            {/* <button
-              className={`pl-3 self-start ${
-                active === 6 ? "text-[red]" : ""
-              } 1100px:block hidden`}
-            >
-              Change Password
-            </button> */}
           </div>
         </div>
       )}

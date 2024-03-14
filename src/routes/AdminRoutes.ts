@@ -8,6 +8,8 @@ const AdminDashboardProducts = lazy(() => import("../pages/admin/AdminDashboardP
 const AdminDashboardEvents = lazy(() => import("../pages/admin/AdminDashboardEvents"));
 const AdminDashboardWithdraw = lazy(() => import("../pages/admin/AdminDashboardWithdraw"));
 const AdminDashboardCategories = lazy(() => import("../pages/admin/AdminDashboardCategory"));
+const AdminDashboardColors = lazy(() => import("../pages/admin/AdminDashboardColors"));
+const AdminDashboardSizes = lazy(() => import("../pages/admin/AdminDashboardSizes"));
 const AdminDashboardBrands = lazy(() => import("../pages/admin/AdminDashboardBrands"));
 const AdminDashboardProductsAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardProductsAnalytics"));
 const AdminDashboardEventsAnalytics = lazy(() => import("../pages/admin/analytics/AdminDashboardEventsAnalytics"));
@@ -30,6 +32,8 @@ export {
     AdminDashboardWithdraw,
     AdminDashboardBrands,
     AdminDashboardCategories,
+    AdminDashboardColors,
+    AdminDashboardSizes,
     AdminDashboardProductsAnalytics,
     AdminDashboardEventsAnalytics,
     AdminDashboardCouponsAnalytics,

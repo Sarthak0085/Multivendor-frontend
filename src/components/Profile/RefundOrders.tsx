@@ -16,7 +16,7 @@ const AllRefundOrders = () => {
       item.status === "Refund Success" || item.status === "Processing Refund"
   );
 
-  console.log(data);
+  // console.log(data);
 
   const TableComponent = TableHOC<OrderDataType>(
     orderColumns.map((column) => {
@@ -26,16 +26,22 @@ const AllRefundOrders = () => {
           Cell: ({ row }) => (
             <div className="flex items-center justify-center space-x-2">
               <Link
+                aria-label="Track your Order"
                 to={`/profile/${user?._id}/track/order/${row.original?._id}`}
               >
                 <MdOutlineTrackChanges
+                  aria-label="Track your Order"
                   title="Track your order"
                   size={20}
                   className="text-[orange]"
                 />
               </Link>
-              <Link to={`/profile/${user?._id}/order/${row.original?._id}`}>
+              <Link
+                aria-label="See Order Details"
+                to={`/profile/${user?._id}/order/${row.original?._id}`}
+              >
                 <FaArrowRight
+                  aria-label="See Order Details"
                   title="See Order Details"
                   size={20}
                   className="text-blue-500"

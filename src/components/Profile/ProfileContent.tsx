@@ -16,7 +16,11 @@ import {
   UpdateProfileFormData,
   updateProfileSchema,
 } from "../../validations/UpdateProfile";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import Input from "../shared/Input";
 
 const ProfileContent = () => {
@@ -46,6 +50,11 @@ const ProfileContent = () => {
   }, [user, setValue]);
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Updating User Profile...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess || AvatarSuccess) {
       const message = isSuccess
         ? "Profile updated successfully"
@@ -80,7 +89,7 @@ const ProfileContent = () => {
         });
       }
     }
-  }, [isSuccess, error, AvatarSuccess, AvatarError]);
+  }, [isSuccess, error, AvatarSuccess, AvatarError, isLoading]);
 
   const updateProfile: SubmitHandler<UpdateProfileFormData> = async (data) => {
     try {
@@ -122,21 +131,28 @@ const ProfileContent = () => {
             alt={user?.fullName}
           />
           <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
+            {/* <label className="hidden">Image</label> */}
             <input
               type="file"
               id="image"
+              title="Image"
               className="hidden"
+              placeholder="Image"
               onChange={handleImage}
             />
-            <label htmlFor="image">
-              <AiOutlineCamera />
+            <label htmlFor="image" className="cursor-pointer">
+              <AiOutlineCamera title="Image" aria-label="Click to add image" />
             </label>
           </div>
         </div>
       </div>
       <br />
       <div className="w-full px-5">
-        <form onSubmit={handleSubmit(updateProfile)} aria-required={true}>
+        <form
+          onSubmit={handleSubmit(updateProfile)}
+          id="Profile"
+          name="Profile"
+        >
           <div className="w-full 800px:flex block pb-3">
             <div className=" w-[100%] 800px:w-[48%] sm:w-[70%] mx-auto 800px:mr-[4%]">
               <Input
@@ -147,7 +163,7 @@ const ProfileContent = () => {
                 register={register}
                 Icon={RxPerson}
                 errors={errors}
-                placeholder=""
+                placeholder="Enter your fullName"
                 inputClassName={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
               />
             </div>
@@ -160,7 +176,7 @@ const ProfileContent = () => {
                 required={false}
                 register={register}
                 errors={errors}
-                placeholder=""
+                placeholder="Enter your email"
                 inputClassName={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
               />
             </div>
@@ -176,7 +192,7 @@ const ProfileContent = () => {
                 required={false}
                 register={register}
                 errors={errors}
-                placeholder=""
+                placeholder="Enter your Phone Number"
                 inputClassName={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
               />
             </div>

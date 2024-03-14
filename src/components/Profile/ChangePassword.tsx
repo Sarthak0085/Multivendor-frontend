@@ -9,7 +9,11 @@ import {
   ChangePasswordFormData,
   changePasswordSchema,
 } from "../../validations/ChangePassword";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import Input from "../shared/Input";
 
 const ChangePassword = () => {
@@ -25,6 +29,11 @@ const ChangePassword = () => {
   });
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Changing Password...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message = data?.message || "Password Changed successful";
       toast.success(message, {
@@ -43,7 +52,7 @@ const ChangePassword = () => {
         });
       }
     }
-  }, [isSuccess, error, data?.message]);
+  }, [isSuccess, error, data?.message, isLoading]);
 
   const passwordChangeHandler: SubmitHandler<ChangePasswordFormData> = async (
     data
@@ -62,9 +71,10 @@ const ChangePassword = () => {
       </h1>
       <div className="w-full">
         <form
-          aria-required
           onSubmit={handleSubmit(passwordChangeHandler)}
           className="flex flex-col items-center"
+          id="Change Password"
+          name="Change Password"
         >
           <div className=" w-[100%] 800px:w-[50%] mt-5">
             <Input

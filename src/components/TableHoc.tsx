@@ -103,7 +103,9 @@ function TableHOC<T extends object>(
         {showPagination && (
           <div className="table-pagination">
             <button
-              className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
+              className={`mr-2 px-4 py-2 bg-blue-500 text-white rounded ${
+                !canPreviousPage && "!bg-blue-300 cursor-not-allowed"
+              }`}
               disabled={!canPreviousPage}
               onClick={previousPage}
             >
@@ -111,7 +113,9 @@ function TableHOC<T extends object>(
             </button>
             <span>{`${pageIndex + 1} of ${pageCount}`}</span>
             <button
-              className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
+              className={`ml-2 px-4 py-2 bg-blue-500 text-white rounded ${
+                !canNextPage && "cursor-not-allowed !bg-blue-300"
+              }`}
               disabled={!canNextPage}
               onClick={nextPage}
             >

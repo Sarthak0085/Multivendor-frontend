@@ -7,10 +7,10 @@ const AdminDashboardEditHero = () => {
     <div>
       <AdminHeader active={19} />
       <div className="flex items-start justify-between w-full">
-        <div className="hidden sm:block fixed sm:w-[80px] 800px:w-[330px] overflow-y-auto">
+        <div className="w-auto fixed hidden sm:block sm:w-[80px] 1100px:w-[260px] overflow-y-auto">
           <AdminSideBar active={19} />
         </div>
-        <div className="flex justify-between w-full mx-10 sm:mr-5 sm:ml-[85px] 1100px:ml-[330px] overflow-x-hidden overflow-y-auto">
+        <div className="flex justify-between w-full mx-10 sm:mr-5 sm:ml-[85px] 1100px:ml-[260px] overflow-x-hidden overflow-y-auto">
           <EditHero />
         </div>
       </div>

@@ -1,9 +1,9 @@
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import Lottie from "react-lottie";
+import { Link } from "react-router-dom";
+import animationData from "../assets/animations/107043-success.json";
 import Footer from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
-import Lottie from "react-lottie";
-import animationData from "../Assests/animations/107043-success.json";
-import { Link } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 
 const OrderSuccessPage = () => {
   return (
@@ -16,6 +16,7 @@ const OrderSuccessPage = () => {
 };
 
 const Success = () => {
+  // const { user } = useSelector((state: any) => state?.auth);
   const defaultOptions = {
     loop: false,
     autoplay: true,
@@ -24,6 +25,29 @@ const Success = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
+
+  // const [emptyCart, { isSuccess }] = useEmptyCartMutation();
+
+  // const { refetch } = useGetCartQuery(user?._id, {
+  //   refetchOnMountOrArgChange: true,
+  // });
+
+  // async function emptyCartFunction() {
+  //   await emptyCart(user?._id);
+  // }
+
+  // useEffect(() => {
+  //   emptyCartFunction();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     // toast.success("Cart is empty");
+  //     refetch();
+  //     window.location.reload();
+  //   }
+  // }, [isSuccess]);
+
   return (
     <div>
       <Lottie options={defaultOptions} width={300} height={300} />

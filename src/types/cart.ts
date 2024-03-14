@@ -5,9 +5,10 @@ export interface IProductInCart {
     shopId: string;
     color: string;
     count: number;
-    size?: string;
+    size: string;
     price: number;
     product: IProduct;
+    gender?: string;
 }
 
 // Define the interface for the cart document

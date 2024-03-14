@@ -80,7 +80,7 @@ const ShopInfo = ({ isOwner }: { isOwner: boolean }) => {
                       ? shopInfo?.shop?.avatar?.url
                       : "https:"
                   }`}
-                  alt=""
+                  alt={shopInfo?.shop?.name}
                   className="w-[150px] h-[150px] object-cover rounded-full"
                 />
               </div>
@@ -134,6 +134,7 @@ const ShopInfo = ({ isOwner }: { isOwner: boolean }) => {
                   }`}
                   onClick={logoutHandler}
                   disabled={logoutLoading}
+                  aria-disabled={logoutLoading ? true : false}
                 >
                   <span className="text-white">Log Out</span>
                 </button>

@@ -10,7 +10,11 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { useCreateEventMutation } from "../../redux/features/events/eventApi";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import toast from "react-hot-toast";
 import {
   MdDriveFileRenameOutline,
@@ -43,6 +47,11 @@ const CreateEvent = () => {
   const [create, { isSuccess, error, isLoading }] = useCreateEventMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Creating new Event. Please Wait....", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Event Created Successfully", {
         style: setSuccessOptions,
@@ -61,7 +70,7 @@ const CreateEvent = () => {
         });
       }
     }
-  }, [isSuccess, error, navigate]);
+  }, [isSuccess, error, navigate, isLoading]);
 
   const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const startDate = new Date(e.target.value);

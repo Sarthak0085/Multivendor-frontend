@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { useGetAllOrdersBySellerQuery } from "../../redux/features/orders/orderApi";
 import { useGetAllShopProductsQuery } from "../../redux/features/product/productApi";
 import { IOrder } from "../../types/order";
-import { IProduct } from "../../types/product";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
 import PieChartAnalytics from "../shared/PieChart";
@@ -38,18 +37,10 @@ const DashboardHero = () => {
 
   const orderData = data?.orders?.slice(0, 6);
 
-  const productsData = productData?.products
-    ?.sort((a: IProduct, b: IProduct) => {
-      if (a?.sold_out !== undefined && b?.sold_out !== undefined) {
-        return b.sold_out - a.sold_out;
-      }
-
-      return 0;
-    })
-    ?.slice(0, 5);
+  const productsData = productData?.products?.slice(0, 5);
 
   // Filter orders for North region
-  const northRegionOrders = data?.orders.filter((item: any) => {
+  const northRegionOrders = data?.orders?.filter((item: any) => {
     return northStates.includes(
       item?.shippingAddress && item?.shippingAddress?.state
     );

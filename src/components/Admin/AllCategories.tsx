@@ -19,14 +19,17 @@ import {
 } from "../../validations/AddCategory";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import {
   CategoryDataType,
   categoryColumns,
 } from "../shared/Tables/CategoryColumns";
 
 const AllCategories = () => {
-  // const { user } = useSelector((state: any) => state.auth);
   const [open, setOpen] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [id, setId] = useState<string>("");
@@ -34,7 +37,7 @@ const AllCategories = () => {
   const [mode, setMode] = useState("");
   const [option, setOption] = useState("");
 
-  console.log(confirm, id);
+  // console.log(confirm, id);
 
   const [
     deleteCategory,
@@ -75,18 +78,33 @@ const AllCategories = () => {
   console.log("category :", categoryData);
 
   useEffect(() => {
+    if (createLoading) {
+      toast.loading("Create new Category. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
+    if (updateLoading) {
+      toast.loading("Update Category. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
+    if (deleteLoading) {
+      toast.loading("Deleting Category. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
+      refetch();
       toast.success("Category Created Successfully", {
         style: setSuccessOptions,
       });
-      refetch();
     }
     if (deleteSuccess) {
+      refetch();
       toast.success("Category Deleted Successfully", {
         style: setSuccessOptions,
       });
       setId("");
-      refetch();
     }
     if (updateSuccess) {
       toast.success("Category Updated Successfully", {
@@ -138,6 +156,9 @@ const AllCategories = () => {
     deleteError,
     updateSuccess,
     updateError,
+    createLoading,
+    updateLoading,
+    deleteLoading,
   ]);
 
   const {
@@ -178,7 +199,12 @@ const AllCategories = () => {
                   categoryRefetch();
                 }}
               >
-                <AiOutlineEdit size={22} className="text-green-500" />
+                <AiOutlineEdit
+                  title="Edit Category"
+                  aria-label="Edit Category"
+                  size={22}
+                  className="text-green-500"
+                />
               </button>
               <button
                 onClick={() => {
@@ -186,7 +212,12 @@ const AllCategories = () => {
                   setConfirm(true);
                 }}
               >
-                <AiOutlineDelete size={22} className="text-red-500" />
+                <AiOutlineDelete
+                  aria-label="Delete Category"
+                  title="Delete Category"
+                  size={22}
+                  className="text-red-500"
+                />
               </button>
             </div>
           ),
@@ -197,7 +228,7 @@ const AllCategories = () => {
     }),
     data?.getallCategory,
     "All Category",
-    data?.getallCategory.length > 10 ? true : false
+    data?.getallCategory.length > 6 ? true : false
   );
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {

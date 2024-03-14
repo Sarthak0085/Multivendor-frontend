@@ -32,13 +32,13 @@ const UserOrderDetails = () => {
     refetch,
   } = useGetAllOrdersByUserQuery(user?._id, {});
 
-  console.log(orderData);
+  // console.log(orderData);
 
   const data =
     orderData?.orders &&
     orderData?.orders.find((item: IOrder) => item._id === id);
 
-  console.log(data);
+  // console.log(data);
 
   //   const state =
 
@@ -98,8 +98,8 @@ const UserOrderDetails = () => {
     await refundRequest({ orderId: id, status: "Processing Refund" });
   };
 
-  console.log("selected:", selectedItem);
-  console.log("data cart:", data?.cart);
+  // console.log("selected:", selectedItem);
+  // console.log("data cart:", data?.cart);
 
   return isLoading ? (
     <Loader />
@@ -107,7 +107,7 @@ const UserOrderDetails = () => {
     <div className={`py-4 min-h-screen bg-blue-50 ${styles.section}`}>
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center">
-          <BsFillBagFill size={30} color="crimson" />
+          <BsFillBagFill aria-label="Order Details" size={30} color="crimson" />
           <h1 className="pl-2 text-[25px]">Order Details</h1>
         </div>
       </div>

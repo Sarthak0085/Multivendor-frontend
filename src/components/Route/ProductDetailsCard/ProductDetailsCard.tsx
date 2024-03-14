@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   AiFillHeart,
   AiOutlineHeart,
@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
 import { IProduct } from "../../../types/product";
 import toast from "react-hot-toast";
+import useClickOutside from "../../../hooks/useClickOutside";
 
 interface IProductDetailsCard {
   setOpen: (open: boolean) => void;
@@ -161,12 +162,19 @@ const ProductDetailsCard = ({
   //   removeWishlistSuccess,
   // ]);
 
+  const modalRef = useRef(null);
+  useClickOutside(modalRef, () => setOpen(false));
+
   return (
     <div className="bg-[#fff]">
       {data ? (
         <div className="fixed w-full h-screen  top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
-          <div className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
+          <div
+            ref={modalRef}
+            className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4"
+          >
             <RxCross1
+              title="Close"
               size={30}
               className="absolute right-3 top-3 z-50"
               onClick={() => setOpen(false)}
@@ -174,14 +182,16 @@ const ProductDetailsCard = ({
             <div className="block w-full 800px:flex gap-2 mt-5">
               <div className="w-full 800px:w-[50%]">
                 <img
-                  src={`${data.images && data.images[0]?.url}`}
+                  src={`${data?.images && data?.images[0]?.url}`}
                   alt={data?.name}
                   className="w-full h-[300px] object-cover"
                 />
                 <div className="flex mt-4">
                   <Link
-                    to={`/shop/preview/${data?.shop._id}`}
+                    to={`/shop/preview/${data?.shop?._id}`}
                     className="flex items-center justify-center"
+                    aria-label="Shop Preview"
+                    title="Shop Preview"
                   >
                     <img
                       src={`${data.images && data.images[0]?.url}`}
@@ -211,16 +221,16 @@ const ProductDetailsCard = ({
 
               <div className="w-full 800px:w-[50%] pt-5 pl-[5px] pr-[5px]">
                 <h1 className={`${styles.productTitle} text-[20px]`}>
-                  {data.name}
+                  {data?.name}
                 </h1>
-                <p>{data.description}</p>
+                <p>{data?.description}</p>
 
                 <div className="flex mt-3">
                   <h4 className={`${styles.productDiscountPrice}`}>
-                    &#8377;. {data.discountPrice}
+                    &#8377;. {data?.discountPrice}
                   </h4>
                   <h3 className={`${styles.price}`}>
-                    &#8377;. {data.originalPrice ? data.originalPrice : null}
+                    &#8377;. {data?.originalPrice ? data?.originalPrice : null}
                   </h3>
                 </div>
                 <div className="flex items-center mt-12 justify-between pr-3">

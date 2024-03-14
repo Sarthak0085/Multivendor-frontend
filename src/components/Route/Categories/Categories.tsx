@@ -1,45 +1,12 @@
-// import { brandingData, categoriesData } from "../../../static/data";
-// import "react-multi-carousel/lib/styles.css";
+import Marquee from "react-fast-marquee";
+import { useGetAllCategoryQuery } from "../../../redux/features/category/categoryApi";
 import { brandingData } from "../../../static/data";
 import styles from "../../../styles/styles";
-
-// const responsive = {
-//   superLargeDesktop: {
-//     // the naming can be any, depends on you.
-//     breakpoint: { max: 4000, min: 3000 },
-//     items: 10,
-//   },
-//   desktop: {
-//     breakpoint: { max: 3000, min: 1024 },
-//     items: 7,
-//   },
-//   tablet: {
-//     breakpoint: { max: 1024, min: 464 },
-//     items: 4,
-//   },
-//   mobile: {
-//     breakpoint: { max: 464, min: 0 },
-//     items: 2,
-//   },
-// };
+import { ICategory } from "../../../types/types";
+import { Link } from "react-router-dom";
 
 const Categories = () => {
-  // const { isLoading, data } = useGetAllCategoryQuery({});
-  // console.log(data);
-
-  // const navigate = useNavigate();
-
-  // const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCurrentCategoryIndex((prevIndex) =>
-  //       prevIndex === data?.getallCategory.length - 1 ? 0 : prevIndex + 1
-  //     );
-  //   }, 3000); // Change slides every 3 seconds
-
-  //   return () => clearInterval(interval);
-  // }, [data?.getallCategory]);
+  const { data } = useGetAllCategoryQuery({});
 
   return (
     <>
@@ -60,38 +27,26 @@ const Categories = () => {
         </div>
       </div>
 
-      {/* <div className="w-full my-10">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Carousel
-            infinite={true}
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            autoPlay={true}
-            autoPlaySpeed={2000}
-            keyBoardControl={false}
-            responsive={responsive}
-            removeArrowOnDeviceType={"all"}
+      <Marquee className="w-full flex justify-around my-4">
+        {data?.getallCategory.map((i: ICategory, index: number) => (
+          <Link
+            to={`/products?category=${i.title}`}
+            key={index}
+            className="relative"
           >
-            {data?.getallCategory?.map((category, index) => (
-              <div key={index} className="space-x-10 relative ">
-                <img
-                  src={category?.image?.url}
-                  alt={category?.title}
-                  className="w-[200px] h-[200px] bg-cover rounded-full"
-                />
-                <h2 className="absolute opacity-0 hover:opacity-100 w-full h-[100px] font-[500] bg-white bg-opacity-75 text-center">
-                  <span className="absolute transform translate-y-9 -translate-x-5">
-                    {category?.title}
-                  </span>
-                </h2>
-              </div>
-            ))}
-          </Carousel>
-        )}
-      </div> */}
+            <img
+              src={i?.image?.url}
+              width={"200px"}
+              height={"200px"}
+              alt={i?.title}
+              className={`md:mx-8 mx-3 h-[200px] w-[200px]`}
+            />
+            <h2 className="absolute top-0 opacity-100 800px:opacity-0 800px:hover:opacity-100 w-full h-[150px] font-[500] translate-y-1/3 bg-white bg-opacity-75 text-center">
+              {i?.title}
+            </h2>
+          </Link>
+        ))}
+      </Marquee>
     </>
   );
 };

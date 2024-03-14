@@ -4,38 +4,14 @@ import { useAdminGetAllOrdersQuery } from "../../redux/features/orders/orderApi"
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
 import { OrderDataType, orderColumns } from "../shared/Tables/OrderColumns";
-import { useSelector } from "react-redux";
 
 const AllOrders = () => {
-  const { isLoading: authLoading } = useSelector((state: any) => state.auth);
-
-  console.log(authLoading);
-
   const { data, isLoading } = useAdminGetAllOrdersQuery({});
 
-  console.log("data:", data);
+  // console.log("data:", data);
 
   const TableComponent = TableHOC<OrderDataType>(
-    orderColumns.map((column) => {
-      if (column.accessor === "actions") {
-        return {
-          ...column,
-          Cell: ({ row }) => (
-            <div className="flex items-center justify-center space-x-2">
-              <Link to={`/order/${row.original?._id}`}>
-                <FaArrowRight
-                  title="Order Details"
-                  size={22}
-                  className="text-blue-500"
-                />
-              </Link>
-            </div>
-          ),
-        };
-      } else {
-        return column;
-      }
-    }),
+    orderColumns,
     data?.orders,
     `All Orders`,
     data?.orders?.length > 10 ? true : false

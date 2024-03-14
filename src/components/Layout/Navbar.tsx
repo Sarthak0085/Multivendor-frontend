@@ -7,8 +7,10 @@ const Navbar = ({ active }: { active: number }) => {
     <div className={`block 800px:${styles.noramlFlex}`}>
       {navItems &&
         navItems.map((i, index) => (
-          <div className="flex">
+          <div key={index} className="flex">
             <Link
+              title={i.title}
+              aria-label={i.title}
               to={i.url}
               className={`${
                 active === index + 1

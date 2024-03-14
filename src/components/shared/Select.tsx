@@ -38,6 +38,7 @@ const Select = <T extends FieldValues>({
   return (
     <div className={`mb-5 ${!className}`}>
       <label
+        htmlFor={name}
         className={`block text-sm lg:text-[15px] 1300px:text-[18px] pb-1 font-medium text-gray-700`}
       >
         {label} {required === true && <span className="text-red-500">*</span>}
@@ -49,6 +50,9 @@ const Select = <T extends FieldValues>({
             valueAsNumber: valueAsNumber === true ? true : false,
             validate: (value) => value !== "",
           })}
+          aria-required={required ? true : false}
+          id={name}
+          autoComplete="true"
           onChange={setState ? (e) => setState(e.target.value) : undefined}
           className={`w-full appearance-none  border h-[40px] rounded-[5px] pl-[40px] focus:outline-none 
           focus:ring-[blue] focus:border-[blue] text-sm lg:text-[15px] 1300px:text-[18px] ${!selectClassName}`}
@@ -78,6 +82,8 @@ const Select = <T extends FieldValues>({
         </select>
         {Icon && (
           <Icon
+            title={label}
+            aria-label={label}
             size={20}
             className="absolute left-2 top-0 transform translate-y-1/2"
           />

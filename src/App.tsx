@@ -1,26 +1,24 @@
-import { Route, Routes } from "react-router-dom";
-import Register from "./components/Auth/Register";
-import ActivationPage from "./pages/ActivationPage";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/auth/LoginPage";
-import ProductsPage from "./pages/ProductsPage";
-import ShopLoginPage from "./pages/auth/ShopLoginPage";
-import ShopRegisterPage from "./pages/auth/ShopRegisterPage";
-import ShopForgotPasswordPage from "./pages/auth/ShopForgotPasswordPage";
-import ShopResetPasswordPage from "./pages/auth/ShopResetPasswordPage";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Suspense, lazy, useEffect, useState } from "react";
-const BestSellingPage = lazy(() => import("./pages/BestSellingPage"));
-const EventsPage = lazy(() => import("./pages/EventsPage"));
-const FAQPage = lazy(() => import("./pages/FaqPage"));
-const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Loader from "./components/Layout/Loader";
+import ActivationPage from "./pages/auth/ActivationPage";
+// import HomePage from "./pages/HomePage";
+// import ProductsPage from "./pages/ProductsPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import ShopForgotPasswordPage from "./pages/auth/ShopForgotPasswordPage";
+import ShopLoginPage from "./pages/auth/ShopLoginPage";
+import ShopRegisterPage from "./pages/auth/ShopRegisterPage";
+import ShopResetPasswordPage from "./pages/auth/ShopResetPasswordPage";
 import { useGetStripeApiKeyQuery } from "./redux/features/payment/paymentApi";
 import {
   AdminDashboardBrands,
   AdminDashboardCategories,
+  AdminDashboardColors,
   AdminDashboardCoupons,
   AdminDashboardCouponsAnalytics,
   AdminDashboardEditFaq,
@@ -34,32 +32,12 @@ import {
   AdminDashboardProductsAnalytics,
   AdminDashboardSellers,
   AdminDashboardSellersAnalytics,
+  AdminDashboardSizes,
   AdminDashboardUsers,
   AdminDashboardUsersAnalytics,
   AdminDashboardWithdraw,
   AdminDashboardWithdrawAnalytics,
 } from "./routes/AdminRoutes";
-import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import SellerProtectedRoute from "./routes/SellerProtectedRoute";
-import Loader from "./components/Layout/Loader";
-import {
-  ShopAllCoupons,
-  ShopAllEvents,
-  ShopAllOrders,
-  ShopAllProducts,
-  ShopAllRefunds,
-  ShopCreateEvent,
-  ShopCreateProduct,
-  ShopDashboardPage,
-  ShopEditProductPage,
-  ShopHomePage,
-  ShopOrderDetails,
-  ShopActivationPage,
-  ShopPreviewPage,
-  ShopSettingsPage,
-  ShopWithDrawMoneyPage,
-} from "./routes/ShopRoutes";
 import {
   AddressPage,
   AllOrdersPage,
@@ -72,6 +50,32 @@ import {
   ProfilePage,
   TrackOrderPage,
 } from "./routes/AuthProtectedRoutes";
+import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import SellerProtectedRoute from "./routes/SellerProtectedRoute";
+import {
+  ShopActivationPage,
+  ShopAllCoupons,
+  ShopAllEvents,
+  ShopAllOrders,
+  ShopAllProducts,
+  ShopAllRefunds,
+  ShopCreateEvent,
+  ShopCreateProduct,
+  ShopDashboardPage,
+  ShopEditProductPage,
+  ShopHomePage,
+  ShopOrderDetails,
+  ShopPreviewPage,
+  ShopSettingsPage,
+  ShopWithDrawMoneyPage,
+} from "./routes/ShopRoutes";
+const BestSellingPage = lazy(() => import("./pages/BestSellingPage"));
+const EventsPage = lazy(() => import("./pages/EventsPage"));
+const FAQPage = lazy(() => import("./pages/FaqPage"));
+const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 
 function App() {
   const [stripeApikey, setStripeApiKey] = useState("");
@@ -85,8 +89,9 @@ function App() {
   useEffect(() => {
     getStripeApikey();
   }, [data]);
+
   return (
-    <>
+    <BrowserRouter>
       <Suspense fallback={<Loader />}>
         {isLoading === false && stripeApikey && (
           <Elements stripe={loadStripe(stripeApikey)}>
@@ -103,16 +108,16 @@ function App() {
           </Elements>
         )}
         <Routes>
-          <Route path="/sign-up" element={<Register />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/best-selling" element={<BestSellingPage />} />
+          <Route path="/sign-up" element={<RegisterPage />} />
           <Route path="/verification" element={<ActivationPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<HomePage />} />
           <Route path="/shop-create" element={<ShopRegisterPage />} />
           <Route path="/verification-shop" element={<ShopActivationPage />} />
           <Route path="/shop-login" element={<ShopLoginPage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductDetailsPage />} />
-          <Route path="/best-selling" element={<BestSellingPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route
@@ -128,18 +133,18 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/order/success" element={<OrderSuccessPage />} />
           <Route
-            path="/profile/:userId"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/checkout"
             element={
               <ProtectedRoute>
                 <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/:userId"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
               </ProtectedRoute>
             }
           />
@@ -361,6 +366,22 @@ function App() {
             }
           />
           <Route
+            path="/admin-colors"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardColors />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin-sizes"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardSizes />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
             path="/admin-coupons"
             element={
               <ProtectedAdminRoute>
@@ -450,7 +471,7 @@ function App() {
           />
         </Routes>
       </Suspense>
-    </>
+    </BrowserRouter>
   );
 }
 

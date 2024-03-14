@@ -8,7 +8,11 @@ import {
 } from "../../redux/features/events/eventApi";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import { EventDataType, eventColumns } from "../shared/Tables/EventColumns";
 import DeleteConfirmationModal from "../../modals/DeleteModal";
 
@@ -28,6 +32,11 @@ const AllEvents = () => {
   };
 
   useEffect(() => {
+    if (deleteLoading) {
+      toast.loading("Deleting Event. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Event Deleted Successfully", {
         style: setSuccessOptions,
@@ -46,7 +55,7 @@ const AllEvents = () => {
         });
       }
     }
-  }, [isSuccess, error, refetch]);
+  }, [isSuccess, error, refetch, deleteLoading]);
 
   console.log("data:", data);
 
@@ -59,6 +68,7 @@ const AllEvents = () => {
             <div className="flex items-center justify-center space-x-2">
               <Link to={`/product/${row.original?._id}`}>
                 <AiOutlineEye
+                  aria-label="View Event"
                   title="View Event"
                   size={22}
                   className="text-blue-500"
@@ -83,6 +93,7 @@ const AllEvents = () => {
                 }}
               >
                 <AiOutlineDelete
+                  aria-label="Delete Event"
                   title="Delete Event"
                   size={22}
                   className="text-red-500"

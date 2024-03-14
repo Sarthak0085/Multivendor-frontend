@@ -1,7 +1,6 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { categoriesData } from "../../static/data";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   CreateProductData,
@@ -11,7 +10,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { useCreateProductMutation } from "../../redux/features/product/productApi";
 import toast from "react-hot-toast";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import {
   MdDriveFileRenameOutline,
   MdOutlineCategory,
@@ -20,11 +23,22 @@ import {
 import Input from "../shared/Input";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 import { SlSocialDropbox } from "react-icons/sl";
+import { PiGenderNeuter } from "react-icons/pi";
 import { BsTags } from "react-icons/bs";
 import Select from "../shared/Select";
+import { useGetAllCategoryQuery } from "../../redux/features/category/categoryApi";
+import { useGetAllBrandQuery } from "../../redux/features/brand/brandApi";
+import MultiSelect from "../shared/MultiSelect";
+import { IoMdColorFilter } from "react-icons/io";
+import { useGetAllColorQuery } from "../../redux/features/color/colorApi";
+import { SiZendesk } from "react-icons/si";
+import { useGetAllSizeQuery } from "../../redux/features/size/sizeApi";
+import { genderData } from "../../static/data";
 
 const CreateProduct = () => {
   const { seller } = useSelector((state: any) => state?.auth);
+  const [open, setOpen] = useState(false);
+  const [select, setSelect] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,13 +47,53 @@ const CreateProduct = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<CreateProductData>({
     resolver: zodResolver(productSchema),
   });
 
   const [create, { isSuccess, error, isLoading }] = useCreateProductMutation();
+  const { data } = useGetAllCategoryQuery({});
+  const { data: brandData } = useGetAllBrandQuery({});
+  const { data: colorData } = useGetAllColorQuery({});
+  const { data: sizeData } = useGetAllSizeQuery({});
+
+  const [selectedColorOptions, setSelectedColorOptions] = useState<string[]>(
+    []
+  );
+  const [selectedSizeOptions, setSelectedSizeOptions] = useState<string[]>([]);
 
   useEffect(() => {
+    setValue("colors", selectedColorOptions);
+    setValue("sizes", selectedSizeOptions);
+  }, [selectedColorOptions, setValue, selectedSizeOptions]);
+
+  const toggleColorSelect = (value: string) => {
+    if (selectedColorOptions.includes(value)) {
+      setSelectedColorOptions(
+        selectedColorOptions.filter((option) => option !== value)
+      );
+    } else {
+      setSelectedColorOptions([...selectedColorOptions, value]);
+    }
+  };
+
+  const toggleSizeSelect = (value: string) => {
+    if (selectedSizeOptions.includes(value)) {
+      setSelectedSizeOptions(
+        selectedSizeOptions.filter((option) => option !== value)
+      );
+    } else {
+      setSelectedSizeOptions([...selectedSizeOptions, value]);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Creating new Product. Please Wait....", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Product Created Successfully", {
         style: setSuccessOptions,
@@ -58,7 +112,7 @@ const CreateProduct = () => {
         });
       }
     }
-  }, [isSuccess, error, navigate]);
+  }, [isSuccess, error, navigate, isLoading]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files as FileList);
@@ -88,6 +142,8 @@ const CreateProduct = () => {
       discountPrice,
       colors,
       brand,
+      sizes,
+      gender,
     } = data;
 
     console.log({
@@ -98,6 +154,8 @@ const CreateProduct = () => {
       originalPrice,
       discountPrice,
       stock,
+      sizes,
+      gender,
       shopId: seller._id,
       images: images,
       colors,
@@ -141,92 +199,7 @@ const CreateProduct = () => {
           required={true}
           name="name"
         />
-
-        {/* <div>
-          <label className="pb-2">
-            Name <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            {...register("name")}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product name..."
-          />
-          {errors.name && (
-            <span className="text-red-500">{errors.name.message}</span>
-          )}
-        </div> */}
-
         <br />
-
-        {/* <div>
-          <label className="pb-2">
-            Description <span className="text-red-500">*</span>
-          </label>
-          <textarea
-            cols={30}
-            rows={8}
-            {...register("description")}
-            className="mt-2 appearance-none block w-full pt-2 px-3 border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product description..."
-          ></textarea>
-          {errors.description && (
-            <span className="text-red-500">{errors.description.message}</span>
-          )}
-        </div>
-        <br /> */}
-
-        {/* <div>
-          <label className="pb-2">
-            Category <span className="text-red-500">*</span>
-          </label>
-          <select
-            className="w-full mt-2 border h-[35px] rounded-[5px]"
-            {...register("category")}
-          >
-            <option value="Choose a category">Choose a category</option>
-            {categoriesData &&
-              categoriesData.map((i) => (
-                <option value={i.title} key={i.title}>
-                  {i.title}
-                </option>
-              ))}
-          </select>
-          {errors.category && (
-            <span className="text-red-500">{errors.category.message}</span>
-          )}
-        </div> */}
-
-        {/* <br /> */}
-
-        {/* <div>
-          <label className="pb-2">Tags</label>
-          <input
-            type="text"
-            {...register("tags")}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product tags..."
-          />
-          {errors.tags && (
-            <span className="text-red-500">{errors.tags.message}</span>
-          )}
-        </div> */}
-
-        {/* <br /> */}
-
-        {/* <div>
-          <label className="pb-2">Original Price</label>
-          <input
-            type="number"
-            {...register("originalPrice", { valueAsNumber: true })}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product price..."
-          />
-          {errors.originalPrice && (
-            <span className="text-red-500">{errors.originalPrice.message}</span>
-          )}
-        </div> */}
-
         <div>
           <label className="block text-sm lg:text-[15px] 1300px:text-[18px] font-medium text-gray-700">
             Product Description <span className="text-red-500">*</span>
@@ -251,9 +224,7 @@ const CreateProduct = () => {
             </span>
           )}
         </div>
-
         <br />
-
         <Select
           name="category"
           defaultOption="Choose a Category"
@@ -262,31 +233,9 @@ const CreateProduct = () => {
           errors={errors}
           Icon={MdOutlineCategory}
           required={true}
-          data={categoriesData}
+          data={data?.getallCategory}
         />
-
-        {/* <div>
-          <label className="pb-2">
-            Category <span className="text-red-500">*</span>
-          </label>
-          <select
-            className="w-full mt-2 border h-[35px] rounded-[5px]"
-            {...register("category")}
-          >
-            <option value="Choose a category">Choose a category</option>
-            {categoriesData &&
-              categoriesData.map((i) => (
-                <option value={i.title} key={i.title}>
-                  {i.title}
-                </option>
-              ))}
-          </select>
-          {errors.category && (
-            <span className="text-red-500">{errors.category.message}</span>
-          )}
-        </div> */}
         <br />
-
         <Input
           label="Tags"
           type="text"
@@ -297,21 +246,7 @@ const CreateProduct = () => {
           required={false}
           name="tags"
         />
-
-        {/* <div>
-          <label className="pb-2">Tags</label>
-          <input
-            type="text"
-            {...register("tags")}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product tags..."
-          />
-          {errors.tags && (
-            <span className="text-red-500">{errors.tags.message}</span>
-          )}
-        </div> */}
         <br />
-
         <Input
           label="Original Price"
           type="number"
@@ -323,22 +258,7 @@ const CreateProduct = () => {
           name="originalPrice"
           valueAsNumber={true}
         />
-
-        {/* <div>
-          <label className="pb-2">Original Price</label>
-          <input
-            type="number"
-            {...register("originalPrice", { valueAsNumber: true })}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="5999"
-          />
-          {errors.originalPrice && (
-            <span className="text-red-500">{errors.originalPrice.message}</span>
-          )}
-        </div> */}
-
         <br />
-
         <Input
           label="Price (With Discount)"
           type="number"
@@ -350,24 +270,7 @@ const CreateProduct = () => {
           name="discountPrice"
           valueAsNumber={true}
         />
-
-        {/* <div>
-          <label className="pb-2">
-            Price (With Discount) <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            {...register("discountPrice", { valueAsNumber: true })}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product price with discount..."
-          />
-          {errors.discountPrice && (
-            <span className="text-red-500">{errors.discountPrice.message}</span>
-          )}
-        </div> */}
-
         <br />
-
         <Input
           label="Product Stock"
           type="number"
@@ -379,42 +282,137 @@ const CreateProduct = () => {
           name="stock"
           valueAsNumber={true}
         />
+        <br />
+        <Select
+          name="brand"
+          defaultOption="Choose a Brand"
+          label="Brand"
+          register={register}
+          errors={errors}
+          Icon={MdOutlineCategory}
+          required={true}
+          data={brandData?.getallBrand}
+        />
+        <Select
+          name="gender"
+          defaultOption="Choose a Gender"
+          label="Gender"
+          register={register}
+          errors={errors}
+          Icon={PiGenderNeuter}
+          required={true}
+          data={genderData}
+        />
+        <br />
+
+        {/* <Multiselect
+          options={brandData?.getallBrand}
+          // selectedValues={selectedValue}
+          // onSelect={onSelect}
+          // onRemove={onRemove}
+          displayValue="title"
+        /> */}
+
+        <MultiSelect
+          register={register}
+          errors={errors}
+          Icon={IoMdColorFilter}
+          required={true}
+          open={open}
+          setOpen={setOpen}
+          selectedOptions={selectedColorOptions}
+          toggleSelect={toggleColorSelect}
+          defaultValue="Select Colors"
+          name="colors"
+          label="Colors"
+          data={colorData?.getAllColor}
+        />
+
+        <br />
+        <MultiSelect
+          register={register}
+          errors={errors}
+          Icon={SiZendesk}
+          required={true}
+          open={select}
+          setOpen={setSelect}
+          selectedOptions={selectedSizeOptions}
+          toggleSelect={toggleSizeSelect}
+          defaultValue="Select Sizes"
+          name="sizes"
+          label="Sizes"
+          data={sizeData?.getAllSize}
+        />
 
         {/* <div>
-          <label className="pb-2">
-            Product Stock <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            {...register("stock", { valueAsNumber: true })}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product stock..."
-          />
-          {errors.stock && (
-            <span className="text-red-500">{errors.stock.message}</span>
+          <label className="pb-2">Colors</label>
+          <div
+            ref={modalRef}
+            className="relative w-full border h-[35px] rounded-[5px] flex-grow text-sm lg:text-[15px] 1300px:text-[18px]"
+          >
+            <div
+              onClick={() => setOpen(!open)}
+              className="flex pl-3 h-full items-center justify-start"
+            >
+              <input
+                type="text"
+                placeholder="Select..."
+                hidden
+                {...register("colors")}
+              />
+              <div className="flex items-center gap-4">
+                {selectedOptions.length === 0 ? (
+                  <span className="text-gray-400">Select Colors</span>
+                ) : (
+                  <>
+                    {selectedOptions.slice(0, 3).map((option) => (
+                      <span
+                        key={option}
+                        className="bg-blue-200 rounded-[5px] text-black flex px-[10px] gap-2 py-[3px]"
+                        onClick={() => toggleSelect(option)}
+                      >
+                        {option}
+                        <span>&times;</span>
+                      </span>
+                    ))}
+                    {selectedOptions.length > 3 && (
+                      <span className="bg-blue-200 rounded-[5px] text-black flex px-[10px] gap-2 py-[3px]">
+                        +{selectedOptions.length - 3} more
+                      </span>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+            {open && (
+              <div className="absolute w-[100%] bg-white max-h-[225px] border border-solid border-t-0 overflow-y-auto z-1">
+                {brandData?.getallBrand.map((item, index) => (
+                  <div
+                    className={`p-[10px] border flex gap-4 hover:bg-blue-200 cursor-pointer ${
+                      selectedOptions.includes(item.title) && "bg-blue-200"
+                    }`}
+                    data-value={item.title}
+                    onClick={() => toggleSelect(item.title)}
+                  >
+                    <img
+                      src={item.image.url}
+                      alt={item.title}
+                      className={"w-[25px] h-[20px] rounded object-cover"}
+                    />
+                    <span>{item.title}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {errors.colors && (
+            <span className="text-red-500">
+              At least one color must be selected
+            </span>
           )}
         </div> */}
 
-        <br />
-
-        <div>
-          <label className="pb-2">Brand</label>
-          <select
-            className="w-full mt-2 border h-[35px] rounded-[5px] text-sm lg:text-[15px] 1300px:text-[18px]"
-            {...register("brand", { required: true })}
-          >
-            <option value="">Select a brand</option>
-            <option value="brand1">Brand 1</option>
-            <option value="brand2">Brand 2</option>
-            <option value="brand3">Brand 3</option>
-            {/* Add more brand options as needed */}
-          </select>
-          {errors.brand && (
-            <span className="text-red-500">{errors.brand.message}</span>
-          )}
-        </div>
-        <br />
-        <div>
+        {/* <div>
           <label className="pb-2">Colors</label>
           <select
             className="w-full mt-2 border h-[35px] rounded-[5px] flex-grow text-sm lg:text-[15px] 1300px:text-[18px]"
@@ -424,78 +422,14 @@ const CreateProduct = () => {
             <option value="blue">Blue</option>
             <option value="green">Green</option>
             <option value="yellow">Yellow</option>
-            {/* Add more color options as needed */}
           </select>
           {errors.colors && (
             <span className="text-red-500">
               At least one color must be selected
             </span>
           )}
-        </div>
-
-        <br />
-        {/* <div>
-          <label className="pb-2">
-            Price (With Discount) <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            {...register("discountPrice", { valueAsNumber: true })}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product price with discount..."
-          />
-          {errors.discountPrice && (
-            <span className="text-red-500">{errors.discountPrice.message}</span>
-          )}
         </div> */}
-        {/* <br /> */}
-        {/* <div>
-          <label className="pb-2">
-            Product Stock <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            {...register("stock", { valueAsNumber: true })}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter your product stock..."
-          />
-          {errors.stock && (
-            <span className="text-red-500">{errors.stock.message}</span>
-          )}
-        </div>
         <br />
-        <div>
-          <label className="pb-2">Brand</label>
-          <select
-            className="w-full mt-2 border h-[35px] rounded-[5px] "
-            {...register("brand", { required: true })}
-          >
-            <option value="">Select a brand</option>
-            <option value="brand1">Brand 1</option>
-            <option value="brand2">Brand 2</option>
-            <option value="brand3">Brand 3</option>
-          </select>
-          {errors.brand && (
-            <span className="text-red-500">{errors.brand.message}</span>
-          )}
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">Colors</label>
-          <select
-            className="w-full mt-2 border h-[35px] rounded-[5px] flex-grow"
-            {...register("colors", { required: true })}
-          >
-            <option value="red">Red</option>
-            <option value="blue">Blue</option>
-            <option value="green">Green</option>
-            <option value="yellow">Yellow</option>
-          </select>
-          {errors.colors && (
-            <span className="text-red-500">{errors.colors.message}</span>
-          )}
-        </div>
-        <br /> */}
         <div>
           <label className="pb-2">
             Upload Images <span className="text-red-500">*</span> (Select upto 6
@@ -518,7 +452,7 @@ const CreateProduct = () => {
                 <img
                   src={i}
                   key={i}
-                  alt=""
+                  alt={i}
                   className="h-[120px] w-[120px] object-cover m-2"
                 />
               ))}

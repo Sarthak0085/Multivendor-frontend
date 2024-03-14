@@ -1,6 +1,5 @@
-import { AiOutlineEdit, AiOutlineEye, AiOutlineGift } from "react-icons/ai";
+import { AiOutlineEye, AiOutlineGift } from "react-icons/ai";
 import { CiMoneyBill } from "react-icons/ci";
-import { FaArrowRight } from "react-icons/fa6";
 import { FiPackage } from "react-icons/fi";
 import { MdBorderClear } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -8,7 +7,6 @@ import { useAdminGetAllOrdersQuery } from "../../redux/features/orders/orderApi"
 import { useAdminGetAllProductsQuery } from "../../redux/features/product/productApi";
 import { useGetAllWithdrawRequestByAdminQuery } from "../../redux/features/withdraw/withdrawApi";
 import { IOrder } from "../../types/order";
-import { IProduct } from "../../types/product";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
 import PieChartAnalytics from "../shared/PieChart";
@@ -32,26 +30,18 @@ const AdminDashboard = () => {
   const { data, isLoading } = useAdminGetAllOrdersQuery({});
 
   const { data: productData, isLoading: productLoading } =
-    useAdminGetAllProductsQuery({});
+    useAdminGetAllProductsQuery({ sort: "" });
 
   const { data: withdrawData, isLoading: withdrawLoading } =
     useGetAllWithdrawRequestByAdminQuery({});
 
-  console.log("data:", data);
+  // console.log("data:", data);
 
   const orderData = data?.orders?.slice(0, 6);
 
-  const productsData = productData?.products
-    ?.sort((a: IProduct, b: IProduct) => {
-      if (a?.sold_out !== undefined && b?.sold_out !== undefined) {
-        return b.sold_out - a.sold_out;
-      }
+  const productsData = productData?.products?.slice(0, 5);
 
-      return 0;
-    })
-    ?.slice(0, 5);
-
-  const withdrawRequestToday = withdrawData?.withdraws.filter(
+  const withdrawRequestToday = withdrawData?.withdraws?.filter(
     (item: any) =>
       item?.createdAt?.slice(0, 10) === new Date().toISOString().slice(0, 10)
   );
@@ -99,26 +89,7 @@ const AdminDashboard = () => {
   ];
 
   const OrderTableComponent = TableHOC<OrderDataType>(
-    orderColumns.map((column) => {
-      if (column.accessor === "actions") {
-        return {
-          ...column,
-          Cell: ({ row }) => (
-            <div className="flex items-center justify-center space-x-2">
-              <Link to={`/order/${row.original?._id}`}>
-                <FaArrowRight
-                  title="Order Details"
-                  size={22}
-                  className="text-blue-500"
-                />
-              </Link>
-            </div>
-          ),
-        };
-      } else {
-        return column;
-      }
-    }),
+    orderColumns,
     orderData,
     "",
     orderData?.length > 10 ? true : false
@@ -240,8 +211,6 @@ const AdminDashboard = () => {
   //     },
   //   ];
 
-  console.log("status: ", statusData);
-
   const ProductTablecomponent = TableHOC<ProductDataType>(
     dashboardProductColumns.map((column) => {
       if (column.accessor === "actions") {
@@ -249,18 +218,15 @@ const AdminDashboard = () => {
           ...column,
           Cell: ({ row }) => (
             <div className="flex items-center justify-center space-x-2">
-              <Link to={`/product/${row.original?._id}`}>
+              <Link
+                to={`/product/${row.original?._id}`}
+                aria-label="View Details"
+              >
                 <AiOutlineEye
+                  aria-label="View Details"
                   title="View Details"
                   size={22}
                   className="text-blue-500"
-                />
-              </Link>
-              <Link to={`/dashboard-update-product/${row.original?._id}`}>
-                <AiOutlineEdit
-                  title="Edit Product"
-                  size={22}
-                  className="text-green-500"
                 />
               </Link>
             </div>

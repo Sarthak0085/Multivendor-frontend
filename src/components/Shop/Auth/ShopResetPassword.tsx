@@ -11,7 +11,11 @@ import {
   ResetFormData,
   resetPasswordSchema,
 } from "../../../validations/ResetPassword";
-import { setErrorOptions, setSuccessOptions } from "../../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../../options";
 import Input from "../../shared/Input";
 import { useResetShopPasswordMutation } from "../../../redux/features/auth/authApi";
 
@@ -44,6 +48,11 @@ const ShopResetPassword = () => {
   console.log("reset_token", shop_reset_token);
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Hold on a moment.Processing new Password...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message = "Password Reset Successfully. Please login to continue.";
       toast.success(message, {
@@ -65,7 +74,7 @@ const ShopResetPassword = () => {
         setInvalidError(false);
       }
     }
-  }, [isSuccess, error, navigate]);
+  }, [isSuccess, error, navigate, isLoading]);
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),

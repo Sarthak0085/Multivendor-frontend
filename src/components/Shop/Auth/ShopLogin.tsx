@@ -11,7 +11,11 @@ import {
   ShopLoginFormData,
   shopLoginSchema,
 } from "../../../validations/ShopLoginValidation";
-import { setErrorOptions, setSuccessOptions } from "../../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../../options";
 import Input from "../../shared/Input";
 
 const ShopLogin = () => {
@@ -20,6 +24,11 @@ const ShopLogin = () => {
   const [login, { isSuccess, data, error, isLoading }] = useShopLoginMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Logging In...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message = data?.message || "Logged In successful";
       toast.success(message, {
@@ -39,7 +48,7 @@ const ShopLogin = () => {
         });
       }
     }
-  }, [isSuccess, error, navigate, data?.message]);
+  }, [isSuccess, error, navigate, data?.message, isLoading]);
 
   const {
     register,
@@ -60,7 +69,7 @@ const ShopLogin = () => {
   };
 
   return (
-    <div className="bg-blue-50 py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
+    <div className="bg-blue-50 bg-opacity-60 backdrop-blur-lg py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-center text-3xl font-extrabold text-blue-600">
           Login to your shop
@@ -74,6 +83,7 @@ const ShopLogin = () => {
           Icon={MdOutlineEmail}
           required={true}
           name="email"
+          inputClassName="!bg-blue-50"
         />
         <Input
           label="Enter shop's Password"
@@ -84,6 +94,7 @@ const ShopLogin = () => {
           Icon={RiLockPasswordLine}
           required={true}
           name="password"
+          inputClassName="!bg-blue-50"
         />
         <div className="text-start">
           <Link

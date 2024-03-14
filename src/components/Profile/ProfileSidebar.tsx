@@ -54,11 +54,13 @@ const ProfileSidebar = ({
   return (
     <div className="w-full mt-[20px] bg-white shadow-sm rounded-[10px] p-4 pt-8">
       <Link
+        aria-label={`${user.fullName}'s Profile`}
         to={`/profile/${user?._id}`}
         className="flex items-center cursor-pointer w-full mb-8"
         onClick={() => setActive(1)}
       >
         <RxPerson
+          aria-label={`${user.fullName}'s Profile`}
           title={`${user.fullName}'s Profile`}
           size={22}
           color={active === 1 ? "red" : ""}
@@ -72,12 +74,14 @@ const ProfileSidebar = ({
         </button>
       </Link>
       <Link
+        aria-label={`${user.fullName}'s Orders`}
         to={`/profile/${user?._id}/all-orders`}
         className="flex items-center cursor-pointer w-full mb-8"
         onClick={() => setActive(2)}
       >
         <HiOutlineShoppingBag
-          title={`All Orders`}
+          aria-label={`${user.fullName}'s Orders`}
+          title={`${user.fullName}'s Orders`}
           size={22}
           color={active === 2 ? "red" : ""}
         />
@@ -90,12 +94,14 @@ const ProfileSidebar = ({
         </button>
       </Link>
       <Link
+        aria-label={`${user.fullName}'s Refund Orders`}
         to={`/profile/${user?._id}/refund-orders`}
         className="flex items-center cursor-pointer w-full mb-8"
         onClick={() => setActive(3)}
       >
         <HiOutlineReceiptRefund
-          title={` All Refund Orders`}
+          aria-label={`${user.fullName}'s Refund Orders`}
+          title={`${user.fullName}'s Refund Orders`}
           size={22}
           color={active === 3 ? "red" : ""}
         />
@@ -114,6 +120,7 @@ const ProfileSidebar = ({
         //   || navigate("/inbox")
       >
         <AiOutlineMessage
+          aria-label="Inbox"
           title={` Inbox`}
           size={22}
           color={active === 4 ? "red" : ""}
@@ -128,11 +135,13 @@ const ProfileSidebar = ({
       </div>
 
       <Link
+        aria-label={`Track Order`}
         to={`/profile/${user?._id}/track/order/${user?._id}`}
         className="flex items-center cursor-pointer w-full mb-8"
         onClick={() => setActive(5)}
       >
         <MdOutlineTrackChanges
+          aria-label={`Track Order`}
           title={`Track Order`}
           size={22}
           color={active === 5 ? "red" : ""}
@@ -147,11 +156,13 @@ const ProfileSidebar = ({
       </Link>
 
       <Link
+        aria-label="Change Password"
         to={`/profile/${user?._id}/password`}
         className="flex items-center cursor-pointer w-full mb-8"
         onClick={() => setActive(6)}
       >
         <RiLockPasswordLine
+          aria-label="Change Password"
           title="Change Password"
           size={22}
           color={active === 6 ? "red" : ""}
@@ -166,11 +177,13 @@ const ProfileSidebar = ({
       </Link>
 
       <Link
+        aria-label={`${user.fullName}'s Address`}
         to={`/profile/${user?._id}/address`}
         className="flex items-center cursor-pointer w-full mb-8"
         onClick={() => setActive(7)}
       >
         <TbAddressBook
+          aria-label={`${user.fullName}'s Address`}
           title={`${user.fullName}'s Addresses`}
           size={22}
           color={active === 7 ? "red" : ""}
@@ -185,24 +198,25 @@ const ProfileSidebar = ({
       </Link>
 
       {user && user?.role === "ADMIN" && (
-        <Link to="/admin/dashboard">
-          <div
-            className="flex items-center cursor-pointer w-full mb-8"
-            onClick={() => setActive(8)}
+        <Link
+          aria-label="Admin Dashboard"
+          to="/admin/dashboard"
+          className="flex items-center cursor-pointer w-full mb-8"
+          onClick={() => setActive(8)}
+        >
+          <MdOutlineAdminPanelSettings
+            aria-label="Admin Dashboard"
+            title="Admin Dashboard"
+            size={22}
+            color={active === 8 ? "red" : ""}
+          />
+          <span
+            className={`pl-3 ${
+              active === 8 ? "text-[red]" : ""
+            } 1100px:block hidden`}
           >
-            <MdOutlineAdminPanelSettings
-              title="Admin Dashboard"
-              size={22}
-              color={active === 8 ? "red" : ""}
-            />
-            <span
-              className={`pl-3 ${
-                active === 8 ? "text-[red]" : ""
-              } 1100px:block hidden`}
-            >
-              Admin Dashboard
-            </span>
-          </div>
+            Admin Dashboard
+          </span>
         </Link>
       )}
       <button
@@ -214,6 +228,7 @@ const ProfileSidebar = ({
         aria-disabled={isLoading ? true : false}
       >
         <AiOutlineLogin
+          aria-label="Logout"
           title={`Logout`}
           size={22}
           color={active === 9 ? "red" : ""}

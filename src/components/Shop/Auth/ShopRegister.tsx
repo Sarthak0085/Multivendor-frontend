@@ -14,7 +14,11 @@ import {
   ShopRegisterFormData,
   shopRegisterSchema,
 } from "../../../validations/ShopRegistrationValidation";
-import { setErrorOptions, setSuccessOptions } from "../../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../../options";
 import Input from "../../shared/Input";
 import { useShopRegisterMutation } from "../../../redux/features/auth/authApi";
 
@@ -26,6 +30,11 @@ const ShopRegister = () => {
     useShopRegisterMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Register new Shop. Please Wait. It will take time...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message = data?.message || "Registration successful";
       toast.success(message, {
@@ -45,7 +54,7 @@ const ShopRegister = () => {
         });
       }
     }
-  }, [isSuccess, error, navigate, data?.message]);
+  }, [isSuccess, error, navigate, data?.message, isLoading]);
 
   const {
     register,
@@ -70,7 +79,7 @@ const ShopRegister = () => {
   };
 
   const onSubmit: SubmitHandler<ShopRegisterFormData> = async (data) => {
-    console.log(data);
+    // console.log(data);
 
     try {
       const {
@@ -82,7 +91,7 @@ const ShopRegister = () => {
         email,
         password,
       } = data;
-      const response = await registerMutation({
+      await registerMutation({
         name,
         description,
         phoneNumber,
@@ -92,15 +101,14 @@ const ShopRegister = () => {
         password,
         avatar,
       });
-      // Handle successful registration response
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="bg-blue-50 py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
+    <div className="bg-blue-50 bg-opacity-60 backdrop-blur-lg py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-center text-3xl font-extrabold text-blue-600">
           Register as a new seller
@@ -115,30 +123,8 @@ const ShopRegister = () => {
           Icon={RxPerson}
           required={true}
           name="name"
+          inputClassName="!bg-blue-50"
         />
-
-        {/* <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Enter your Shop Name
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type="text"
-              placeholder="Famous Shop"
-              {...register("name")}
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <FaRegUser
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-          </div>
-
-          {errors.name && (
-            <span className="mt-2 text-red-500">{errors.name.message}</span>
-          )}
-        </div> */}
-
         <Input
           label="Enter shop's Email address"
           type="email"
@@ -148,29 +134,8 @@ const ShopRegister = () => {
           Icon={MdOutlineEmail}
           required={true}
           name="email"
+          inputClassName="!bg-blue-50"
         />
-
-        {/* <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Enter your Email
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type="email"
-              placeholder="shop@gmail.com"
-              {...register("email")}
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <MdOutlineEmail
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-          </div>
-          {errors.email && (
-            <span className="mt-2 text-red-500">{errors.email.message}</span>
-          )}
-        </div> */}
-
         <div>
           <label className="block text-sm lg:text-[15px] 1300px:text-[18px] font-medium text-gray-700">
             Enter Shop's description <span className="text-red-500">*</span>
@@ -182,7 +147,7 @@ const ShopRegister = () => {
               {...register("description")}
               rows={8}
               cols={10}
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm 
+              className="appearance-none block w-full px-10 py-2 border border-gray-300 bg-blue-50 rounded-md shadow-sm 
               placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 lg:text-[15px] 1300px:text-[18px] text-sm"
             />
             <MdOutlineDescription
@@ -206,34 +171,8 @@ const ShopRegister = () => {
           Icon={HiMiniDevicePhoneMobile}
           required={true}
           name="phoneNumber"
+          inputClassName="!bg-blue-50"
         />
-
-        {/* <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Enter your Phone Number
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type="text"
-              placeholder="6280858***"
-              {...register("phoneNumber")}
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <HiMiniDevicePhoneMobile
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-          </div>
-          {errors.phoneNumber && (
-            <span className="mt-2 text-red-500">
-              {errors.phoneNumber.message}
-            </span>
-          )}
-        </div> */}
-
         <Input
           label="Enter shop's Address"
           type="text"
@@ -243,29 +182,8 @@ const ShopRegister = () => {
           Icon={PiAddressBook}
           required={true}
           name="address"
+          inputClassName="!bg-blue-50"
         />
-
-        {/* <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Enter your Address
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type="text"
-              placeholder="H.No.100, Pathankot"
-              {...register("address")}
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <PiAddressBook
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-          </div>
-          {errors.address && (
-            <span className="mt-2 text-red-500">{errors.address.message}</span>
-          )}
-        </div> */}
-
         <Input
           label="Enter Pin/Zip Code"
           type="number"
@@ -276,32 +194,8 @@ const ShopRegister = () => {
           required={true}
           name="pinCode"
           valueAsNumber={true}
+          inputClassName="!bg-blue-50"
         />
-
-        {/* <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Enter PinCode/ZipCode
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type="number"
-              placeholder="145001"
-              {...register("pinCode", { valueAsNumber: true })}
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <TbMapPinCode
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-          </div>
-          {errors.pinCode && (
-            <span className="mt-2 text-red-500">{errors.pinCode.message}</span>
-          )}
-        </div> */}
-
         <Input
           label="Enter shop's Password"
           type="password"
@@ -311,46 +205,8 @@ const ShopRegister = () => {
           Icon={RiLockPasswordLine}
           required={true}
           name="password"
+          inputClassName="!bg-blue-50"
         />
-
-        {/* <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Enter your Password
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type={visible ? "text" : "password"}
-              autoComplete="current-password"
-              {...register("password")}
-              placeholder="**********"
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <RiLockPasswordLine
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-            {visible ? (
-              <AiOutlineEye
-                className="absolute right-2 top-2 cursor-pointer"
-                size={25}
-                onClick={() => setVisible(false)}
-              />
-            ) : (
-              <AiOutlineEyeInvisible
-                className="absolute right-2 top-2 cursor-pointer"
-                size={25}
-                onClick={() => setVisible(true)}
-              />
-            )}
-          </div>
-          {errors.password && (
-            <span className="mt-2 text-red-500">{errors.password.message}</span>
-          )}
-        </div> */}
-
         <Input
           label="Enter shop's Confirm Password"
           type="password"
@@ -360,48 +216,8 @@ const ShopRegister = () => {
           Icon={RiLockPasswordLine}
           required={true}
           name="confirmPassword"
+          inputClassName="!bg-blue-50"
         />
-
-        {/* <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Enter your Confirm Password
-          </label>
-          <div className="mt-1 relative">
-            <input
-              type={visible ? "text" : "password"}
-              autoComplete="password@1234"
-              {...register("confirmPassword")}
-              placeholder="**********"
-              className="appearance-none block w-full px-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <RiLockPasswordLine
-              className="absolute left-2 top-2 cursor-pointer"
-              size={20}
-            />
-            {visible ? (
-              <AiOutlineEye
-                className="absolute right-2 top-2 cursor-pointer"
-                size={25}
-                onClick={() => setVisible(false)}
-              />
-            ) : (
-              <AiOutlineEyeInvisible
-                className="absolute right-2 top-2 cursor-pointer"
-                size={25}
-                onClick={() => setVisible(true)}
-              />
-            )}
-          </div>
-          {errors.confirmPassword && (
-            <span className="mt-2 text-red-500">
-              {errors.confirmPassword.message}
-            </span>
-          )}
-        </div> */}
-
         <div>
           <label
             htmlFor="avatar"
@@ -421,7 +237,8 @@ const ShopRegister = () => {
             </span>
             <label
               htmlFor="file-input"
-              className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              className="ml-5 flex items-center bg-blue-50 hover:bg-blue-100 justify-center px-4 py-2 border 
+              border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 cursor-pointer"
             >
               <span>Upload a file</span>
               <input
@@ -457,8 +274,6 @@ const ShopRegister = () => {
         </div>
       </form>
     </div>
-    //   </div>
-    // </div>
   );
 };
 

@@ -9,15 +9,13 @@ import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  useEmptyCartMutation,
-  useGetCartQuery,
-} from "../../redux/features/cart/cartApi";
 import { useCreateOrderMutation } from "../../redux/features/orders/orderApi";
 import { usePaymentProcessMutation } from "../../redux/features/payment/paymentApi";
 import styles from "../../styles/styles";
 import { IProductInCart } from "../../types/cart";
 import { IUser } from "../../types/user";
+import { useEmptyCartMutation } from "../../redux/features/cart/cartApi";
+import { setLoadingOptions } from "../options";
 
 interface ICreateOrder {
   paymentInfo: { type: string };
@@ -42,13 +40,11 @@ const Payment = () => {
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
-
-  const { refetch } = useGetCartQuery(user?._id, {
-    refetchOnMountOrArgChange: true,
-  });
-  const [orderCreation, { isSuccess, error }] = useCreateOrderMutation();
-  const [processPayment, { error: paymentError }] = usePaymentProcessMutation();
-  const [emptyCart, { isSuccess: cartSuccess }] = useEmptyCartMutation();
+  const [orderCreation, { isSuccess, error, isLoading }] =
+    useCreateOrderMutation();
+  const [processPayment, { error: paymentError, isLoading: paymentLoading }] =
+    usePaymentProcessMutation();
+  const [emptyCart] = useEmptyCartMutation();
 
   useEffect(() => {
     const orderData = JSON.parse(localStorage.getItem("latestOrder") as string);
@@ -57,17 +53,23 @@ const Payment = () => {
 
   console.log(orderData);
 
+  async function emptyCartFunction() {
+    await emptyCart(user?._id);
+  }
+
   useEffect(() => {
+    if (isLoading || paymentLoading) {
+      toast.loading("Processing...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       // setOpen(false);
-      emptyCart(user?._id);
-      window.location.reload();
+      emptyCartFunction();
       navigate("/order/success");
       toast.success("Order successful!");
       localStorage.setItem("latestOrder", JSON.stringify([]));
-    }
-    if (cartSuccess) {
-      refetch();
+      window.location.reload();
     }
     if (paymentError) {
       if ("data" in paymentError) {
@@ -83,7 +85,7 @@ const Payment = () => {
         toast.error("An error occurred while processing the order.");
       }
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, paymentLoading, isLoading]);
 
   // const createOrder = (data, actions) => {
   //   return actions.order
@@ -566,27 +568,30 @@ const PaymentInfo = ({
 };
 
 const CartData = ({ orderData }: { orderData: any }) => {
-  const shipping = orderData?.shippingAddress.toFixed(2);
+  const shipping = Number(orderData?.shipping).toFixed(0);
+  const totalPrice = Number(orderData?.totalPrice).toFixed(0);
   return (
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">${orderData?.subTotalPrice}</h5>
+        <h5 className="text-[18px] font-[600]">
+          &#8377;. {orderData?.subTotalPrice}
+        </h5>
       </div>
       <br />
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">shipping:</h3>
-        <h5 className="text-[18px] font-[600]">${shipping}</h5>
+        <h5 className="text-[18px] font-[600]">&#8377;. {shipping}</h5>
       </div>
       <br />
       <div className="flex justify-between border-b pb-3">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
         <h5 className="text-[18px] font-[600]">
-          {orderData?.discountPrice ? "$" + orderData.discountPrice : "-"}
+          &#8377;. {orderData?.discountPrice ? orderData.discountPrice : 0}
         </h5>
       </div>
       <h5 className="text-[18px] font-[600] text-end pt-3">
-        ${orderData?.totalPrice}
+        &#8377;. {totalPrice}
       </h5>
       <br />
     </div>

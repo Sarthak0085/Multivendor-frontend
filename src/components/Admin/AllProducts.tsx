@@ -9,7 +9,11 @@ import {
 } from "../../redux/features/product/productApi";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import {
   ProductDataType,
   productColumns,
@@ -31,6 +35,11 @@ const AllProducts = () => {
   };
 
   useEffect(() => {
+    if (deleteLoading) {
+      toast.loading("Deleting Product. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Product Deleted Successfully", {
         style: setSuccessOptions,
@@ -49,7 +58,7 @@ const AllProducts = () => {
         });
       }
     }
-  }, [isSuccess, error, refetch]);
+  }, [isSuccess, error, refetch, deleteLoading]);
 
   console.log("data:", data, "product:-", data?.products);
 
@@ -62,6 +71,7 @@ const AllProducts = () => {
             <div className="flex items-center justify-center space-x-2">
               <Link to={`/product/${row.original?._id}`}>
                 <AiOutlineEye
+                  aria-label="View Product"
                   title="View Product"
                   size={22}
                   className="text-blue-500"

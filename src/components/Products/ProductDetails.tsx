@@ -30,8 +30,10 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
   const [click, setClick] = useState(false);
   const selectImage = data?.images[0]?.url;
   const [select, setSelect] = useState<string>(selectImage ?? null);
+  const [colorSelect, setColorSelect] = useState<string>(data?.colors[0]);
+  const [sizeSelect, setSizeSelect] = useState<string>(data?.sizes[0]);
+  console.log(sizeSelect);
 
-  // const navigate = useNavigate();
   const { data: productData, isLoading } = useGetAllShopProductsQuery(
     seller?._id,
     {}
@@ -63,8 +65,9 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
     const wishlistData = {
       productId: data?._id,
       shopId: data?.shop?._id,
-      color: data?.colors[0],
-      // category: data?.category,
+      color: colorSelect,
+      size: sizeSelect,
+      category: data?.category,
       price: data?.discountPrice,
     };
     removeFromWishlist(wishlistData);
@@ -74,8 +77,9 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
     const wishlistData = {
       productId: data?._id,
       shopId: data?.shop?._id,
-      color: data?.colors[0],
-      // category: data?.category,
+      color: colorSelect,
+      size: sizeSelect,
+      category: data?.category,
       price: data?.discountPrice,
     };
     addToWishlist(wishlistData);
@@ -90,11 +94,14 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
       const cartData = {
         product: data?._id,
         shop: data?.shop?._id,
-        color: data?.colors[0],
+        color: colorSelect,
+        size: sizeSelect,
+        category: data?.category,
         count,
         price: data?.discountPrice,
+        gender: data?.gender,
       };
-      console.log(cartData);
+      // console.log(cartData);
 
       addToCart(cartData);
     }
@@ -179,38 +186,40 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
         <Loader />
       ) : data ? (
         <div className={`${styles.section} w-[90%] 800px:w-[100%]`}>
-          <div className="w-full py-5">
+          <div className="w-full py-5 mb-80 500px:mb-70 800px:mb-10">
             <div className="block w-full 800px:flex">
               <div className="w-full 800px:w-[50%]">
-                <img
-                  src={`${data && select}`}
-                  alt=""
-                  className="w-[100%] 800px:w-[90%] h-[450px]"
-                />
-                <div className="w-[100%] 800px:w-[90%] 1300px:w-[80%] flex">
-                  {data &&
-                    data.images.map(
-                      (
-                        i: { public_id: string; url: string },
-                        index: number
-                      ) => (
-                        <div
-                          key={index}
-                          className={`${
-                            select === i.url
-                              ? "border border-blue-500 scale-110"
-                              : "null"
-                          } cursor-pointer mr-5 mt-5`}
-                        >
-                          <img
-                            src={`${i?.url}`}
-                            alt={i.url}
-                            className="w-[150px] h-[100px] object-cover overflow-hidden"
-                            onClick={() => setSelect(i.url)}
-                          />
-                        </div>
-                      )
-                    )}
+                <div className="flex flex-col 1300px:flex-row 1300px:gap-5">
+                  <img
+                    src={`${data && select}`}
+                    alt={`${data}`}
+                    className="w-[100%] 800px:w-[90%] h-[450px] 500px:h-[600px] 800px:h-[500px] 1100px:h-[650px]"
+                  />
+                  <div className="w-[100%] 800px:w-[90%] 1300px:w-[20%] 1300px:flex-col flex">
+                    {data &&
+                      data.images.map(
+                        (
+                          i: { public_id: string; url: string },
+                          index: number
+                        ) => (
+                          <div
+                            key={index}
+                            className={`${
+                              select === i.url
+                                ? "border border-blue-500 scale-110"
+                                : "null"
+                            } cursor-pointer mr-5 mt-5`}
+                          >
+                            <img
+                              src={`${i?.url}`}
+                              alt={i.url}
+                              className="w-[150px] h-[100px] object-cover overflow-hidden"
+                              onClick={() => setSelect(i.url)}
+                            />
+                          </div>
+                        )
+                      )}
+                  </div>
                 </div>
               </div>
               <div className="w-full 800px:w-[50%] h-[450px] pt-5">
@@ -225,12 +234,79 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
                       &#x20B9;{data.originalPrice ? data.originalPrice : null}
                     </h3>
                   </div>
+                  <div className="mb-4">
+                    <span className="font-bold text-gray-700 dark:text-gray-300">
+                      Select Color:
+                    </span>
+                    <div className="flex items-center mt-2">
+                      {data?.colors?.map((item: string, index: number) => (
+                        <button
+                          key={index}
+                          style={{
+                            backgroundImage: `radial-gradient(circle at 50% 50%, ${item}  0%, ${item} 60%, white 50%, white 100%)`,
+                            borderRadius: "50%",
+                            width: "30px",
+                            height: "30px",
+                          }}
+                          onClick={() => setColorSelect(item)}
+                          className={`w-8 h-8 rounded-full mr-2 ${
+                            colorSelect === item &&
+                            "!border-solid !border-[2px] !border-teal-500"
+                          }`}
+                        ></button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <span className="font-bold text-gray-700">
+                      Select Size:
+                    </span>
+                    <div className="flex items-center mt-2 gap-4">
+                      {data?.sizes?.map((size: string, index: number) => {
+                        console.log(size);
+
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => setSizeSelect(size)}
+                            className={`w-[60px] h-[60px] rounded-md font-semibold text-black bg-white border border-solid border-black ${
+                              sizeSelect === size && "!bg-teal-500 !text-white"
+                            }`}
+                          >
+                            {size}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="mb-2 flex  flex-wrap gap-4">
+                    <div className="flex gap-2">
+                      <span className="font-medium text-gray-700">
+                        Category:
+                      </span>
+                      <span className="flex items-center font-medium gap-4 text-[blue]">
+                        {data?.category}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="font-medium text-gray-700">Brand:</span>
+                      <span className="flex items-center font-medium gap-4 text-[blue]">
+                        {data?.brand}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="font-medium text-gray-700">Gender:</span>
+                      <span className="flex items-center font-medium gap-4 text-[blue]">
+                        {data?.gender}
+                      </span>
+                    </div>
+                  </div>
                   {/* <Ratings
                     rating={
                       data ? data?.reviews !== undefined && data?.reviews?.rating : 0
                     }
                   /> */}
-                  <div className="flex items-center mt-12 justify-between w-[90%] pr-3">
+                  <div className="flex items-center mt-8 justify-between w-[90%] pr-3">
                     <div>
                       <button
                         className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
@@ -315,14 +391,15 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
               </div>
             </div>
           </div>
+          {/* <br />
+          <br />
+          <br /> */}
           <ProductDetailsInfo
             data={data}
             products={productData?.products}
             totalReviewsLength={totalReviewsLength}
             averageRating={averageRating}
           />
-          <br />
-          <br />
         </div>
       ) : null}
     </div>

@@ -12,7 +12,11 @@ import {
   ResetFormData,
   resetPasswordSchema,
 } from "../../validations/ResetPassword";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import Input from "../shared/Input";
 
 type VerifyNumber = {
@@ -26,11 +30,7 @@ type VerifyNumber = {
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-  const {
-    reset_token,
-    // isLoading: authLoading,
-    user,
-  } = useSelector((state: any) => state.auth);
+  const { reset_token, user } = useSelector((state: any) => state.auth);
   console.log("resetToken", reset_token, user);
 
   const [invalidError, setInvalidError] = useState<boolean>(false);
@@ -45,9 +45,14 @@ const ResetPassword = () => {
   const [resetPassword, { isSuccess, error, isLoading }] =
     useResetPasswordMutation();
 
-  console.log("reset_token", reset_token);
+  // console.log("reset_token", reset_token);
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Hold on a moment.Processing new Password...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message = "Password Reset Successfully. Please login to continue.";
       toast.success(message, {
@@ -69,7 +74,7 @@ const ResetPassword = () => {
         setInvalidError(false);
       }
     }
-  }, [isSuccess, error, navigate]);
+  }, [isSuccess, error, navigate, isLoading]);
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -117,7 +122,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(verificationHandler)}>
+    <form
+      id="reset-password"
+      name="reset-password"
+      onSubmit={handleSubmit(verificationHandler)}
+    >
       <h1 className={`${styles.title}`}>Reset Password</h1>
       <div className="w-full flex items-center justify-center mt-2">
         <div className="h-[80px] w-[80px] rounded-full flex items-center justify-center bg-blue-500">

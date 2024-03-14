@@ -4,7 +4,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { MdOutlineEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { setErrorOptions, setSuccessOptions } from "../../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../../options";
 import {
   ForgotPasswordDataType,
   forgotPasswordSchema,
@@ -20,6 +24,11 @@ const ShopForgotPassword = () => {
     useShopForgotPasswordMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Please Wait...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message = data?.message || "Please check your email for otp.";
       toast.success(message, {
@@ -39,7 +48,7 @@ const ShopForgotPassword = () => {
         });
       }
     }
-  }, [isSuccess, error, navigate, data?.message]);
+  }, [isSuccess, error, navigate, data?.message, isLoading]);
 
   const {
     register,
@@ -57,7 +66,7 @@ const ShopForgotPassword = () => {
   };
 
   return (
-    <div className="bg-blue-50 py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
+    <div className="bg-blue-50 bg-opacity-60 backdrop-blur-lg py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-center text-3xl font-extrabold text-blue-600">
           Forgot Password
@@ -71,6 +80,7 @@ const ShopForgotPassword = () => {
           errors={errors}
           register={register}
           required={true}
+          inputClassName="!bg-blue-50"
         />
         <div>
           <button

@@ -13,7 +13,11 @@ import {
 } from "../../redux/features/user/userApi";
 import styles from "../../styles/styles";
 import { AddressFormData, addressSchema } from "../../validations/AddAddress";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 
 type IAddress = {
   _id: string;
@@ -50,6 +54,11 @@ const Address = () => {
   });
 
   useEffect(() => {
+    if (isLoading || deleteLoading) {
+      toast.loading("It will take some time...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Address updated successfully", {
         style: setSuccessOptions,
@@ -88,7 +97,7 @@ const Address = () => {
         });
       }
     }
-  }, [isSuccess, error, deleteError, deleteSuccess]);
+  }, [isSuccess, error, deleteError, deleteSuccess, isLoading, deleteLoading]);
 
   const AddNewAddress: SubmitHandler<AddressFormData> = async (data) => {
     try {

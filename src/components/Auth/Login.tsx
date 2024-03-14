@@ -4,19 +4,30 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import styles from "../../styles/styles";
 import { LoginFormData, loginSchema } from "../../validations/LoginValidation";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import Input from "../shared/Input";
 
 const Login = () => {
+  const { user } = useSelector((state: any) => state?.auth);
   const navigate = useNavigate();
 
   const [login, { isSuccess, data, error, isLoading }] = useLoginMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Logging In...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message = data?.message || "Logged In successful";
       toast.success(message, {
@@ -36,7 +47,7 @@ const Login = () => {
         });
       }
     }
-  }, [isSuccess, error, navigate, data?.message]);
+  }, [isSuccess, error, navigate, data?.message, isLoading]);
 
   const {
     register,
@@ -47,15 +58,22 @@ const Login = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-    console.log(data);
-    const response = await login(data);
-    console.log("login", response);
+    // console.log(data);
+    await login(data);
+    // console.log("login", response);
   };
 
-  return (
-    <div className="bg-blue-50 py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
-      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="text-center text-3xl font-extrabold text-blue-600">
+  return user ? (
+    <Navigate to="/" />
+  ) : (
+    <div className="bg-blue-50 bg-opacity-60 backdrop-blur-lg py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
+      <form
+        id="login"
+        name="login"
+        className="space-y-6"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <h2 className="text-center text-3xl font-extrabold text-blue-700">
           Login to your account
         </h2>
         <Input
@@ -67,6 +85,7 @@ const Login = () => {
           errors={errors}
           register={register}
           required={true}
+          inputClassName="!bg-blue-50"
         />
         <Input
           name="password"
@@ -77,6 +96,7 @@ const Login = () => {
           errors={errors}
           register={register}
           required={true}
+          inputClassName="!bg-blue-50"
         />
         <div className="text-start">
           <Link

@@ -51,6 +51,8 @@ const EventCard = ({ active, data }: { active?: boolean; data: IEvent }) => {
         productId: data?._id,
         shopId: data?.shop?._id,
         color: data?.colors[0],
+        size: data?.sizes[0],
+        gender: data?.gender,
         count,
         price: data?.discountPrice,
       };

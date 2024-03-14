@@ -76,7 +76,7 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
     }
   });
 
-  console.log(cartData?.cart?.products);
+  // console.log(cartData?.cart?.products);
 
   const modalRef = useRef(null);
   useClickOutside(modalRef, () => setSearchData(null));
@@ -89,10 +89,12 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
       <div className={`${styles.section}`}>
         <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
           <div>
-            <Link to="/">
+            <Link to="/" title="Home" aria-label="Home">
               <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                alt=""
+                src="https://res.cloudinary.com/dkzfopuco/image/upload/v1709903777/Trend_Flex__1_-removebg-preview_era9ij.svg"
+                alt="logo"
+                width={110}
+                height={100}
               />
             </Link>
           </div>
@@ -101,6 +103,8 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
             <input
               type="text"
               placeholder="Search Product..."
+              id="Search"
+              name="Search"
               value={searchTerm as any}
               onChange={handleSearchChange}
               className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
@@ -114,14 +118,18 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                 {searchData &&
                   searchData.map((i, index) => {
                     return (
-                      <Link key={index} to={`/product/${i._id}`}>
+                      <Link
+                        key={index}
+                        to={`/product/${i._id}`}
+                        title="Product Details Page"
+                      >
                         <div
                           ref={modalRef}
                           className="w-full flex items-start-py-3"
                         >
                           <img
                             src={`${i.images[0]?.url}`}
-                            alt=""
+                            alt={i.name}
                             className="w-[40px] h-[40px] mr-[10px]"
                           />
                           <h1>{i.name}</h1>
@@ -154,20 +162,25 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
           {/* categories */}
           <div onClick={() => setDropDown(!dropDown)}>
             <div className="relative h-[66px] w-[270px] hidden 1000px:block">
-              <BiMenuAltLeft size={30} className="absolute top-4 left-2" />
+              <BiMenuAltLeft
+                title="Category"
+                size={30}
+                className="absolute top-4 left-2"
+              />
               <button
                 className={`h-[100%] w-full flex justify-between items-center pl-10 bg-white font-sans text-lg font-[500] select-none rounded-md`}
               >
                 All Categories
               </button>
               <IoIosArrowDown
+                title="DropDown"
                 size={20}
                 className="absolute right-2 top-5 cursor-pointer"
                 onClick={() => setDropDown(!dropDown)}
               />
               {dropDown ? (
                 <DropDown
-                  categoriesData={data?.categories}
+                  categoriesData={data?.getallCategory}
                   setDropDown={setDropDown}
                 />
               ) : null}
@@ -191,6 +204,7 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                 onClick={() => setOpenWishlist(true)}
               >
                 <AiOutlineHeart
+                  aria-label="Wishlist"
                   title="Wishlist"
                   size={30}
                   color="rgb(255 255 255 / 83%)"
@@ -211,11 +225,13 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                 onClick={() => setOpenCart(true)}
               >
                 <AiOutlineShoppingCart
+                  aria-label="cart"
+                  title="Cart"
                   size={30}
                   color="rgb(255 255 255 / 83%)"
                 />
                 <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                  {user ? (cartData ? cartData?.cart?.products.length : 0) : 0}
+                  {user ? (cartData ? cartData?.cart?.products?.length : 0) : 0}
                 </span>
               </div>
             </div>
@@ -223,20 +239,28 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
             <div className={`${styles.noramlFlex}`}>
               <div className="relative cursor-pointer mr-[15px]">
                 {user ? (
-                  <Link to={`/profile/${user?._id}`}>
+                  <Link
+                    to={`/profile/${user?._id}`}
+                    title={`${user?.fullName}'s Profile`}
+                  >
                     <img
                       src={`${
-                        user.avatar?.url
-                          ? user.avatar?.url
+                        user?.avatar?.url
+                          ? user?.avatar?.url
                           : "https://res.cloudinary.com/dkzfopuco/image/upload/v1704392874/avatars/fgzkqxku7re8opvf8lsz.png"
                       }`}
                       className="w-[35px] h-[35px] rounded-full"
-                      alt=""
+                      alt={`${user?.fullName}'s Profile`}
                     />
                   </Link>
                 ) : (
-                  <Link to="/login">
-                    <CgProfile size={30} color="rgb(255 255 255 / 83%)" />
+                  <Link to="/login" title="Login Page">
+                    <CgProfile
+                      title="login"
+                      aria-label="login"
+                      size={30}
+                      color="rgb(255 255 255 / 83%)"
+                    />
                   </Link>
                 )}
               </div>
@@ -260,22 +284,26 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
         className={`${
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
         }
-      w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden`}
+      w-full h-[80px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden`}
       >
         <div className="w-full flex items-center justify-between">
           <div>
             <BiMenuAltLeft
+              aria-label="Categories"
+              title="Categories"
               size={40}
               className="ml-4"
               onClick={() => setOpen(true)}
             />
           </div>
           <div>
-            <Link to="/">
+            <Link to="/" title="Home" aria-label="Home">
               <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                alt=""
-                className="mt-3 cursor-pointer"
+                src="https://res.cloudinary.com/dkzfopuco/image/upload/v1709903777/Trend_Flex__1_-removebg-preview_era9ij.svg"
+                alt="logo"
+                width={110}
+                height={100}
+                className="cursor-pointer"
               />
             </Link>
           </div>
@@ -284,9 +312,9 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
               className="relative mr-[20px]"
               onClick={() => setOpenCart(true)}
             >
-              <AiOutlineShoppingCart size={30} />
+              <AiOutlineShoppingCart title="Cart" size={30} />
               <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                {user ? cartData?.cart && cartData?.cart?.products?.length : 0}
+                {user ? (cartData ? cartData?.cart?.products.length : 0) : 0}
               </span>
             </div>
           </div>
@@ -319,7 +347,11 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                       setOpen(false);
                     }}
                   >
-                    <AiOutlineHeart size={30} className="mt-5 ml-3" />
+                    <AiOutlineHeart
+                      title="Wishlist"
+                      size={30}
+                      className="mt-5 ml-3"
+                    />
                     <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                       {wishlistData?.wishlist
                         ? wishlistData?.wishlist?.products?.length
@@ -328,6 +360,7 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                   </div>
                 </div>
                 <RxCross1
+                  title="Close"
                   size={30}
                   className="ml-4 mt-5"
                   onClick={() => setOpen(false)}
@@ -337,6 +370,8 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
               <div className="my-8 w-[92%] m-auto h-[40px relative]">
                 <input
                   type="search"
+                  id="Search"
+                  name="Search"
                   placeholder="Search Product..."
                   className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
                   value={searchTerm as any}
@@ -346,10 +381,12 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                   <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
                     {searchData.map((i) => {
                       const d = i.name;
-
-                      const Product_name = d.replace(/\s+/g, "-");
                       return (
-                        <Link to={`/product/${Product_name}`}>
+                        <Link
+                          to={`/product/${i?._id}`}
+                          title="Product Details Page"
+                          aria-label="Product Details Page"
+                        >
                           <div className="flex items-center justify-between py-2 border-b border-gray-200">
                             <img
                               src={i.images[0]?.url}
@@ -374,10 +411,18 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                 }
               />
               <div className={`${styles.button} ml-4 !rounded-[4px]`}>
-                <Link to="/shop-create">
+                <Link
+                  to="/shop-create"
+                  title={seller ? "Go Dashboard" : "Become Seller"}
+                  aria-label={seller ? "Go Dashboard" : "Become Seller"}
+                >
                   <h1 className="text-[#fff] flex items-center">
                     {seller ? "Go Dashboard" : "Become Seller"}{" "}
-                    <IoIosArrowForward className="ml-1" />
+                    <IoIosArrowForward
+                      title="Shop Create Page"
+                      aria-label="Shop Create Page"
+                      className="ml-1"
+                    />
                   </h1>
                 </Link>
               </div>
@@ -388,14 +433,18 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
               <div className="flex w-full justify-center">
                 {user ? (
                   <div>
-                    <Link to={`/profile/${user?._id}`}>
+                    <Link
+                      to={`/profile/${user?._id}`}
+                      title={`${user.fullName}'s Profile`}
+                      aria-label={`${user.fullName}'s Profile`}
+                    >
                       <img
                         src={`${
                           user.avatar?.url
                             ? user.avatar?.url
                             : "https://res.cloudinary.com/dkzfopuco/image/upload/v1704392874/avatars/fgzkqxku7re8opvf8lsz.png"
                         }`}
-                        alt=""
+                        alt={user?.fullName}
                         className="w-[60px] h-[60px] rounded-full border-[3px] border-[#0eae88]"
                       />
                     </Link>
@@ -404,12 +453,16 @@ const Header = ({ activeHeading }: { activeHeading?: number }) => {
                   <>
                     <Link
                       to="/login"
+                      title="login"
+                      aria-label="login"
                       className="text-[18px] pr-[10px] text-[#000000b7]"
                     >
                       Login /
                     </Link>
                     <Link
                       to="/sign-up"
+                      aria-label="sign Up or register"
+                      title="Sign Up or Register"
                       className="text-[18px] text-[#000000b7]"
                     >
                       Sign up

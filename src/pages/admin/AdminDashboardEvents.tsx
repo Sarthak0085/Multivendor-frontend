@@ -5,15 +5,13 @@ import AllEvents from "../../components/Admin/AllEvents";
 const AdminDashboardEvents = () => {
   return (
     <div>
-      <AdminHeader />
-      <div className="w-full flex">
-        <div className="flex items-start justify-between w-full">
-          <div className="hidden sm:block sm:w-[80px] 800px:w-[330px]">
-            <AdminSideBar active={10} />
-          </div>
-          <div className="w-full flex justify-center overflow-x-hidden overflow-y-auto">
-            <AllEvents />
-          </div>
+      <AdminHeader active={10} />
+      <div className="flex items-start justify-between w-full">
+        <div className="w-auto fixed hidden sm:block sm:w-[80px] 1100px:w-[260px] overflow-y-auto">
+          <AdminSideBar active={10} />
+        </div>
+        <div className="flex justify-between w-full mx-10 sm:mr-5 sm:ml-[85px] 1100px:ml-[260px] overflow-x-hidden overflow-y-auto">
+          <AllEvents />
         </div>
       </div>
     </div>

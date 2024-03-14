@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
@@ -6,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useActivationMutation } from "../../redux/features/auth/authApi";
 import styles from "../../styles/styles";
 import { Link, useNavigate } from "react-router-dom";
+import { setLoadingOptions } from "../options";
 
 type VerifyNumber = {
   "0": string;
@@ -27,6 +27,11 @@ const Verification = () => {
   const [activation, { isSuccess, error, isLoading }] = useActivationMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Activating...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message =
         "Account Activated Successfully. Please Login to Continue.";
@@ -43,7 +48,7 @@ const Verification = () => {
         setInvalidError(false);
       }
     }
-  }, [isSuccess, error, navigate]);
+  }, [isSuccess, error, navigate, isLoading]);
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),

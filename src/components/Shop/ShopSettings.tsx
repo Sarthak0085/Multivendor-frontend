@@ -17,7 +17,11 @@ import {
   UpdateShopFormData,
   updateShopInfoSchema,
 } from "../../validations/UpdateShopValidation";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import Input from "../shared/Input";
 
 const ShopSettings = () => {
@@ -51,6 +55,11 @@ const ShopSettings = () => {
   }, [setValue, seller]);
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Updating Content...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Shop Avatar Updated Successfully.", {
         style: setSuccessOptions,
@@ -85,7 +94,7 @@ const ShopSettings = () => {
         });
       }
     }
-  }, [isSuccess, error, updateError, updateSuccess]);
+  }, [isSuccess, error, updateError, updateSuccess, isLoading]);
 
   const handleImage = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0 && e.target.files[0]) {

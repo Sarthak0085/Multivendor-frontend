@@ -16,7 +16,11 @@ import styles from "../../styles/styles";
 import { addBrand, addBrandFormData } from "../../validations/AddBrand";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import { BrandDataType, brandColumns } from "../shared/Tables/BrandColumns";
 
 const AllBrands = () => {
@@ -67,10 +71,25 @@ const AllBrands = () => {
     isLoading: brandLoading,
     refetch: brandRefetch,
   } = useAdminGetBrandByIdQuery(id, { refetchOnMountOrArgChange: true });
-  console.log("brand :", brandData);
+  // console.log("brand :", brandData);
 
-  console.log(data);
+  // console.log(data);
   useEffect(() => {
+    if (createLoading) {
+      toast.loading("Create new Brand. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
+    if (updateLoading) {
+      toast.loading("Update Brand. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
+    if (deleteLoading) {
+      toast.loading("Deleting Brand. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       toast.success("Brand Created Successfully", {
         style: setSuccessOptions,
@@ -135,6 +154,9 @@ const AllBrands = () => {
     updateSuccess,
     updateError,
     refetch,
+    createLoading,
+    updateLoading,
+    deleteLoading,
   ]);
 
   const {
@@ -175,7 +197,12 @@ const AllBrands = () => {
                   brandRefetch();
                 }}
               >
-                <AiOutlineEdit size={22} className="text-green-500" />
+                <AiOutlineEdit
+                  title="Edit Brand"
+                  aria-label="Edit Brand"
+                  size={22}
+                  className="text-green-500"
+                />
               </button>
               <button
                 onClick={() => {
@@ -183,7 +210,12 @@ const AllBrands = () => {
                   setConfirm(true);
                 }}
               >
-                <AiOutlineDelete size={22} className="text-red-500" />
+                <AiOutlineDelete
+                  title="Delete Brand"
+                  aria-label="Delete Brand"
+                  size={22}
+                  className="text-red-500"
+                />
               </button>
             </div>
           ),
@@ -194,7 +226,7 @@ const AllBrands = () => {
     }),
     data?.getallBrand,
     "All Brands",
-    data?.getallBrand.length > 10 ? true : false
+    data?.getallBrand.length > 6 ? true : false
   );
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {

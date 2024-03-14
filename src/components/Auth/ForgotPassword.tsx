@@ -10,16 +10,25 @@ import {
   ForgotPasswordDataType,
   forgotPasswordSchema,
 } from "../../validations/ForgotPassword";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import Input from "../shared/Input";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
-  const [forgotPassword, { isSuccess, data, error }] =
+  const [forgotPassword, { isSuccess, data, error, isLoading }] =
     useForgotPasswordMutation();
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Please wait...", {
+        style: setLoadingOptions,
+      });
+    }
     if (isSuccess) {
       const message = data?.message || "Please check your email for otp.";
       toast.success(message, {
@@ -39,7 +48,7 @@ const ForgotPassword = () => {
         });
       }
     }
-  }, [isSuccess, error, navigate, data?.message]);
+  }, [isSuccess, error, navigate, data?.message, isLoading]);
 
   const {
     register,
@@ -50,15 +59,20 @@ const ForgotPassword = () => {
   });
 
   const onSubmit: SubmitHandler<ForgotPasswordDataType> = async (data) => {
-    console.log(data);
+    // console.log(data);
     const { email } = data;
-    const response = await forgotPassword({ email });
-    console.log("Response", response);
+    await forgotPassword({ email });
+    // console.log("Response", response);
   };
 
   return (
-    <div className="bg-blue-50 py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
-      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+    <div className="bg-opacity-60 backdrop-blur-lg bg-blue-50 py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
+      <form
+        id="forgot-password"
+        name="forgot-password"
+        className="space-y-6"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <h2 className="text-center text-3xl font-extrabold text-blue-600">
           Forgot Password
         </h2>
@@ -71,6 +85,7 @@ const ForgotPassword = () => {
           errors={errors}
           register={register}
           required={true}
+          inputClassName="!bg-blue-50"
         />
         <div>
           <button

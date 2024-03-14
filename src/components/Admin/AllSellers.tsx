@@ -10,7 +10,11 @@ import {
 } from "../../redux/features/shop/shopApi";
 import Loader from "../Layout/Loader";
 import TableHOC from "../TableHoc";
-import { setErrorOptions, setSuccessOptions } from "../options";
+import {
+  setErrorOptions,
+  setLoadingOptions,
+  setSuccessOptions,
+} from "../options";
 import shopColumns, { ShopDataType } from "../shared/Tables/ShopColumns";
 
 const AllSellers = () => {
@@ -48,6 +52,16 @@ const AllSellers = () => {
   };
 
   useEffect(() => {
+    if (updateLoading) {
+      toast.loading("Updating Shop Status. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
+    if (deleteLoading) {
+      toast.loading("Deleting Shop. Hold on a moment...", {
+        style: setLoadingOptions,
+      });
+    }
     if (deleteSuccess) {
       toast.success("Shop Deleted from Database successfully", {
         style: setSuccessOptions,
@@ -84,7 +98,15 @@ const AllSellers = () => {
         });
       }
     }
-  }, [deleteSuccess, deleteError, updateSuccess, updateError, refetch]);
+  }, [
+    deleteSuccess,
+    deleteError,
+    updateSuccess,
+    updateError,
+    refetch,
+    updateLoading,
+    deleteLoading,
+  ]);
 
   const TableComponent = TableHOC<ShopDataType>(
     shopColumns.map((column) => {
@@ -101,6 +123,7 @@ const AllSellers = () => {
                   }}
                 >
                   <AiOutlineEdit
+                    aria-label="Change Shop Status"
                     title="Change Shop Status"
                     size={22}
                     className="text-green-500"
@@ -115,6 +138,7 @@ const AllSellers = () => {
                   }}
                 >
                   <AiOutlineDelete
+                    aria-label="Delete Shop"
                     title="Delete Shop"
                     size={22}
                     className="text-red-500"
