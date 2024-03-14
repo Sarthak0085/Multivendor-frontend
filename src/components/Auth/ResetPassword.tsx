@@ -51,6 +51,7 @@ const ResetPassword = () => {
     if (isLoading) {
       toast.loading("Hold on a moment.Processing new Password...", {
         style: setLoadingOptions,
+        // duration: Infinity,
       });
     }
     if (isSuccess) {

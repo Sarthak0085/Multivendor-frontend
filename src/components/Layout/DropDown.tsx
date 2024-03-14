@@ -17,7 +17,7 @@ const DropDown = ({
   };
 
   return (
-    <div className="pb-4 w-[270px] bg-[#fff] absolute z-30 rounded-b-md shadow-sm overflow-y-auto">
+    <div className="pb-4 w-[270px] h-[70vh] bg-[#fff] absolute z-30 rounded-b-md shadow-sm overflow-y-auto">
       {categoriesData &&
         categoriesData.map((i: ICategory, index: number) => (
           <div

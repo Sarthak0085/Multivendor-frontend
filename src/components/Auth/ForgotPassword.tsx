@@ -27,6 +27,7 @@ const ForgotPassword = () => {
     if (isLoading) {
       toast.loading("Please wait...", {
         style: setLoadingOptions,
+        // duration: Infinity,
       });
     }
     if (isSuccess) {

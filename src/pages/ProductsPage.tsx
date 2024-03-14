@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { IoFilterSharp } from "react-icons/io5";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import DisplayAllFilters from "../components/Filters/DisplayAllFilters";
+import MainFilters from "../components/Filters/MainFilters";
+import MobileFiltersModal from "../components/Filters/MobileFilters";
+import SortDropDown from "../components/Filters/SortDropDown";
 import Footer from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
-import Loader from "../components/Layout/Loader";
-import DisplayAllFilters from "../components/Products/DisplayAllFilters";
-import MainFilters from "../components/Products/MainFilters";
-import MobileFiltersModal from "../components/Products/MobileFilters";
 import ProductCard from "../components/Products/ProductCard";
-import SortDropDown from "../components/Products/SortDropDown";
 import useWindowSize from "../hooks/useWindowSize";
 import { useGetAllBrandQuery } from "../redux/features/brand/brandApi";
 import { useGetAllCategoryQuery } from "../redux/features/category/categoryApi";
@@ -297,9 +296,7 @@ const ProductsPage = () => {
                 setSelectedSizes={setSelectedSizes}
               />
             </div>
-            {isLoading ? (
-              <Loader />
-            ) : (
+            {!isLoading && (
               <>
                 <div style={gridStyle} className="w-full ml-2">
                   {data &&

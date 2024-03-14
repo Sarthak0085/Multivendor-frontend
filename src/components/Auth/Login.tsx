@@ -23,9 +23,10 @@ const Login = () => {
   const [login, { isSuccess, data, error, isLoading }] = useLoginMutation();
 
   useEffect(() => {
-    if (isLoading) {
+    if (isLoading === true) {
       toast.loading("Logging In...", {
         style: setLoadingOptions,
+        // duration: Infinity,
       });
     }
     if (isSuccess) {
@@ -42,7 +43,7 @@ const Login = () => {
           style: setErrorOptions,
         });
       } else {
-        toast.error("An error occured", {
+        toast.error("An unknown error occured", {
           style: setErrorOptions,
         });
       }

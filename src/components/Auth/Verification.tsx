@@ -30,6 +30,7 @@ const Verification = () => {
     if (isLoading) {
       toast.loading("Activating...", {
         style: setLoadingOptions,
+        // duration: Infinity,
       });
     }
     if (isSuccess) {
