@@ -12,7 +12,7 @@ const EventsPage = () => {
           {eventData?.events?.length !== 0 ? (
             <EventCard active={true} data={eventData && eventData?.events[0]} />
           ) : (
-            <div className="flex my-20 items-center text-[red] font-bold justify-center">
+            <div className="flex my-20 items-center text-[red] font-bold justify-center mr-7 md:mr-0">
               No events at the moment! Stay tuned for our upcoming events! We're
               working on bringing you new and exciting experiences.
             </div>

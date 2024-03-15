@@ -59,7 +59,7 @@ const Cart = ({
       refetch();
       toast.success("Cart Empty Successfully.");
       setOpenCart(false);
-      // window.location.reload();
+      window.location.reload();
     }
     if (RemoveError) {
       if ("data" in RemoveError) {
@@ -138,7 +138,7 @@ const Cart = ({
       <div className="fixed top-0 right-0 z-[2000] h-full w-[100%] sm:w-[80%] md:w-[60%] lg:w-[50%] 1300px:w-[38%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
         {isLoading ? (
           <Loader />
-        ) : typeof cartData !== "undefined" &&
+        ) : typeof cartData === "undefined" ||
           cartData?.cart?.products?.length === 0 ? (
           <div className="w-full h-screen flex items-center justify-center">
             <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">

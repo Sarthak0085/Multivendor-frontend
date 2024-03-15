@@ -113,10 +113,12 @@ const Wishlist = ({
       refetch();
     }
     if (emptySuccess) {
+      refetch();
+      setOpenWishlist(false);
+      window.location.reload();
       toast.success("Wishlist Empty Successfully.", {
         style: setSuccessOptions,
       });
-      refetch();
     }
     if (error) {
       if ("data" in error) {
@@ -174,7 +176,7 @@ const Wishlist = ({
       <div className="fixed top-0 right-0 z-20 h-full w-[100%] sm:w-[80%] md:w-[60%] lg:w-[50%] 1300px:w-[38%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
         {isLoading ? (
           <Loader />
-        ) : wishlistData?.wishlist &&
+        ) : typeof wishlistData === "undefined" ||
           wishlistData?.wishlist?.products.length === 0 ? (
           <div className="w-full h-screen flex items-center justify-center">
             <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">
