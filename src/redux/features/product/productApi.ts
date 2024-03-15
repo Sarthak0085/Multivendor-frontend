@@ -35,14 +35,14 @@ export const productApi = apiSlice.injectEndpoints({
         }),
         createNewReview: builder.mutation({
             query: () => ({
-                url: `/ product / create - new- review`,
+                url: `/product/create-new-review`,
                 method: "PUT",
                 credentials: "include" as const,
             })
         }),
         updateProduct: builder.mutation({
             query: (data) => ({
-                url: `/ product / update`,
+                url: `/product/update`,
                 method: "PUT",
                 body: data,
                 credentials: "include" as const,
@@ -50,7 +50,7 @@ export const productApi = apiSlice.injectEndpoints({
         }),
         deleteShopProduct: builder.mutation({
             query: (id) => ({
-                url: `/ product / delete -shop - product / ${id}`,
+                url: `/ product/delete-shop-product/${id}`,
                 method: "DELETE",
                 credentials: "include" as const,
             })
@@ -64,7 +64,7 @@ export const productApi = apiSlice.injectEndpoints({
         }),
         adminDeleteProductById: builder.mutation({
             query: (id) => ({
-                url: `/ product / admin - delete /${id}`,
+                url: `/ product/admin-delete/${id}`,
                 method: "DELETE",
                 credentials: "include" as const,
             })

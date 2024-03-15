@@ -171,6 +171,8 @@ const CreateProduct = () => {
         originalPrice,
         discountPrice,
         stock,
+        sizes,
+        gender,
         shopId: seller._id,
         images: images,
         colors,
