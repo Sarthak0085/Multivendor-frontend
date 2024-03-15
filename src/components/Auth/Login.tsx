@@ -23,10 +23,10 @@ const Login = () => {
   const [login, { isSuccess, data, error, isLoading }] = useLoginMutation();
 
   useEffect(() => {
-    if (isLoading || isSuccess) {
+    if (isLoading) {
       toast.loading("Logging In...", {
         style: setLoadingOptions,
-        duration: isSuccess ? 0 : Infinity,
+        duration: 10000,
       });
     }
     if (isSuccess) {
