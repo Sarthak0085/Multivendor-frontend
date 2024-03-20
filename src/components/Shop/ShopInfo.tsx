@@ -36,6 +36,8 @@ const ShopInfo = ({ isOwner }: { isOwner: boolean }) => {
         toast.error(errorData?.message, {
           style: setErrorOptions,
         });
+      } else {
+        toast.error("An unknown error occured.");
       }
     }
   }, [isSuccess, error, navigate]);
@@ -70,35 +72,35 @@ const ShopInfo = ({ isOwner }: { isOwner: boolean }) => {
       {isLoading && shopLoading ? (
         <Loader />
       ) : (
-        shopInfo?.shop && (
+        shopInfo?.seller && (
           <div>
             <div className="w-full py-5">
               <div className="w-full flex item-center justify-center">
                 <img
                   src={`${
-                    shopInfo?.shop?.avatar
-                      ? shopInfo?.shop?.avatar?.url
+                    shopInfo?.seller?.avatar
+                      ? shopInfo?.seller?.avatar?.url
                       : "https:"
                   }`}
-                  alt={shopInfo?.shop?.name}
+                  alt={shopInfo?.seller?.name}
                   className="w-[150px] h-[150px] object-cover rounded-full"
                 />
               </div>
               <h3 className="text-center py-2 text-[20px]">
-                {shopInfo?.shop?.name}
+                {shopInfo?.seller?.name}
               </h3>
               <p className="text-[16px] text-[#000000a6] p-[10px] flex items-center">
-                {shopInfo?.shop?.description}
+                {shopInfo?.seller?.description}
               </p>
             </div>
             <div className="p-3">
               <h5 className="font-[600]">Address</h5>
-              <h4 className="text-[#000000a6]">{shopInfo?.shop?.address}</h4>
+              <h4 className="text-[#000000a6]">{shopInfo?.seller?.address}</h4>
             </div>
             <div className="p-3">
               <h5 className="font-[600]">Phone Number</h5>
               <h4 className="text-[#000000a6]">
-                {shopInfo?.shop?.phoneNumber}
+                {shopInfo?.seller?.phoneNumber}
               </h4>
             </div>
             <div className="p-3">
@@ -114,7 +116,7 @@ const ShopInfo = ({ isOwner }: { isOwner: boolean }) => {
             <div className="p-3">
               <h5 className="font-[600]">Joined On</h5>
               <h4 className="text-[#000000b0]">
-                {shopInfo?.shop?.createdAt?.slice(0, 10)}
+                {shopInfo?.seller?.createdAt?.slice(0, 10)}
               </h4>
             </div>
             {isOwner && (

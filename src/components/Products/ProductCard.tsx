@@ -174,7 +174,7 @@ const ProductCard = ({
         }}
         onMouseLeave={() => setShow(false)}
         className={`w-full sm:w-[300px] border border-blue-200 max-w-[350px] h-[400px]
-       bg-white rounded-lg shadow-sm relative cursor-pointer mr-5`}
+       bg-white rounded-lg shadow-sm relative cursor-pointer mr-5 mx-4`}
       >
         <Link
           to={`${

@@ -15,8 +15,8 @@ const BestDeals = () => {
       ? [...productData.products]
       : [];
     const sortedData = allProductsData?.sort((a, b) => b.sold_out - a.sold_out);
-    const firstFive = sortedData && sortedData.slice(0, 5);
-    setData(firstFive);
+    const firstEight = sortedData && sortedData.slice(0, 8);
+    setData(firstEight);
   }, [productData]);
 
   const { width } = useWindowSize();

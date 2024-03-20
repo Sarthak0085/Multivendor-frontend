@@ -30,7 +30,7 @@ const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <div className="w-full flex">
-          <div className="flex items-center" onClick={() => setActive(1)}>
+          <button className="flex items-center" onClick={() => setActive(1)}>
             <h5
               className={`font-[600] text-[20px] ${
                 active === 1 ? "text-red-500" : "text-[#333]"
@@ -38,8 +38,8 @@ const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
             >
               Shop Products
             </h5>
-          </div>
-          <div className="flex items-center" onClick={() => setActive(2)}>
+          </button>
+          <button className="flex items-center" onClick={() => setActive(2)}>
             <h5
               className={`font-[600] text-[20px] ${
                 active === 2 ? "text-red-500" : "text-[#333]"
@@ -47,9 +47,9 @@ const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
             >
               Running Events
             </h5>
-          </div>
+          </button>
 
-          <div className="flex items-center" onClick={() => setActive(3)}>
+          <button className="flex items-center" onClick={() => setActive(3)}>
             <h5
               className={`font-[600] text-[20px] ${
                 active === 3 ? "text-red-500" : "text-[#333]"
@@ -57,7 +57,7 @@ const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
             >
               Shop Reviews
             </h5>
-          </div>
+          </button>
         </div>
         <div>
           {isOwner && (
@@ -76,7 +76,7 @@ const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
       {active === 1 && productLoading ? (
         <Loader />
       ) : (
-        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
+        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
           {productData?.products &&
             productData?.products.map((i: IProduct, index: number) => (
               <ProductCard data={i} key={index} />
@@ -89,7 +89,7 @@ const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
           <Loader />
         ) : (
           <div className="w-full">
-            <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
+            <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
               {eventData?.events &&
                 eventData?.events.map((i: any, index: number) => (
                   <ProductCard data={i} key={index} isEvent={true} />
