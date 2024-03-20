@@ -49,7 +49,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Hold on a moment.Processing new Password...", {
+      toast.loading("Hold on a moment. Processing new Password...", {
         style: setLoadingOptions,
         // duration: Infinity,
       });

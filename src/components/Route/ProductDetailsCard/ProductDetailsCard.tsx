@@ -1,16 +1,15 @@
 import { useRef, useState } from "react";
+import toast from "react-hot-toast";
 import {
   AiFillHeart,
   AiOutlineHeart,
-  AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
+import useClickOutside from "../../../hooks/useClickOutside";
 import styles from "../../../styles/styles";
 import { IProduct } from "../../../types/product";
-import toast from "react-hot-toast";
-import useClickOutside from "../../../hooks/useClickOutside";
 
 interface IProductDetailsCard {
   setOpen: (open: boolean) => void;
@@ -19,6 +18,10 @@ interface IProductDetailsCard {
   addToWishlist: (data: IProduct) => void;
   removeFromWishlist: (data: IProduct) => void;
   click: boolean;
+  sizeSelect: string;
+  setSizeSelect: (sizeSelect: string) => void;
+  colorSelect: string;
+  setColorSelect: (colorSelect: string) => void;
 }
 
 const ProductDetailsCard = ({
@@ -28,11 +31,17 @@ const ProductDetailsCard = ({
   addToWishlist,
   removeFromWishlist,
   click,
+  colorSelect,
+  setColorSelect,
+  sizeSelect,
+  setSizeSelect,
 }: IProductDetailsCard) => {
   const [count, setCount] = useState(1);
   // const [click, setClick] = useState(false);
 
-  const handleMessageSubmit = () => {};
+  // const handleMessageSubmit = () => {};
+
+  console.log(data);
 
   const incrementCount = () => {
     if (count === 99) {
@@ -48,119 +57,6 @@ const ProductDetailsCard = ({
       setCount(count - 1);
     }
   };
-
-  // const [
-  //   addToWishlist,
-  //   { isSuccess: addWishlistSuccess, error: addWishlistError },
-  // ] = useAddToWishlistMutation();
-  // const [
-  //   removeFromWishlist,
-  //   { isSuccess: removeWishlistSuccess, error: removeWishlistError },
-  // ] = useRemoveFromWishlistMutation();
-
-  // const incrementCount = () => {
-  //   setCount(count + 1);
-  // };
-
-  // const removeFromWishlistHandler = (data) => {
-  //   const wishlistData = {
-  //     productId: data?._id,
-  //     shopId: data?.shop?._id,
-  //     // color: data?.colors[0],
-  //     category: data?.category,
-  //     price: data?.discountPrice,
-  //   };
-  //   removeFromWishlist(wishlistData);
-  //   // setClick(!click);
-  //   // dispatch(removeFromWishlist(data));
-  // };
-
-  // const addToWishlistHandler = (data) => {
-  //   const wishlistData = {
-  //     productId: data?._id,
-  //     shopId: data?.shop?._id,
-  //     color: data?.colors[0],
-  //     // category: data?.category,
-  //     price: data?.discountPrice,
-  //   };
-  //   addToWishlist(wishlistData);
-  //   // setClick(!click);
-  //   // dispatch(addToWishlist(data));
-  // };
-
-  // //   const {
-  // //     data: cartData,
-  // //     isLoading: cartLoading,
-  // //     refetch,
-  // //   } = useGetCartQuery({
-  // //     refetchOnMountOrArgChange: true,
-  // //   });
-  // const [addToCart, { isSuccess, error }] = useAddToCartMutation();
-
-  // const addToCartHandler = (data: IProduct) => {
-  //   // const isItemExists =
-  //   //   cartData?.cart && cartData?.cart.find((i) => i._id === id);
-  //   // if (isItemExists) {
-  //   //   toast.error("Item already in cart!");
-  //   // } else {
-  //   if (data.stock < 1) {
-  //     toast.error("Product stock limited!");
-  //   } else {
-  //     const cartData = {
-  //       product: data?._id,
-  //       shop: data?.shop?._id,
-  //       color: data?.colors[0],
-  //       count,
-  //       price: data?.discountPrice,
-  //     };
-  //     // console.log(cartData);
-
-  //     addToCart(cartData);
-  //   }
-  // };
-
-  // const { data: wishlistData } = useGetWishlistQuery({});
-  // console.log("Wishlist :", wishlistData);
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     toast.success("Item added to Cart successfully!");
-  //     //   refetch();
-  //   }
-  //   if (addWishlistSuccess) {
-  //     toast.success("Product Added to Wishlist Successfully");
-  //     setClick(!click);
-  //   }
-  //   if (removeWishlistSuccess) {
-  //     toast.success("Product Removed from wishlist Successfully");
-  //     setClick(!click);
-  //   }
-  //   if (error) {
-  //     if ("data" in error) {
-  //       const errorData = error?.data as Error;
-  //       toast.error(errorData?.message);
-  //     }
-  //   }
-  //   if (removeWishlistError) {
-  //     if ("data" in removeWishlistError) {
-  //       const errorData = removeWishlistError?.data as Error;
-  //       toast.error(errorData?.message);
-  //     }
-  //   }
-  //   if (addWishlistError) {
-  //     if ("data" in addWishlistError) {
-  //       const errorData = addWishlistError?.data as Error;
-  //       toast.error(errorData?.message);
-  //     }
-  //   }
-  // }, [
-  //   isSuccess,
-  //   error,
-  //   removeWishlistError,
-  //   addWishlistError,
-  //   addWishlistSuccess,
-  //   removeWishlistSuccess,
-  // ]);
 
   const modalRef = useRef(null);
   useClickOutside(modalRef, () => setOpen(false));
@@ -180,7 +76,7 @@ const ProductDetailsCard = ({
               onClick={() => setOpen(false)}
             />
             <div className="block w-full 800px:flex gap-2 mt-5">
-              <div className="w-full 800px:w-[50%]">
+              <div className="w-full 800px:w-[50%] pt-7">
                 <img
                   src={`${data?.images && data?.images[0]?.url}`}
                   alt={data?.name}
@@ -194,7 +90,7 @@ const ProductDetailsCard = ({
                     title="Shop Preview"
                   >
                     <img
-                      src={`${data.images && data.images[0]?.url}`}
+                      src={`${data?.shop?.avatar && data?.shop?.avatar?.url}`}
                       alt={data?.name}
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />
@@ -206,14 +102,14 @@ const ProductDetailsCard = ({
                     </div>
                   </Link>
                 </div>
-                <div
+                {/* <div
                   className={`${styles.button} bg-[#000] mt-4 rounded-[4px] h-11`}
                   onClick={handleMessageSubmit}
                 >
                   <span className="text-[#fff] flex items-center">
                     Send Message <AiOutlineMessage className="ml-1" size={20} />
                   </span>
-                </div>
+                </div> */}
                 <h5 className="text-[16px] ml-1 text-[red] mt-5">
                   ({data?.sold_out}) Sold out
                 </h5>
@@ -225,7 +121,7 @@ const ProductDetailsCard = ({
                 </h1>
                 <p>{data?.description}</p>
 
-                <div className="flex mt-3">
+                <div className="flex my-2">
                   <h4 className={`${styles.productDiscountPrice}`}>
                     &#8377;. {data?.discountPrice}
                   </h4>
@@ -233,7 +129,70 @@ const ProductDetailsCard = ({
                     &#8377;. {data?.originalPrice ? data?.originalPrice : null}
                   </h3>
                 </div>
-                <div className="flex items-center mt-12 justify-between pr-3">
+                <div className="mb-3">
+                  <span className="font-bold text-gray-700 dark:text-gray-300">
+                    Select Color:
+                  </span>
+                  <div className="flex items-center mt-1">
+                    {data?.colors?.map((item: string, index: number) => (
+                      <button
+                        key={index}
+                        style={{
+                          backgroundImage: `radial-gradient(circle at 50% 50%, ${item}  0%, ${item} 60%, white 50%, white 100%)`,
+                          borderRadius: "50%",
+                          width: "20px",
+                          height: "20px",
+                        }}
+                        onClick={() => setColorSelect(item)}
+                        className={`w-6 h-6 rounded-full mr-2 ${
+                          colorSelect === item &&
+                          "!border-solid !border-[2px] !border-teal-500"
+                        }`}
+                      ></button>
+                    ))}
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <span className="font-bold text-gray-700">Select Size:</span>
+                  <div className="flex items-center mt-1 gap-4">
+                    {data?.sizes?.map((size: string, index: number) => {
+                      console.log(size);
+
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => setSizeSelect(size)}
+                          className={`w-[30px] h-[30px] rounded-md font-semibold text-black bg-white border border-solid border-black ${
+                            sizeSelect === size && "!bg-teal-500 !text-white"
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="mb-2 flex flex-wrap gap-4">
+                  <div className="flex gap-2">
+                    <span className="font-medium text-gray-700">Category:</span>
+                    <span className="flex items-center font-medium gap-4 text-[blue]">
+                      {data?.category}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="font-medium text-gray-700">Brand:</span>
+                    <span className="flex items-center font-medium gap-4 text-[blue]">
+                      {data?.brand}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="font-medium text-gray-700">Gender:</span>
+                    <span className="flex items-center font-medium gap-4 text-[blue]">
+                      {data?.gender}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center mt-5 justify-between pr-3">
                   <div>
                     <button
                       className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"

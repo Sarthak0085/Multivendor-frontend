@@ -37,6 +37,8 @@ const ProductCard = ({
   const { user } = useSelector((state: any) => state?.auth);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
+  const [colorSelect, setColorSelect] = useState<string>(data?.colors[0]);
+  const [sizeSelect, setSizeSelect] = useState<string>(data?.sizes[0]);
 
   const { data: wishlistData, refetch } = useGetWishlistQuery(user?._id, {
     refetchOnMountOrArgChange: true,
@@ -148,10 +150,10 @@ const ProductCard = ({
       const cartData = {
         productId: data?._id,
         shopId: data?.shop?._id,
-        color: data?.colors[0],
+        color: colorSelect,
         count: count || 1,
         price: data?.discountPrice,
-        size: data?.sizes[0],
+        size: sizeSelect,
         gender: data?.gender,
       };
       console.log(cartData);
@@ -173,8 +175,8 @@ const ProductCard = ({
           }
         }}
         onMouseLeave={() => setShow(false)}
-        className={`w-full sm:w-[300px] border border-blue-200 max-w-[350px] h-[400px]
-       bg-white rounded-lg shadow-sm relative cursor-pointer mr-5 mx-4`}
+        className={`w-[280px] 400px:w-[300px] border border-blue-200 max-w-[300px] h-[400px]
+       bg-white rounded-lg shadow-sm relative cursor-pointer mr-5`}
       >
         <Link
           to={`${
@@ -273,6 +275,44 @@ const ProductCard = ({
               title="Add to cart"
               aria-label="Add to cart"
             />
+            {/* </div> */}
+            <div className="mb-4 absolute left-5 top-[150px]">
+              <div className="flex items-center bg-transparent px-2 rounded-md">
+                {data?.colors?.map((item: string, index: number) => (
+                  <button
+                    key={index}
+                    style={{
+                      backgroundImage: `radial-gradient(circle at 50% 50%, ${item}  0%, ${item} 60%, white 50%, white 100%)`,
+                      borderRadius: "50%",
+                      width: "30px",
+                      height: "30px",
+                    }}
+                    onClick={() => setColorSelect(item)}
+                    className={`w-8 h-8 rounded-full mr-2 ${
+                      colorSelect === item &&
+                      "!border-solid !border-[2px] !border-teal-500"
+                    }`}
+                  ></button>
+                ))}
+              </div>
+              <div className="flex items-center mt-2 gap-2 bg-transparent px-2 rounded-md">
+                {data?.sizes?.map((size: string, index: number) => {
+                  console.log(size);
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => setSizeSelect(size)}
+                      className={`w-[30px] h-[30px] rounded-md font-semibold text-black bg-white border border-solid border-black ${
+                        sizeSelect === size && "!bg-teal-500 !text-white"
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
             {open ? (
               <ProductDetailsCard
                 click={click}
@@ -280,6 +320,10 @@ const ProductCard = ({
                 addToWishlist={addToWishlistHandler}
                 removeFromWishlist={removeFromWishlistHandler}
                 setOpen={setOpen}
+                setColorSelect={setColorSelect}
+                colorSelect={colorSelect}
+                sizeSelect={sizeSelect}
+                setSizeSelect={setSizeSelect}
                 data={data}
               />
             ) : null}

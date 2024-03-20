@@ -25,9 +25,9 @@ const AllUsers = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [confirm, setConfirm] = useState<boolean>(false);
 
-  console.log("id", id, "open", open);
+  // console.log("id", id, "open", open);
 
-  console.log("data:", data, "product:-", data?.users);
+  // console.log("data:", data, "product:-", data?.users);
 
   const [
     deleteUser,

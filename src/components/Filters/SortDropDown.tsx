@@ -15,7 +15,7 @@ const SortDropDown = ({
   useClickOutside(modalRef, () => setOpen(false));
 
   return (
-    <div ref={modalRef} className="relative inline-block z-2">
+    <div ref={modalRef} className="relative inline-block z-10">
       <select id="select" className="hidden">
         {sortData.map((item: { title: string }, index: number) => (
           <option value={item.title} key={index}>

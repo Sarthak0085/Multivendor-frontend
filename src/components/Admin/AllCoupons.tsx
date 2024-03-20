@@ -30,7 +30,7 @@ const AllCoupons = () => {
   const { data, isLoading, refetch } = useAdminGetAllCouponsQuery({
     refetchOnMountOrArgChange: true,
   });
-  console.log("data", data);
+  // console.log("data", data);
 
   useEffect(() => {
     if (isLoading) {

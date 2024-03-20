@@ -30,7 +30,7 @@ const Cart = ({
     refetch,
   } = useGetCartQuery(userId, { refetchOnMountOrArgChange: true });
 
-  console.log(cartData);
+  // console.log(cartData);
 
   const [addTocart, { isSuccess, error }] = useAddToCartMutation();
   const [emptyCart, { isSuccess: emptySuccess, error: emptyError }] =
@@ -104,15 +104,15 @@ const Cart = ({
   };
 
   const removeFromCartHandler = async (data: IProductInCart) => {
-    console.log("cart:", data);
-    const response = await removeFromCart(data);
-    console.log(response);
+    // console.log("cart:", data);
+    await removeFromCart(data);
+    // console.log(response);
   };
 
   const totalPrice = cartData?.cart?.cartTotal;
 
   const quantityChangeHandler = async (data: IProductInCart) => {
-    console.log("value: ", value);
+    // console.log("value: ", value);
 
     const cart = {
       productId: data?.productId,
@@ -123,7 +123,7 @@ const Cart = ({
       size: size || data?.size,
       gender: data?.gender,
     };
-    console.log(cart);
+    // console.log(cart);
 
     await addTocart(cart);
     // dispatch(addTocart(data));

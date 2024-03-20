@@ -31,7 +31,7 @@ const Register = () => {
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Registering new user...", {
+      toast.loading("Registering new user. Please Wait for a While....", {
         style: setLoadingOptions,
         // duration: isSuccess || error ? 0 : Infinity,
       });
@@ -84,15 +84,15 @@ const Register = () => {
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     // console.log(data);
     const { fullName, email, password } = data;
-    console.log({ fullName, email, password, avatar });
+    // console.log({ fullName, email, password, avatar });
 
-    const response = await registerMutation({
+    await registerMutation({
       fullName,
       email,
       password,
       avatar,
     });
-    console.log(response);
+    // console.log(response);
   };
 
   return user ? (

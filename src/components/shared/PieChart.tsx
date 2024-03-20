@@ -9,7 +9,7 @@ interface ICustomized {
   innerRadius: number;
   outerRadius: number;
   percent: number;
-  index?: number;
+  index: number;
 }
 
 const RADIAN = Math.PI / 180;
@@ -38,13 +38,6 @@ const renderCustomizedLabel = ({
   );
 };
 
-// const tempdata = [
-//   { name: "Group A", value: 400 },
-//   { name: "Group B", value: 300 },
-//   { name: "Group C", value: 300 },
-//   { name: "Group D", value: 200 },
-// ];
-
 const PieChartAnalytics = ({ data }: { data: any }) => {
   return (
     <div className="my-5">
@@ -65,8 +58,8 @@ const PieChartAnalytics = ({ data }: { data: any }) => {
         </Pie>
       </PieChart>
       <div className={`flex items-center justify-around pl-[35px]`}>
-        {data.map((item: { name: string; value: number }, index: number) => (
-          <p key={index} className="font-bold cursor-pointer">
+        {data.map((item: { name: string; value: number }) => (
+          <p key={item?.name} className="font-bold cursor-pointer">
             {item?.name}
           </p>
         ))}

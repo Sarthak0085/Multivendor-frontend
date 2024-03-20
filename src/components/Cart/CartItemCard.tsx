@@ -29,7 +29,7 @@ const CartItemCard = ({
   setValue,
 }: ICartSingleCard) => {
   const totalPrice = data?.price * value;
-  console.log(data.count);
+  // console.log(data.count);
 
   const increment = () => {
     if (data.product.stock < value) {

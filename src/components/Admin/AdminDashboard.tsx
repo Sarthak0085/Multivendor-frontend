@@ -17,6 +17,7 @@ import {
 } from "../shared/Tables/ProductColumns";
 import SellersAnalytics from "./Analytics/SellersAnalytics";
 import UsersAnalytics from "./Analytics/UsersAnalytics";
+import { useAdminGetAllCouponsQuery } from "../../redux/features/coupon/couponApi";
 
 const northStates = ["RJ", "HP", "PB", "JK", "UP", "HR", "CH", "DL", "UK"];
 
@@ -34,6 +35,8 @@ const AdminDashboard = () => {
 
   const { data: withdrawData, isLoading: withdrawLoading } =
     useGetAllWithdrawRequestByAdminQuery({});
+  const { data: couponData, isLoading: couponLoading } =
+    useAdminGetAllCouponsQuery({});
 
   // console.log("data:", data);
 
@@ -45,8 +48,6 @@ const AdminDashboard = () => {
     (item: any) =>
       item?.createdAt?.slice(0, 10) === new Date().toISOString().slice(0, 10)
   );
-
-  console.log(withdrawRequestToday);
 
   // Filter orders for North region
   const northRegionOrders = data?.orders?.filter((item: any) => {
@@ -73,14 +74,6 @@ const AdminDashboard = () => {
     );
   });
 
-  console.log(
-    "northRegionOrders",
-    northRegionOrders?.length,
-    southRegionsOrders?.length,
-    eastRegionsOrders?.length,
-    westRegionOrders?.length
-  );
-
   const pieChartData = [
     { name: "North", value: northRegionOrders?.length },
     { name: "South", value: southRegionsOrders?.length },
@@ -103,8 +96,6 @@ const AdminDashboard = () => {
     { name: "C.O.D", value: paymentStatus?.length },
     { name: "PAID", value: data?.orders?.length - paymentStatus?.length },
   ];
-
-  console.log(paymentStatusData);
 
   const processing = data?.orders?.filter(
     (item: any) => item?.status === "Processing"
@@ -177,39 +168,12 @@ const AdminDashboard = () => {
     },
   ];
 
-  // function getRefundOrdersForToday() {
-  //   const today = new Date();
-
-  //   const refundOrdersToday = data?.orders.filter((order: IOrder) => {
-  //     return (
-  //       order.status === "Processing Refund" &&
-  //       order.updatedAt !== undefined &&
-  //       order?.updatedAt.slice(0, 10) ===
-  //         today.toISOString().slice(0, 10)
-  //     );
-  //   });
-
-  //   return refundOrdersToday;
-  // }
-
   const refundOrdersToday = data?.orders?.filter(
     (order: any) =>
       order?.status === "Processing Refund" &&
       order?.updatedAt &&
       order?.updatedAt?.slice(0, 10) === new Date().toISOString()?.slice(0, 10)
   );
-
-  //   const orderCancelData = [
-  //     {
-  //       name: "Cancelled",
-  //       value: refundProcess.length + refundSuccess.length,
-  //     },
-  //     {
-  //       name: "",
-  //       value:
-  //         data?.orders.length - (refundProcess.length + refundSuccess.length),
-  //     },
-  //   ];
 
   const ProductTablecomponent = TableHOC<ProductDataType>(
     dashboardProductColumns?.map((column) => {
@@ -247,7 +211,7 @@ const AdminDashboard = () => {
       ?.reduce((acc: number, item: IOrder) => acc + item?.totalPrice * 0.1, 0)
       ?.toFixed(0);
 
-  return isLoading || productLoading || withdrawLoading ? (
+  return isLoading || productLoading || couponLoading || withdrawLoading ? (
     <Loader />
   ) : (
     <div className="w-full p-1 pt-10 500px:p-8">
@@ -307,7 +271,7 @@ const AdminDashboard = () => {
               All Coupons
             </h2>
             <h3 className="text-[20px] leading-[24px] font-bold text-[#5a5c69] mt-[5px]">
-              {productData?.products?.length}
+              {couponData?.couponCodes?.length}
             </h3>
             <Link to="/dashboard-coupons">
               <h5 className="text-[#077f9c] underline text-[13px]">

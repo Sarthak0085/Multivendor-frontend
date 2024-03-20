@@ -24,7 +24,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Logging In...", {
+      toast.loading("Logging In. Please Wait for a While....", {
         style: setLoadingOptions,
         duration: 10000,
       });

@@ -60,7 +60,7 @@ const AllProducts = () => {
     }
   }, [isSuccess, error, refetch, deleteLoading]);
 
-  console.log("data:", data, "product:-", data?.products);
+  // console.log("data:", data, "product:-", data?.products);
 
   const TableComponent = TableHOC<ProductDataType>(
     productColumns.map((column) => {

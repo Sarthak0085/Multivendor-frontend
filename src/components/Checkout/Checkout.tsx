@@ -43,7 +43,7 @@ const Checkout = () => {
     refetch();
   }, [couponCode]);
 
-  console.log(user);
+  // console.log(user);
 
   const paymentSubmit = () => {
     if (
@@ -75,9 +75,8 @@ const Checkout = () => {
         user,
       };
 
-      console.log("order", orderData);
+      // console.log("order", orderData);
 
-      // update local storage with the updated orders array
       localStorage.setItem("latestOrder", JSON.stringify(orderData));
       navigate("/payment");
     }
@@ -108,7 +107,7 @@ const Checkout = () => {
     //   const shopId = res.data.couponCode?.shopId;
     const couponCodeValue = data.couponCode?.value;
     if (data.couponCode !== null) {
-      console.log("Cart", cart?.products);
+      // console.log("Cart", cart?.products);
 
       const isCouponValid =
         cart &&
@@ -135,16 +134,6 @@ const Checkout = () => {
       setCouponCode("");
     }
   };
-
-  // console.log(discountPercentenge);
-  // const handleSubmit = () => {};
-
-  // const totalPrice = 290;
-  // const shipping = "svjgakgaggka";
-  // const subTotalPrice = 200;
-  // const discountPercentenge = 2;
-
-  // const paymentSubmit = () => {};
 
   return (
     <div className="w-full flex flex-col items-center py-8">

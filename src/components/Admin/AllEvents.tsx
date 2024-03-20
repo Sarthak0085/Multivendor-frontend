@@ -57,7 +57,7 @@ const AllEvents = () => {
     }
   }, [isSuccess, error, refetch, deleteLoading]);
 
-  console.log("data:", data);
+  // console.log("data:", data);
 
   const TableComponent = TableHOC<EventDataType>(
     eventColumns.map((column) => {

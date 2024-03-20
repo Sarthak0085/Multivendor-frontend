@@ -56,7 +56,7 @@ const EventCard = ({ active, data }: { active?: boolean; data: IEvent }) => {
         count,
         price: data?.discountPrice,
       };
-      console.log(cartData);
+      // console.log(cartData);
 
       await addToCart(cartData);
     }

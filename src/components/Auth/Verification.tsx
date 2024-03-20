@@ -28,7 +28,7 @@ const Verification = () => {
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Activating...", {
+      toast.loading("Activating. Please Wait...", {
         style: setLoadingOptions,
         // duration: Infinity,
       });

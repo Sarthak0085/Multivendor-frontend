@@ -49,7 +49,7 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
     removeFromWishlist,
     { isSuccess: removeWishlistSuccess, error: removeWishlistError },
   ] = useRemoveFromWishlistMutation();
-  console.log(data);
+  // console.log(data);
 
   const incrementCount = () => {
     setCount(count + 1);

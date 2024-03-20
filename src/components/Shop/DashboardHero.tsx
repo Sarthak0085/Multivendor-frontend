@@ -16,6 +16,7 @@ import {
   ProductDataType,
   dashboardProductColumns,
 } from "../shared/Tables/ProductColumns";
+import { useGetAllShopCouponQuery } from "../../redux/features/coupon/couponApi";
 
 const northStates = ["RJ", "HP", "PB", "JK", "UP", "HR", "CH", "DL", "UK"];
 
@@ -33,7 +34,10 @@ const DashboardHero = () => {
   const { data: productData, isLoading: productLoading } =
     useGetAllShopProductsQuery(seller?._id, {});
 
-  console.log("data:", data);
+  const { data: couponData, isLoading: couponLoading } =
+    useGetAllShopCouponQuery(seller?._id, {});
+
+  console.log("data:", couponData);
 
   const orderData = data?.orders?.slice(0, 6);
 
@@ -114,7 +118,7 @@ const DashboardHero = () => {
     { name: "PAID", value: data?.orders?.length - paymentStatus?.length },
   ];
 
-  console.log(paymentStatusData);
+  // console.log(paymentStatusData);
 
   const processing = data?.orders?.filter(
     (item: any) => item.status === "Processing"
@@ -224,7 +228,7 @@ const DashboardHero = () => {
 
   const availableBalance = seller?.availableBalance.toFixed(0);
 
-  return isLoading || productLoading ? (
+  return isLoading || productLoading || couponLoading ? (
     <Loader />
   ) : (
     <div className="w-full p-1 pt-10 500px:p-8">
@@ -284,7 +288,7 @@ const DashboardHero = () => {
               All Coupons
             </h2>
             <h3 className="text-[20px] leading-[24px] font-bold text-[#5a5c69] mt-[5px]">
-              {productData?.products.length}
+              {couponData?.couponCodes?.length}
             </h3>
             <Link to="/dashboard-coupons">
               <h5 className="text-[#077f9c] underline text-[13px]">

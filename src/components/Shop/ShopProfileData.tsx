@@ -5,20 +5,13 @@ import ProductCard from "../Products/ProductCard";
 import Ratings from "../Products/Ratings";
 import { useGetAllShopProductsQuery } from "../../redux/features/product/productApi";
 import { useGetAllShopEventsQuery } from "../../redux/features/events/eventApi";
-import Loader from "../Layout/Loader";
 import { IProduct, IReview } from "../../types/product";
 
 const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
   const { id } = useParams();
 
-  const { data: productData, isLoading: productLoading } =
-    useGetAllShopProductsQuery(id, {});
-  const { data: eventData, isLoading: eventLoading } = useGetAllShopEventsQuery(
-    id,
-    {}
-  );
-
-  // console.log(eventData);
+  const { data: productData } = useGetAllShopProductsQuery(id, {});
+  const { data: eventData } = useGetAllShopEventsQuery(id, {});
 
   const [active, setActive] = useState(1);
 
@@ -73,10 +66,8 @@ const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
       </div>
 
       <br />
-      {active === 1 && productLoading ? (
-        <Loader />
-      ) : (
-        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
+      {active === 1 && (
+        <div className="grid grid-cols-1 gap-[20px] 800px:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
           {productData?.products &&
             productData?.products.map((i: IProduct, index: number) => (
               <ProductCard data={i} key={index} />
@@ -84,24 +75,21 @@ const ShopProfileData = ({ isOwner }: { isOwner: boolean }) => {
         </div>
       )}
 
-      {active === 2 &&
-        (eventLoading ? (
-          <Loader />
-        ) : (
-          <div className="w-full">
-            <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
-              {eventData?.events &&
-                eventData?.events.map((i: any, index: number) => (
-                  <ProductCard data={i} key={index} isEvent={true} />
-                ))}
-            </div>
-            {eventData?.events && eventData?.events.length === 0 && (
-              <h5 className="w-full text-center py-5 text-[18px]">
-                No Events have for this shop!
-              </h5>
-            )}
+      {active === 2 && (
+        <div className="w-full">
+          <div className="grid grid-cols-1 gap-[20px] 800px:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
+            {eventData?.events &&
+              eventData?.events.map((i: any, index: number) => (
+                <ProductCard data={i} key={index} isEvent={true} />
+              ))}
           </div>
-        ))}
+          {eventData?.events && eventData?.events.length === 0 && (
+            <h5 className="w-full text-center py-5 text-[18px]">
+              No Events have for this shop!
+            </h5>
+          )}
+        </div>
+      )}
 
       {active === 3 && (
         <div className="w-full">

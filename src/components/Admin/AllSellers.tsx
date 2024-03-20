@@ -25,7 +25,7 @@ const AllSellers = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [confirm, setConfirm] = useState<boolean>(false);
 
-  console.log("data:", data, "product:-", data?.sellers);
+  // console.log("data:", data, "product:-", data?.sellers);
 
   const [
     deleteShop,

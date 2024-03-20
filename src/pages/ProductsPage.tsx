@@ -165,10 +165,12 @@ const ProductsPage = () => {
   };
 
   const { width } = useWindowSize();
-  const baseWidth = 350;
-  const gap = 8;
+  const baseWidth = 320;
+  const gap = 10;
 
-  const productsPerRow = Math.floor((width - gap) / (baseWidth + gap));
+  const productsPerRow = Math.floor(
+    (width > 1025 ? width - gap - 250 : width - gap) / (baseWidth + gap)
+  );
 
   const gridStyle = {
     display: "grid",

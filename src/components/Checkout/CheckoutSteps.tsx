@@ -1,7 +1,7 @@
 import styles from "../../styles/styles";
 
 const CheckoutSteps = ({ active }: { active: number }) => {
-  console.log(active);
+  // console.log(active);
   return (
     <div className="w-full mt-7 flex-col md:flex justify-center items-center">
       <div className="w-[90%] 800px:w-[70%] lg:w-[50%] xs:flex-col md:flex items-center justify-center flex-wrap">

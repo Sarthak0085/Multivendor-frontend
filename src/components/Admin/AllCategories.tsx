@@ -56,13 +56,13 @@ const AllCategories = () => {
   };
 
   const createCategory: SubmitHandler<addCategoryFormData> = async (data) => {
-    console.log(data, image);
+    // console.log(data, image);
     setOpen(false);
     await create({ ...data, image: image });
   };
 
   const updateCategory: SubmitHandler<addCategoryFormData> = async (data) => {
-    console.log(data, image);
+    // console.log(data, image);
     setOpen(false);
     await update({ id, ...data, image: image });
   };

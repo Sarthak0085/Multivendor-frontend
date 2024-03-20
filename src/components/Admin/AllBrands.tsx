@@ -32,8 +32,6 @@ const AllBrands = () => {
   const [mode, setMode] = useState("");
   const [option, setOption] = useState("");
 
-  console.log(confirm, id);
-
   const [
     deleteBrand,
     { isSuccess: deleteSuccess, error: deleteError, isLoading: deleteLoading },
@@ -51,13 +49,12 @@ const AllBrands = () => {
   };
 
   const createBrand: SubmitHandler<addBrandFormData> = async (data) => {
-    console.log(data, image);
     setOpen(false);
     await create({ ...data, image: image });
   };
 
   const updateBrand: SubmitHandler<addBrandFormData> = async (data) => {
-    console.log(data, image);
+    // console.log(data, image);
     setOpen(false);
     await update({ id, ...data, image: image });
   };
