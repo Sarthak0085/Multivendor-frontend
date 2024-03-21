@@ -33,7 +33,7 @@ const Register = () => {
     if (isLoading) {
       toast.loading("Registering new user. Please Wait for a While....", {
         style: setLoadingOptions,
-        // duration: isSuccess || error ? 0 : Infinity,
+        duration: 13000,
       });
     }
     if (isSuccess) {

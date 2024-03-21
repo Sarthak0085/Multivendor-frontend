@@ -33,6 +33,7 @@ const Verification = () => {
     if (isLoading) {
       toast.loading("Activating new Shop. It will take time....", {
         style: setLoadingOptions,
+        duration: 13000,
       });
     }
     if (isSuccess) {

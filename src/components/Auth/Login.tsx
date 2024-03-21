@@ -26,7 +26,7 @@ const Login = () => {
     if (isLoading) {
       toast.loading("Logging In. Please Wait for a While....", {
         style: setLoadingOptions,
-        duration: 10000,
+        duration: 13000,
       });
     }
     if (isSuccess) {

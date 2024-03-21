@@ -27,6 +27,7 @@ const ShopLogin = () => {
     if (isLoading) {
       toast.loading("Logging In...", {
         style: setLoadingOptions,
+        duration: 13000,
       });
     }
     if (isSuccess) {

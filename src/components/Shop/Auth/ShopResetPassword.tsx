@@ -51,6 +51,7 @@ const ShopResetPassword = () => {
     if (isLoading) {
       toast.loading("Hold on a moment.Processing new Password...", {
         style: setLoadingOptions,
+        duration: 13000,
       });
     }
     if (isSuccess) {

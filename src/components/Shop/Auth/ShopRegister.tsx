@@ -33,6 +33,7 @@ const ShopRegister = () => {
     if (isLoading) {
       toast.loading("Register new Shop. Please Wait. It will take time...", {
         style: setLoadingOptions,
+        duration: 13000,
       });
     }
     if (isSuccess) {
