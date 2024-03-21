@@ -1,0 +1,5 @@
+services:
+  - name: Multivendor-Frontend
+    type: web
+    buildCommand: npm run build
+    publishDir: dist
