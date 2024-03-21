@@ -117,9 +117,9 @@ const ProductCard = ({
     const wishlistData = {
       productId: data?._id,
       shopId: data?.shop?._id,
-      color: data?.colors[0],
+      color: colorSelect,
       price: data?.discountPrice,
-      size: data?.sizes[0],
+      size: sizeSelect,
     };
     await removeFromWishlist(wishlistData);
   };
@@ -128,9 +128,9 @@ const ProductCard = ({
     const wishlistData = {
       productId: data?._id,
       shopId: data?.shop?._id,
-      color: data?.colors[0],
+      color: colorSelect,
       price: data?.discountPrice,
-      size: data?.sizes[0],
+      size: sizeSelect,
     };
     // console.log("Wishlist :", wishlistData);
 
@@ -156,7 +156,7 @@ const ProductCard = ({
         size: sizeSelect,
         gender: data?.gender,
       };
-      console.log(cartData);
+      // console.log(cartData);
 
       await addToCart(cartData);
     }
@@ -297,7 +297,7 @@ const ProductCard = ({
               </div>
               <div className="flex items-center mt-2 gap-2 bg-transparent px-2 rounded-md">
                 {data?.sizes?.map((size: string, index: number) => {
-                  console.log(size);
+                  console.log(sizeSelect);
 
                   return (
                     <button

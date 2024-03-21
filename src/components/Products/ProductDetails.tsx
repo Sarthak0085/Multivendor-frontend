@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import {
   AiFillHeart,
   AiOutlineHeart,
-  AiOutlineMessage,
+  // AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { useSelector } from "react-redux";
@@ -178,7 +178,7 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
 
   const averageRating = avg.toFixed(2);
 
-  const handleMessageSubmit = async () => {};
+  // const handleMessageSubmit = async () => {};
 
   return (
     <div className="bg-white">
@@ -379,14 +379,14 @@ const ProductDetails = ({ data }: { data: IProduct | IEvent }) => {
                       </h5>
                     </div>
                   </div>
-                  <div
+                  {/* <div
                     className={`${styles.button} bg-[#6443d1] mt-4 !rounded !h-11`}
                     onClick={handleMessageSubmit}
                   >
                     <span className="text-white flex items-center">
                       Send Message <AiOutlineMessage className="ml-1" />
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

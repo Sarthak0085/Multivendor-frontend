@@ -161,16 +161,16 @@ const BestSellingPage = () => {
     const savedSelectedGender = localStorage.getItem("selectedGender");
     const savedSelectedPrice = localStorage.getItem("selectedPrice");
     const savedSelectedDiscount = localStorage.getItem("selectedDiscount");
-    console.log(
-      "localstorage: ",
-      savedSelectedColors,
-      savedSelectedCategory,
-      savedSelectedBrand,
-      savedSelectedSizes,
-      savedSelectedGender,
-      savedSelectedPrice,
-      savedSelectedDiscount
-    );
+    // console.log(
+    //   "localstorage: ",
+    //   savedSelectedColors,
+    //   savedSelectedCategory,
+    //   savedSelectedBrand,
+    //   savedSelectedSizes,
+    //   savedSelectedGender,
+    //   savedSelectedPrice,
+    //   savedSelectedDiscount
+    // );
 
     if (savedSelectedColors && typeof savedSelectedColors !== "undefined") {
       setSelectedColors(JSON?.parse(savedSelectedColors));
@@ -225,7 +225,7 @@ const BestSellingPage = () => {
 
   const { width } = useWindowSize();
   const baseWidth = 350;
-  const gap = 8;
+  const gap = 10;
 
   const productsPerRow = Math.floor(
     (width > 1025 ? width - gap - 250 : width - gap) / (baseWidth + gap)

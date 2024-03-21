@@ -218,7 +218,7 @@ const Wishlist = ({
 
               {/* cart Single Items */}
               <br />
-              <div className="w-full border-t">
+              <div className="w-full border-t space-y-4">
                 {wishlistData?.wishlist &&
                   wishlistData?.wishlist?.products.map(
                     (i: IProductInWishlist, index: number) => (
