@@ -1,19 +1,13 @@
 import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
-import { useGetHeroLayoutQuery } from "../../../redux/features/layout/layoutApi";
-import Loader from "../../Layout/Loader";
+import { Layout } from "../../../types/layout";
 
-const Hero = () => {
-  const { data, isLoading } = useGetHeroLayoutQuery("Banner", {});
-  console.log("banner", data);
-
-  return isLoading ? (
-    <Loader />
-  ) : (
+const Hero = ({ data }: { data: Layout }) => {
+  return (
     <div
       className={`relative min-h-[70vh] flex 800px:min-h-[70vh] w-full bg-slate-300 bg-no-repeat ${styles.noramlFlex}`}
       style={{
-        backgroundImage: `url('${data?.layout?.banner?.image?.url}')`,
+        backgroundImage: `url('${data?.banner?.image?.url}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         width: "100%",
@@ -26,10 +20,10 @@ const Hero = () => {
         <h1
           className={`text-[35px] p-2 bg-[#00000034] leading-[1.2] 800px:text-[60px] text-white font-[600] capitalize`}
         >
-          {data?.layout?.banner?.title}
+          {data?.banner?.title}
         </h1>
         <p className="mt-5 leading-[1.5] pt-5 p-2 bg-[#00000075] text-[18px] font-[Poppins] font-[400] text-emerald-50">
-          {data?.layout?.banner?.subTitle}
+          {data?.banner?.subTitle}
         </p>
         <Link to="/products" className="inline-block">
           <div className={`${styles.button} mt-8`}>

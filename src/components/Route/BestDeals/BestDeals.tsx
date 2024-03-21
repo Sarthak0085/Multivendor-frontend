@@ -1,24 +1,9 @@
-import { useEffect, useState } from "react";
-import styles from "../../../styles/styles";
-import ProductCard from "../../Products/ProductCard";
-import { useGetAllProductsQuery } from "../../../redux/features/product/productApi";
 import useWindowSize from "../../../hooks/useWindowSize";
-import Loader from "../../Layout/Loader";
+import styles from "../../../styles/styles";
 import { IProduct } from "../../../types/product";
+import ProductCard from "../../Products/ProductCard";
 
-const BestDeals = () => {
-  const [data, setData] = useState<IProduct[]>();
-  const { data: productData, isLoading } = useGetAllProductsQuery({});
-  console.log(productData);
-  useEffect(() => {
-    const allProductsData = productData?.products
-      ? [...productData.products]
-      : [];
-    const sortedData = allProductsData?.sort((a, b) => b.sold_out - a.sold_out);
-    const firstEight = sortedData && sortedData.slice(0, 8);
-    setData(firstEight);
-  }, [productData]);
-
+const BestDeals = ({ data }: { data: IProduct[] | undefined }) => {
   const { width } = useWindowSize();
   const baseWidth = 350;
   const gap = 10;
@@ -40,16 +25,11 @@ const BestDeals = () => {
       </div>
       {/* <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[30px] 2xl:grid-cols-5 2xl:gap-[35px] mb-12 border-0"> */}
       <div style={gridStyle}>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          data &&
-          data.length !== 0 && (
-            <>
-              {data &&
-                data?.map((i, index) => <ProductCard data={i} key={index} />)}
-            </>
-          )
+        {data !== undefined && data.length !== 0 && (
+          <>
+            {data &&
+              data?.map((i, index) => <ProductCard data={i} key={index} />)}
+          </>
         )}
       </div>
     </div>
