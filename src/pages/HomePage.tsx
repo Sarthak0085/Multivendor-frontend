@@ -11,36 +11,39 @@ import { useGetAllProductsQuery } from "../redux/features/product/productApi";
 import { useEffect, useState } from "react";
 import { IProduct } from "../types/product";
 import Loader from "../components/Layout/Loader";
+import { useGetAllEventsQuery } from "../redux/features/events/eventApi";
 
 const HomePage = () => {
   const [bestProducts, setBestProducts] = useState<IProduct[]>();
+  const [featuredProducts, setFeaturedProducts] = useState<IProduct[]>();
   const { data, isLoading } = useGetHeroLayoutQuery("Banner", {});
-  const { data: featuredProducts, isLoading: FeaturedLoading } =
-    useGetAllProductsQuery({ sort: "Rating" });
+  const { data: featured, isLoading: FeaturedLoading } = useGetAllProductsQuery(
+    { sort: "Rating" }
+  );
   const { data: productData, isLoading: productLoading } =
     useGetAllProductsQuery({ sort: "Recommended" });
+  const { data: eventData, isLoading: eventLoading } = useGetAllEventsQuery({});
 
   useEffect(() => {
-    const allProductsData = productData?.products
-      ? [...productData.products]
-      : [];
-    const sortedData = allProductsData?.sort((a, b) => b.sold_out - a.sold_out);
-    const firstFour = sortedData && sortedData.slice(0, 4);
-    setBestProducts(firstFour);
-  }, [productData]);
+    const bestFour =
+      productData?.products && productData?.products?.slice(0, 4);
+    setBestProducts(bestFour);
+    const featuredFour = featured?.products && featured?.products.slice(0, 4);
+    setFeaturedProducts(featuredFour);
+  }, [productData, featured]);
 
   return (
     <div>
       <Header activeHeading={1} />
-      {isLoading || FeaturedLoading || productLoading ? (
+      {isLoading || FeaturedLoading || productLoading || eventLoading ? (
         <Loader />
       ) : (
         <>
           <Hero data={data?.layout} />
           <Categories />
           <BestDeals data={bestProducts} />
-          <Events />
-          <FeaturedProduct data={featuredProducts?.products} />
+          <Events eventData={eventData?.events} />
+          <FeaturedProduct data={featuredProducts} />
           <Sponsored />
         </>
       )}

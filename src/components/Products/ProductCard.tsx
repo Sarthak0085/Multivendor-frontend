@@ -275,8 +275,7 @@ const ProductCard = ({
               title="Add to cart"
               aria-label="Add to cart"
             />
-            {/* </div> */}
-            <div className="mb-4 absolute left-5 top-[150px]">
+            <div className="mb-4 absolute left-1 400px:left-5 top-[150px]">
               <div className="flex items-center bg-transparent px-2 rounded-md">
                 {data?.colors?.map((item: string, index: number) => (
                   <button

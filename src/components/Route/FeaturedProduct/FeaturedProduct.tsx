@@ -3,7 +3,7 @@ import styles from "../../../styles/styles";
 import { IProduct } from "../../../types/product";
 import ProductCard from "../../Products/ProductCard";
 
-const FeaturedProduct = ({ data }: { data: IProduct[] }) => {
+const FeaturedProduct = ({ data }: { data: IProduct[] | undefined }) => {
   const { width } = useWindowSize();
   const baseWidth = 350;
   const gap = 10;
@@ -25,7 +25,7 @@ const FeaturedProduct = ({ data }: { data: IProduct[] }) => {
       </div>
       {/* <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[30px] 2xl:grid-cols-5 2xl:gap-[35px] mb-12 border-0"> */}
       <div style={gridStyle}>
-        {data && data?.length !== 0 && (
+        {data !== undefined && data?.length !== 0 && (
           <>
             {data &&
               data?.map((i: IProduct, index: number) => (
